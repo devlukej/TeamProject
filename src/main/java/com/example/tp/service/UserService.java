@@ -1,9 +1,9 @@
-package com.example.unplugged.service;
+package com.example.tp.service;
 
-import com.example.unplugged.domain.Role;
-import com.example.unplugged.domain.entity.UserEntity;
-import com.example.unplugged.domain.repository.UserRepository;
-import com.example.unplugged.dto.UserDto;
+import com.example.tp.domain.Role;
+import com.example.tp.domain.entity.UserEntity;
+import com.example.tp.domain.repository.UserRepository;
+import com.example.tp.dto.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

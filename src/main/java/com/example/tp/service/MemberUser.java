@@ -1,6 +1,6 @@
-package com.example.unplugged.service;
+package com.example.tp.service;
 
-import com.example.unplugged.domain.entity.UserEntity;
+import com.example.tp.domain.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 

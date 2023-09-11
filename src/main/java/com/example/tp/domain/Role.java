@@ -1,4 +1,4 @@
-package com.example.unplugged.domain;
+package com.example.tp.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

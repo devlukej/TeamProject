@@ -1,15 +1,15 @@
-package com.example.unplugged.controller;
+package com.example.tp.Controller;
 
-import com.example.unplugged.dto.UserDto;
-import com.example.unplugged.service.MemberUser;
-import com.example.unplugged.service.UserService;
+import com.example.tp.dto.UserDto;
+import com.example.tp.service.MemberUser;
+import com.example.tp.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.example.unplugged.service.S3Service;
+import com.example.tp.service.S3Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 

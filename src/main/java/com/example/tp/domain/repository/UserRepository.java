@@ -1,6 +1,6 @@
-package com.example.unplugged.domain.repository;
+package com.example.tp.domain.repository;
 
-import com.example.unplugged.domain.entity.UserEntity;
+import com.example.tp.domain.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

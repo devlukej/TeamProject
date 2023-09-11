@@ -1,4 +1,4 @@
-package com.example.unplugged.service;
+package com.example.tp.service;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

@@ -1,6 +1,6 @@
-package com.example.unplugged.config;
+package com.example.tp.config;
 
-import com.example.unplugged.service.UserService;
+import com.example.tp.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

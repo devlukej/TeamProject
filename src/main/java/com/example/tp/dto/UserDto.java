@@ -1,6 +1,6 @@
-package com.example.unplugged.dto;
+package com.example.tp.dto;
 
-import com.example.unplugged.domain.entity.UserEntity;
+import com.example.tp.domain.entity.UserEntity;
 import lombok.*;
 
 import java.time.LocalDate;
