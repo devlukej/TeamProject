@@ -196,11 +196,14 @@ d {
     margin: 10px auto 10px auto;
     border: 1px solid black;
     background: #D6E4FF;
-    width: 95%;
+    width: 35%;
     height: 54px;
     border-radius: 5px;
     font-size: 20px;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    border-radius: 50px;
 }
 
 .error {

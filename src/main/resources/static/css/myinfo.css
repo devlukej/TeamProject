@@ -25,21 +25,6 @@
     align-items: center;
 }
 
-.info_text {
-    font-size: 18px;
-    font-weight: bold;
-    width: 40%;
-    float: left;
-}
-
-.info_data {
-    width: 60%;
-    font-size: 18px;
-    float: right;
-    display: flex;
-    margin-left: 5px;
-}
-
 .profile-info {
     width: 100%;
 }

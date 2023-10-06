@@ -2,48 +2,111 @@
 <html lang="kr" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>UNPLUGGED</title>
+    <title>MEGAZONE</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
 <!-- HEADER -->
 <div th:insert="common/header.html" class="header"></div>
 
-<div class="main">
-    <div class="box">
-        <dl class="notice">
-            <dt style="font-weight: bold">
-                <div>공지사항</div>
-                <a class="plus" th:href="@{/user/notice}">+ 더보기</a>
-            </dt>
-            <ul>
-                <li><a href="#" class="main_text"><span>1</span> - now having a board</a></li>
-                <li><a href="#" class="main_text"><span>2</span> - now having a board</a></li>
-                <li><a href="#" class="main_text"><span>3</span> - now having a board</a></li>
-                <li><a href="#" class="main_text"><span>4</span> - now having a board</a></li>
-                <li><a href="#" class="main_text"><span>5</span> - now having a board</a></li>
-            </ul>
-        </dl>
-    </div>
-    <div class="box">
-        <dl class="notice">
-            <ul>
+<div class="view">
+    <div class="top">
+        <div class="box">
+            <div class="notice1">
+                <div class="info">
+                    <p class="info_text">이름</p>
+                    <p class="info_data"><span th:text="${user.userEntity.name}"></span></p>
+                </div>
+                <div class="info">
+                    <p class="info_text">성별</p>
+                    <p class="info_data"><span th:text="${user.userEntity.gender}"></span></p>
+                </div>
+                <div class="info">
+                    <p class="info_text">아이디</p>
+                    <p class="info_data"><span th:text="${user.userEntity.id}"></span></p>
+                </div>
+                <div class="info">
+                    <p class="info_text">연락처</p>
+                    <p class="info_data"><span th:text="${user.userEntity.phone.substring(0,3)}"></span>
+                        <span>-</span><span th:text="${user.userEntity.phone.substring(3,7)}"></span>
+                        <span>-</span><span th:text="${user.userEntity.phone.substring(7,11)}"></span></p>
+                </div>
+                <div class="info">
+                    <p class="info_text">생년월일</p>
+                    <p class="info_data"><span th:text="${user.userEntity.birthday}"></span></p>
+                </div>
+                <div class="info">
+                    <p class="info_text">가입일</p>
+                    <p class="info_data"><span th:text="${user.userEntity.date}"></span></p>
+                </div>
+                <div class="info">
+                    <p class="info_text">등급</p>
+                    <p class="info_data"><span>골드</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <div class="notice">
                 <dt style="font-weight: bold">
-                    <div>행사일정</div>
-                    <a class="plus" th:href="@{/user/event}">+ 더보기</a>
+                    <div>활동 기록</div>
+                    <a class="plus" th:href="@{/user/notice}">+ 더보기</a>
                 </dt>
-                <li><a href="#" class="main_text"><span>1</span> - now having a board</a></li>
-                <li><a href="#" class="main_text"><span>2</span> - now having a board</a></li>
-                <li><a href="#" class="main_text"><span>3</span> - now having a board</a></li>
-                <li><a href="#" class="main_text"><span>4</span> - now having a board</a></li>
-                <li><a href="#" class="main_text"><span>5</span> - now having a board</a></li>
-            </ul>
-        </dl>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="box">
+            <dl class="notice">
+                <dt style="font-weight: bold">
+                    <div>공지사항</div>
+                    <a class="plus" th:href="@{/user/notice}">+ 더보기</a>
+                </dt>
+                <ul>
+                    <div class="li">
+                        <li><a href="#" class="main_text"><span>1</span> - now having a board</a></li>
+                    </div>
+                    <div class="li">
+                        <li><a href="#" class="main_text"><span>2</span> - now having a board</a></li>
+                    </div>
+                    <div class="li">
+                        <li><a href="#" class="main_text"><span>3</span> - now having a board</a></li>
+                    </div>
+                    <div class="li">
+                        <li><a href="#" class="main_text"><span>4</span> - now having a board</a></li>
+                    </div>
+                    <div class="li">
+                        <li><a href="#" class="main_text"><span>5</span> - now having a board</a></li>
+                    </div>
+                </ul>
+            </dl>
+        </div>
+        <div class="box">
+            <dl class="notice">
+                <ul>
+                    <dt style="font-weight: bold">
+                        <div>시험일정</div>
+                        <a class="plus" th:href="@{/user/event}">+ 더보기</a>
+                    </dt>
+                    <li><a href="#" class="main_text"><span>1</span> - now having a board</a></li>
+                    <li><a href="#" class="main_text"><span>2</span> - now having a board</a></li>
+                    <li><a href="#" class="main_text"><span>3</span> - now having a board</a></li>
+                    <li><a href="#" class="main_text"><span>4</span> - now having a board</a></li>
+                    <li><a href="#" class="main_text"><span>5</span> - now having a board</a></li>
+                </ul>
+            </dl>
+        </div>
     </div>
 </div>
-
 <!-- FOOTER -->
 <div th:insert="common/footer.html" class="footer"></div>
 
+<script>
+
+    $('#target_img').click(function (e) {
+        document.signform.target_url.value = document.getElementById('target_img').src;
+        e.preventDefault();
+        $('#file').click();
+    });
+</script>
 </body>
 </html>

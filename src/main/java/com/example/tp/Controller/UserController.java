@@ -27,6 +27,11 @@ public class UserController {
     @GetMapping("/")
     public String list(@AuthenticationPrincipal MemberUser user, Model model) {
 
+        if (user == null) {
+
+            return "redirect:/login";
+        }
+
         model.addAttribute("user", user);
         return "board/main";
     }
@@ -64,7 +69,7 @@ public class UserController {
     }
 
     // 내 정보 페이지
-    @GetMapping("/myinfo")
+    @GetMapping("/private/myinfo")
     public String dispMyInfo(@AuthenticationPrincipal MemberUser user, Model model) {
 
         if (user == null) {
@@ -79,7 +84,7 @@ public class UserController {
         return "user/myinfo";
     }
 
-    @PostMapping("/myinfo")
+    @PostMapping("/private/myinfo")
     public String dispMyInfo(@AuthenticationPrincipal MemberUser user, Model model , UserDto userDto, MultipartFile file) throws IOException {
 
         String imgPath = s3Service.upload(userDto.getFilePath(), file);
@@ -91,7 +96,7 @@ public class UserController {
         return "redirect:/myinfo";
     }
 
-    @GetMapping("/user/event")
+    @GetMapping("/private/question")
     public String dispEvent(@AuthenticationPrincipal MemberUser user, Model model) {
 
         if (user == null) {
@@ -100,10 +105,10 @@ public class UserController {
 
 
         model.addAttribute("user", user);
-        return "board/event";
+        return "board/question";
     }
 
-    @GetMapping("/user/event/add")
+    @GetMapping("/private/wrong")
     public String dispEventWrite(@AuthenticationPrincipal MemberUser user, Model model) {
 
         if (user == null) {
@@ -111,7 +116,7 @@ public class UserController {
         }
 
         model.addAttribute("user", user);
-        return "board/eventadd";
+        return "board/wrong";
     }
 
 

@@ -16,12 +16,11 @@
             <img class="check" src="${user.imgFullPath}" width="104" height="104"/>
         </div>
         <img id="target_img" src="/img/info_profile.png" width="104" height="104">
-        <form name="signform" th:action="@{/myinfo}" method="post" enctype="multipart/form-data"
+        <form name="signform" th:action="@{/}" method="post" enctype="multipart/form-data"
               action="./design_update.htm">
             <div class="profile-change">
                 <input type="file" id="file" name="file" style="display:none;" onchange="changeValue(this)">
                 <input type="hidden" name="target_url">
-                <button class="change-btn">사진 변경</button>
             </div>
         </form>
     </div>
@@ -39,30 +38,10 @@
             <p class="info_data"><span th:text="${user.userEntity.id}"></span></p>
         </div>
         <div class="info">
-            <p class="info_text">학과</p>
-            <p class="info_data"><span th:text="${user.userEntity.major}"></span></p>
-        </div>
-        <div class="info">
-            <p class="info_text">학번</p>
-            <p class="info_data"><span th:text="${user.userEntity.studentNum}"></span></p>
-        </div>
-        <div class="info">
             <p class="info_text">연락처</p>
             <p class="info_data"><span th:text="${user.userEntity.phone.substring(0,3)}"></span>
                 <span>-</span><span th:text="${user.userEntity.phone.substring(3,7)}"></span>
                 <span>-</span><span th:text="${user.userEntity.phone.substring(7,11)}"></span></p>
-        </div>
-        <div class="info">
-            <p class="info_text">기수</p>
-            <p class="info_data"><span th:text="${user.userEntity.year}"></span></p>
-        </div>
-        <div class="info">
-            <p class="info_text">세션</p>
-            <p class="info_data"><span th:text="${user.userEntity.session}"></span></p>
-        </div>
-        <div class="info">
-            <p class="info_text">직책</p>
-            <p class="info_data"><span th:text="${user.userEntity.position}"></span></p>
         </div>
         <div class="info">
             <p class="info_text">생년월일</p>
@@ -74,9 +53,7 @@
         </div>
     </div>
 </div>
-<div class="btn-box">
-    <button class="back-btn" onclick="location.href='/'">돌아가기</button>
-</div>
+
 <div th:insert="common/footer.html" class="footer"></div>
 <script>
 

@@ -4,7 +4,7 @@
     background-color: #D6E4FF;
     position: fixed;
     text-align: center;
-
+    display: flex;
     top: 0;
     left: 0;
     right: 0;
@@ -12,21 +12,14 @@
 }
 
 .title {
-    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    height: 100%;
+    width: 60%;
 }
 
-.header .div-open {
-    position: absolute;
-    top: 50%;
-    left: 20px;
-    transform: translateY(-50%);
-}
-
-.div-close img {
-    width: 100%;
-}
-
-dt {
+dth {
     border-bottom: 1px solid black;
     padding: 4px 0;
     display: flex;
@@ -37,7 +30,6 @@ dt {
     overflow: hidden;
     position: sticky;
     top: 0;
-    background-color: #FFFFFF;
     font-weight: bold;
 }
 
@@ -46,42 +38,14 @@ dt {
     line-height: 60px;
 }
 
-.modal {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
-    display: none;
-    z-index: 9;
-}
-
-.slide-div {
-    position: fixed;
-    left: -200px;
-    top: 0;
-    width: 200px;
-    height: 100%;
-    z-index: 10;
-    background: #FFFFFF;
-    overflow: auto;
-}
-
 li {
     padding: 30px 10px 0;
 }
 
-.slide-div span {
-    font-weight: 700;
-    font-size: 16px;
-}
-
-.slide-div .div-close {
-    width: 27px;
-    height: 27px;
-    float: right;
+.slide-div{
+    width: 200px;
+    height: 100px;
+    float: left;
 }
 
 .slide-top {
@@ -113,14 +77,23 @@ li {
     width: 30%;
     align-content: center;
 }
-
+.loginbox {
+    width: 50%;
+}
 .login {
+    float: right;
     margin-top: 5px;
     width: 120px;
+    height: 100%;
+    margin-right: 30px;
 }
-
+.msg {
+    display: flex;
+    height: 50%;
+    justify-content: center;
+    align-items: center;
+}
 .choice {
-    margin-top: 10px;
     display: flex;
     justify-content: space-evenly;
     font-weight: normal;
@@ -152,4 +125,5 @@ b {
     padding: 9px 18px;
     height: auto;
     overflow: hidden;
+    margin-top: 30px;
 }
