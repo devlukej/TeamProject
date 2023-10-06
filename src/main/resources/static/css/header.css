@@ -20,6 +20,7 @@
 }
 
 dth {
+    margin-top: 5px;
     border-bottom: 1px solid black;
     padding: 4px 0;
     display: flex;
@@ -39,7 +40,7 @@ dth {
 }
 
 li {
-    padding: 30px 10px 0;
+    padding: 20px 10px 0;
 }
 
 .slide-div{

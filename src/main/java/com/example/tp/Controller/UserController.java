@@ -120,7 +120,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/user/notice")
+    @GetMapping("/board/notice")
     public String dispNotice(@AuthenticationPrincipal MemberUser user, Model model) {
 
         if (user == null) {
@@ -129,7 +129,7 @@ public class UserController {
         }
 
         model.addAttribute("user", user);
-        return "user/notice";
+        return "board/notice";
     }
 
     @GetMapping("/admin/userJoin")

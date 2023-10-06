@@ -13,6 +13,10 @@
     <div class="top">
         <div class="box">
             <div class="notice1">
+                <dt style="font-weight: bold">
+                    <div>내 정보</div>
+                    <a class="plus" th:href="@{/private/myinfo}">자세히</a>
+                </dt>
                 <div class="info">
                     <p class="info_text">이름</p>
                     <p class="info_data"><span th:text="${user.userEntity.name}"></span></p>
@@ -24,12 +28,6 @@
                 <div class="info">
                     <p class="info_text">아이디</p>
                     <p class="info_data"><span th:text="${user.userEntity.id}"></span></p>
-                </div>
-                <div class="info">
-                    <p class="info_text">연락처</p>
-                    <p class="info_data"><span th:text="${user.userEntity.phone.substring(0,3)}"></span>
-                        <span>-</span><span th:text="${user.userEntity.phone.substring(3,7)}"></span>
-                        <span>-</span><span th:text="${user.userEntity.phone.substring(7,11)}"></span></p>
                 </div>
                 <div class="info">
                     <p class="info_text">생년월일</p>
@@ -49,7 +47,7 @@
             <div class="notice">
                 <dt style="font-weight: bold">
                     <div>활동 기록</div>
-                    <a class="plus" th:href="@{/user/notice}">+ 더보기</a>
+                    <a class="plus" th:href="@{/board/notice}">+ 더보기</a>
                 </dt>
             </div>
         </div>
@@ -59,7 +57,7 @@
             <dl class="notice">
                 <dt style="font-weight: bold">
                     <div>공지사항</div>
-                    <a class="plus" th:href="@{/user/notice}">+ 더보기</a>
+                    <a class="plus" th:href="@{/board/notice}">+ 더보기</a>
                 </dt>
                 <ul>
                     <div class="li">
