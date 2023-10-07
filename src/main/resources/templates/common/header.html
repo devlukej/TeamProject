@@ -13,68 +13,36 @@
 </head>
 <body>
 <div class="slide">
-    <div class="slide-div">
-
-        <div class="slide-top">
-
-            <!--            <div class="menu_top">-->
-            <!--                <span>UNPLUGGED</span>-->
-            <!--            </div>-->
-
-            <!--            <div class="menu_info">-->
-            <!--                <div class="profile">-->
-            <!--                    <img src="/img/profile.png" width="51" height="51"/>-->
-            <!--                </div>-->
-
-            <!--                <div class="login">-->
-            <!--                    <div class="msg">-->
-            <!--                        <b sec:authorize="isAnonymous()">로그인이 필요합니다.</b>-->
-            <!--                        <b sec:authorize="isAuthenticated()"><span th:text="${user.userEntity.year}"></span><span>-</span><span th:text="${user.userEntity.name}"></span></b>-->
-            <!--                    </div>-->
-            <!--                    <div class="choice">-->
-            <!--                        <a sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>-->
-            <!--                        <a sec:authorize="isAuthenticated()" th:href="@{/myinfo}">내정보</a>-->
-            <!--                        <a sec:authorize="isAnonymous()" th:href="@{/signup}" id="signup">회원가입</a>-->
-            <!--                        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-
-            <!--            </div>-->
-
+    <div class="slide-menu">
+        <div class="box1">
+            <dl>
+                <dth>혼자</dth>
+                <ul class="menu-slide">
+                    <li><a th:href="@{/}"><span>마이페이지</span></a></li>
+                    <li><a th:href="@{/private/question}"><span>기출문제</span></a></li>
+                    <li><a th:href="@{/private/wrong}"><span>오답노트</span></a></li>
+                </ul>
+            </dl>
         </div>
 
-        <div class="slide-bottom">
-
-            <div class="box1">
-                <dl>
-                    <dth>혼자</dth>
-                    <ul class="menu-slide">
-                        <li><a th:href="@{/}"><span>마이페이지</span></a></li>
-                        <li><a th:href="@{/private/question}"><span>기출문제</span></a></li>
-                        <li><a th:href="@{/private/wrong}"><span>오답노트</span></a></li>
-                    </ul>
-                </dl>
-            </div>
-
-            <div class="box1">
-                <dl>
-                    <dth>함께</dth>
-                    <ul class="menu-slide">
-                        <li><a th:href="@{/board/notice}"><span>공지사항</span></a></li>
-                        <li><a th:href="@{/admin/userJoin}"><span>질문해요</span></a></li>
-                        <li><a th:href="@{/admin/userList}"><span>스터디</span></a></li>
-                        <li><a th:href="@{/admin/userList}"><span>랭킹확인</span></a></li>
-                    </ul>
-                </dl>
-            </div>
-
+        <div class="box1">
+            <dl>
+                <dth>함께</dth>
+                <ul class="menu-slide">
+                    <li><a th:href="@{/board/notice}"><span>공지사항</span></a></li>
+                    <li><a th:href="@{/board/board}"><span>질문답변</span></a></li>
+                    <li><a th:href="@{/}"><span>스터디</span></a></li>
+                    <li><a th:href="@{/}"><span>랭킹확인</span></a></li>
+                </ul>
+            </dl>
         </div>
+
     </div>
 </div>
 
 <div class="header">
     <div class="title">
-        <a th:href="@{/}" id="title">UNPLUGGED</a>
+        <a th:href="@{/}" id="title">MEGAZONE</a>
     </div>
     <div class="loginbox">
         <div class="login">

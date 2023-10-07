@@ -43,44 +43,16 @@ li {
     padding: 20px 10px 0;
 }
 
-.slide-div{
-    width: 200px;
-    height: 100px;
-    float: left;
-}
-
-.slide-top {
-    background: #D6E4FF;
-    width: 100%;
-    height: auto;
-    padding: 5px 5px 18px 5px;
-}
-
-.slide-bottom {
+.slide-menu {
+    margin-top: 62px;
     width: 100%;
     height: auto;
 }
 
-.slide-div .menu_top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 10px 10px 10px;
-}
-
-.menu_info {
-    margin-top: 15px;
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.profile {
-    width: 30%;
-    align-content: center;
-}
 .loginbox {
     width: 50%;
 }
+
 .login {
     float: right;
     margin-top: 5px;

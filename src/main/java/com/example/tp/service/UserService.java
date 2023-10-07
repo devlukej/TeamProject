@@ -29,28 +29,26 @@ public class UserService implements UserDetailsService {
     private static final int BLOCK_PAGE_NUM_COUNT = 10; // 블럭에 존재하는 페이지 번호 수
     private static final int PAGE_POST_COUNT = 15; // 한 페이지에 존재하는 게시글 수
 
-//    @javax.transaction.Transactional
-//    public List<UserDto> getUserlist(Integer pageNum) {
-//        Page<UserEntity> page = userRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.DESC, "date")));
-//
-//        List<UserEntity> userEntities = page.getContent();
-//        List<UserDto> userDtoList = new ArrayList<>();
-//
-//        for (UserEntity userEntity : userEntities) {
-//            UserDto userDTO = UserDto.builder()
-//                    .id(userEntity.getId())
-//                    .name(userEntity.getName())
-//                    .phone(userEntity.getPhone())
-//                    .year(userEntity.getYear())
-//                    .session(userEntity.getSession())
-//                    .position(userEntity.getPosition())
-//                    .build();
-//
-//            userDtoList.add(userDTO);
-//        }
-//
-//        return userDtoList;
-//    }
+    @javax.transaction.Transactional
+    public List<UserDto> getUserlist(Integer pageNum) {
+        Page<UserEntity> page = userRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.DESC, "date")));
+
+        List<UserEntity> userEntities = page.getContent();
+        List<UserDto> userDtoList = new ArrayList<>();
+
+        for (UserEntity userEntity : userEntities) {
+            UserDto userDTO = UserDto.builder()
+                    .id(userEntity.getId())
+                    .name(userEntity.getName())
+                    .phone(userEntity.getPhone())
+                    .tier(userEntity.getTier())
+                    .build();
+
+            userDtoList.add(userDTO);
+        }
+
+        return userDtoList;
+    }
 
     @javax.transaction.Transactional
     public List<UserDto> getPassUserlist(String state) {
@@ -70,23 +68,23 @@ public class UserService implements UserDetailsService {
         return userDtoList;
     }
 
-    @javax.transaction.Transactional
-    public List<UserDto> getJoinUserlist(String state) {
-
-
-        List<UserEntity> userEntities = userRepository.findByState("0");
-
-        List<UserDto> userDtoList = new ArrayList<>();
-
-        if (userEntities.isEmpty()) return userDtoList;
-
-
-        for (UserEntity userEntity : userEntities) {
-            userDtoList.add(this.convertEntityToDto(userEntity));
-        }
-
-        return userDtoList;
-    }
+//    @javax.transaction.Transactional
+//    public List<UserDto> getJoinUserlist(String state) {
+//
+//
+//        List<UserEntity> userEntities = userRepository.findByState("0");
+//
+//        List<UserDto> userDtoList = new ArrayList<>();
+//
+//        if (userEntities.isEmpty()) return userDtoList;
+//
+//
+//        for (UserEntity userEntity : userEntities) {
+//            userDtoList.add(this.convertEntityToDto(userEntity));
+//        }
+//
+//        return userDtoList;
+//    }
 
     @javax.transaction.Transactional
     public Long getUserCount() {
@@ -122,81 +120,81 @@ public class UserService implements UserDetailsService {
     }
 
 
-    //이름검색
-    @javax.transaction.Transactional
-    public List<UserDto> searchUserName(String nameKeyword) {
+//    //이름검색
+//    @javax.transaction.Transactional
+//    public List<UserDto> searchUserName(String nameKeyword) {
+//
+//        List<UserEntity> userEntities = userRepository.findByNameContaining(nameKeyword);
+//
+//
+//        List<UserDto> userDtoList = new ArrayList<>();
+//
+//        if (userEntities.isEmpty()) return userDtoList;
+//
+//
+//        for (UserEntity userEntity : userEntities) {
+//            userDtoList.add(this.convertEntityToDto(userEntity));
+//        }
+//
+//        return userDtoList;
+//    }
 
-        List<UserEntity> userEntities = userRepository.findByNameContaining(nameKeyword);
-
-
-        List<UserDto> userDtoList = new ArrayList<>();
-
-        if (userEntities.isEmpty()) return userDtoList;
-
-
-        for (UserEntity userEntity : userEntities) {
-            userDtoList.add(this.convertEntityToDto(userEntity));
-        }
-
-        return userDtoList;
-    }
-
-    //기수검색
-    @javax.transaction.Transactional
-    public List<UserDto> searchUserYear(String yearKeyword) {
-
-        List<UserEntity> userEntities = userRepository.findByYearContaining(yearKeyword);
-
-
-        List<UserDto> userDtoList = new ArrayList<>();
-
-        if (userEntities.isEmpty()) return userDtoList;
-
-
-        for (UserEntity userEntity : userEntities) {
-            userDtoList.add(this.convertEntityToDto(userEntity));
-        }
-
-        return userDtoList;
-    }
-
-    //세션검색
-    @javax.transaction.Transactional
-    public List<UserDto> searchUserSession(String sessionKeyword) {
-
-        List<UserEntity> userEntities = userRepository.findBySessionContaining(sessionKeyword);
-
-
-        List<UserDto> userDtoList = new ArrayList<>();
-
-        if (userEntities.isEmpty()) return userDtoList;
-
-
-        for (UserEntity userEntity : userEntities) {
-            userDtoList.add(this.convertEntityToDto(userEntity));
-        }
-
-        return userDtoList;
-    }
-
-    //직책검색
-    @javax.transaction.Transactional
-    public List<UserDto> searchUserPosition(String positionKeyword) {
-
-        List<UserEntity> userEntities = userRepository.findByPositionContaining(positionKeyword);
-
-
-        List<UserDto> userDtoList = new ArrayList<>();
-
-        if (userEntities.isEmpty()) return userDtoList;
-
-
-        for (UserEntity userEntity : userEntities) {
-            userDtoList.add(this.convertEntityToDto(userEntity));
-        }
-
-        return userDtoList;
-    }
+//    //기수검색
+//    @javax.transaction.Transactional
+//    public List<UserDto> searchUserYear(String yearKeyword) {
+//
+//        List<UserEntity> userEntities = userRepository.findByYearContaining(yearKeyword);
+//
+//
+//        List<UserDto> userDtoList = new ArrayList<>();
+//
+//        if (userEntities.isEmpty()) return userDtoList;
+//
+//
+//        for (UserEntity userEntity : userEntities) {
+//            userDtoList.add(this.convertEntityToDto(userEntity));
+//        }
+//
+//        return userDtoList;
+//    }
+//
+//    //세션검색
+//    @javax.transaction.Transactional
+//    public List<UserDto> searchUserSession(String sessionKeyword) {
+//
+//        List<UserEntity> userEntities = userRepository.findBySessionContaining(sessionKeyword);
+//
+//
+//        List<UserDto> userDtoList = new ArrayList<>();
+//
+//        if (userEntities.isEmpty()) return userDtoList;
+//
+//
+//        for (UserEntity userEntity : userEntities) {
+//            userDtoList.add(this.convertEntityToDto(userEntity));
+//        }
+//
+//        return userDtoList;
+//    }
+//
+//    //직책검색
+//    @javax.transaction.Transactional
+//    public List<UserDto> searchUserPosition(String positionKeyword) {
+//
+//        List<UserEntity> userEntities = userRepository.findByPositionContaining(positionKeyword);
+//
+//
+//        List<UserDto> userDtoList = new ArrayList<>();
+//
+//        if (userEntities.isEmpty()) return userDtoList;
+//
+//
+//        for (UserEntity userEntity : userEntities) {
+//            userDtoList.add(this.convertEntityToDto(userEntity));
+//        }
+//
+//        return userDtoList;
+//    }
 
     private UserDto convertEntityToDto(UserEntity userEntity) {
 
@@ -204,9 +202,7 @@ public class UserService implements UserDetailsService {
                 .id(userEntity.getId())
                 .name(userEntity.getName())
                 .phone(userEntity.getPhone())
-                .year(userEntity.getYear())
-                .session(userEntity.getSession())
-                .position(userEntity.getPosition())
+                .tier(userEntity.getTier())
                 .filePath(userEntity.getFilePath())
                 .imgFullPath("https://" + S3Service.CLOUD_FRONT_DOMAIN_NAME + "/" + userEntity.getFilePath())
 
@@ -250,15 +246,15 @@ public class UserService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
 
-        if (("1").equals(userEntity.getState()) && ("간부").equals(userEntity.getPosition())) {
-            authorities.add(new SimpleGrantedAuthority(Role.MANAGER.getValue()));
-        } else if (("1").equals(userEntity.getState()) && ("동아리원").equals(userEntity.getPosition())) {
-            authorities.add(new SimpleGrantedAuthority(Role.USER.getValue()));
-        } else if (("2").equals(userEntity.getState())) {
-            authorities.add(new SimpleGrantedAuthority(Role.GUEST.getValue()));
-        } else {
-            authorities.add(new SimpleGrantedAuthority(Role.GUEST.getValue()));
-        }
+//        if (("1").equals(userEntity.getState()) && ("간부").equals(userEntity.getPosition())) {
+//            authorities.add(new SimpleGrantedAuthority(Role.MANAGER.getValue()));
+//        } else if (("1").equals(userEntity.getState()) && ("동아리원").equals(userEntity.getPosition())) {
+//            authorities.add(new SimpleGrantedAuthority(Role.USER.getValue()));
+//        } else if (("2").equals(userEntity.getState())) {
+//            authorities.add(new SimpleGrantedAuthority(Role.GUEST.getValue()));
+//        } else {
+//            authorities.add(new SimpleGrantedAuthority(Role.GUEST.getValue()));
+//        }
 
         return new MemberUser(userEntity.getId(), userEntity.getPw(), authorities, userEntity);
     }

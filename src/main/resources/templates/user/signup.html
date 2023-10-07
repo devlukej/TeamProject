@@ -6,9 +6,22 @@
     <meta charset="UTF-8">
     <title>UNPLUGGED</title>
     <link rel="stylesheet" th:href="@{/css/signup.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
     <script src="/js/signup.js"></script>
 </head>
 <body>
+
+<div class="header">
+    <div class="title">
+        <a th:href="@{/}" id="title">MEGAZONE</a>
+    </div>
+</div>
+
+<script>
+
+    document.getElementById("title").innerText = "MEGAZONE";
+
+</script>
 <form id="form" th:action="@{/signup}" method="post" modelAttribute="userDto">
     <div class="body">
         <div class="areabox">
@@ -74,9 +87,6 @@
                     class="check-btn">가입하기</label></a>
         </div>
     </div>
-
-    <div class="modal2">
-    </div>
 </form>
 <script>
 
@@ -124,116 +134,8 @@
         $('#phone').keyup(function () {
             $('#phoneError').html('');
         });
-        $('#studentNum').keyup(function () {
-            $('#studentNumError').html('');
-        });
 
     });
-
-    // noinspection JSJQueryEfficiency
-    $("#major").click(function () {
-        $(".major-modal").show();
-        $(".modal2").show();
-        $('#majorError').html('');
-    });
-
-    // noinspection JSJQueryEfficiency
-    $("#year").click(function () {
-        $(".year-modal").show();
-        $(".modal2").show();
-        $('#yearError').html('');
-    });
-
-    // noinspection JSJQueryEfficiency
-    $("#session").click(function () {
-        $(".session-modal").show();
-        $(".modal2").show();
-        $('#sessionError').html('');
-    });
-
-    // noinspection JSJQueryEfficiency
-    $(".modal2").click(function () {
-        $(".major-modal").hide();
-        $(".year-modal").hide();
-        $(".session-modal").hide();
-        $(".modal2").hide();
-    });
-
-    $(document).ready(function () {
-
-        $('.blockbox').click(function () { //전체선택 체크
-            const chk = $(this).is(":checked"); //전체선택의 체크 여부 확인
-            if (chk) { //전체선택이 체크 되었다면
-                $('.checkbox').each(function () {
-                    const disabled = $(this).prop("disabled"); //비활성화 여부 체크
-                    if (!disabled) { //비활성화가 아니라면
-                        $(this).prop('disabled', true); //비활성화 실행
-                        $(this).prop('checked', false);
-                    }
-                });
-            } else {//전체선택이 체크되지 않았다면
-                $('.checkbox').prop('disabled', false); //전체 체크 풀기 (체크 푸는건 모두 해도 상관 없음)
-            }
-        });
-
-    });
-
-    document.getElementById("title").innerText = "회원가입";
-
-
-    function getMajor() {
-        // 선택된 목록 가져오기
-        const query = 'input[name="major-check"]:checked';
-        const selectedEls =
-            document.querySelectorAll(query);
-
-        // 선택된 목록에서 value 찾기
-        let result = '';
-        selectedEls.forEach((el) => {
-            result = el.value;
-        });
-
-        document.getElementById("year").focus();
-        $("#major").val(result)
-        $(".major-modal").hide();
-        $(".modal2").hide();
-
-    }
-
-    function getYear() {
-        // 선택된 목록 가져오기
-        const query = 'input[name="year-check"]:checked';
-        const selectedEls =
-            document.querySelectorAll(query);
-
-        // 선택된 목록에서 value 찾기
-        let result = '';
-        selectedEls.forEach((el) => {
-            result += el.value;
-        });
-        document.getElementById("session").focus();
-        $("#year").val(result)
-        $(".year-modal").hide();
-        $(".modal2").hide();
-
-    }
-
-    function getSession() {
-        // 선택된 목록 가져오기
-        const query = 'input[name="session-check"]:checked';
-        const selectedEls =
-            document.querySelectorAll(query);
-
-        // 선택된 목록에서 value 찾기
-        let result = '';
-        selectedEls.forEach((el) => {
-            result += el.value;
-        });
-        $("#session").val(result)
-        $(".session-modal").hide();
-        $(".modal2").hide();
-
-    }
 
 </script>
 </body>

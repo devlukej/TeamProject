@@ -2,8 +2,10 @@ package com.example.tp.dto;
 
 import com.example.tp.domain.entity.UserEntity;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,23 +26,15 @@ public class UserDto {
 //    @NotBlank(message = "연락처는 필수 입력 값입니다.")
     private String phone;
     //    @Pattern(regexp = "^[1-9]{8}$", message = "학번은 8자리수여야 합니다.")
-//    @NotBlank(message = "학번은 필수 입력 값입니다.")
-    private String studentNum;
-    //    @NotBlank(message = "학과는 필수 입력 값입니다.")
-    private String major;
-    //    @NotBlank(message = "기수는 필수 입력 값입니다.")
-    private String year;
-    //    @NotBlank(message = "세션은 필수 입력 값입니다.")
-    private String session;
-    //    @NotBlank(message = "직급은 필수 입력 값입니다.")
-    private String position;
+    private String tier;
     //    @NotBlank(message = "성별은 필수 입력 값입니다.")
     private String gender;
     //    @NotBlank(message = "생년월일은 필수 입력 값입니다.")
     private String birthday;
 
     private String state;
-    private LocalDate date;
+
+    private LocalDate createDate;
 
     private String filePath;
 
@@ -52,11 +46,7 @@ public class UserDto {
                 .pw(pw)
                 .name(name)
                 .phone(phone)
-                .studentNum(studentNum)
-                .major(major)
-                .year(year)
-                .session(session)
-                .position(position)
+                .tier(tier)
                 .gender(gender)
                 .state(state)
                 .birthday(birthday)
@@ -65,20 +55,16 @@ public class UserDto {
     }
 
     @Builder
-    public UserDto(String id, String pw, String name, String phone, String studentNum, String major, String year, String session, String position, String gender, String state, String birthday, LocalDate date , String filePath , String imgFullPath) {
+    public UserDto(String id, String pw, String name, String phone, String tier, String gender, String state, String birthday, LocalDate createDate , String filePath , String imgFullPath) {
         this.id = id;
         this.pw = pw;
         this.name = name;
         this.phone = phone;
-        this.studentNum = studentNum;
-        this.major = major;
-        this.year = year;
-        this.session = session;
-        this.position = position;
+        this.tier = tier;
         this.gender = gender;
         this.birthday = birthday;
         this.state = state;
-        this.date = date;
+        this.createDate = createDate;
         this.filePath = filePath;
         this.imgFullPath = imgFullPath;
     }

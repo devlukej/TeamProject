@@ -1,18 +1,18 @@
 package com.example.tp.domain.entity;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.*;
-import java.util.Date;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
-public class UserEntity extends TimeEntity {
+@Table(name = "fire")
+public class FireEntity extends TimeEntity {
 
     @Id
     @Column(length = 20, nullable = false)
@@ -33,17 +33,17 @@ public class UserEntity extends TimeEntity {
     @Column(length = 20)
     private String birthday;
 
-    @Column(length = 2)
+    @Column(length = 20)
     private String state;
 
-    @ColumnDefault("0")
+    @Column(length = 20)
     private String tier;
 
     @Column(columnDefinition = "TEXT")
     private String filePath;
 
     @Builder
-    public UserEntity(String id, String pw, String name, String phone, String tier, String gender, String state, String birthday, String filePath, Date date) {
+    public FireEntity(String id, String pw, String name, String phone, String tier, String gender, String state, String birthday, String filePath) {
         this.id = id;
         this.pw = pw;
         this.name = name;
