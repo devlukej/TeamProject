@@ -92,6 +92,14 @@ b {
     float: left;
 }
 
+.menu-slide a:hover {
+    font-weight: bold;
+}
+
+.bold-text {
+    font-weight: bold;
+}
+
 .box1 {
     box-sizing: border-box;
     width: 100%;

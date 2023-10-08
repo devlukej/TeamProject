@@ -7,16 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
 public class TestServiceImpl {
     private final TestRepository testRepository;
-
-    private static final Logger logger = LoggerFactory.getLogger(TestServiceImpl.class);
 
     @Autowired
     public TestServiceImpl(TestRepository testRepository) {
@@ -25,11 +23,7 @@ public class TestServiceImpl {
 
     public List<TestDto> getQuestionsByCategories(String name, String year, String type) {
 
-        logger.info("getQuestionsByCategories 호출: name={}, year={}, type={}", name, year, type);
-
         List<Test> tests = testRepository.findByNameAndYearAndType(name, year, type);
-
-        logger.info("검색 결과: tests={}", tests);
 
         return tests.stream()
                 .map(this::convertToDto)

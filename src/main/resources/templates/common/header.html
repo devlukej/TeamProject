@@ -4,12 +4,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>UNPLUGGED</title>
+    <title>MEGAZONE</title>
     <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/header.css}">
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="slide">
@@ -17,26 +14,29 @@
         <div class="box1">
             <dl>
                 <dth>혼자</dth>
-                <ul class="menu-slide">
-                    <li><a th:href="@{/}"><span>마이페이지</span></a></li>
-                    <li><a th:href="@{/private/pre-cbt}"><span>기출문제</span></a></li>
-                    <li><a th:href="@{/private/wrong}"><span>오답노트</span></a></li>
-                </ul>
+                <div class="sidebar">
+                    <ul class="menu-slide">
+                        <li><a th:href="@{/}" onclick="makeBold(this)" class="menu-item"><span>마이페이지</span></a></li>
+                        <li><a th:href="@{/private/pre-cbt}" onclick="makeBold(this)" class="menu-item"><span>기출문제</span></a></li>
+                        <li><a th:href="@{/private/wrong}" onclick="makeBold(this)" class="menu-item"><span>오답노트</span></a></li>
+                    </ul>
+                </div>
             </dl>
         </div>
 
         <div class="box1">
             <dl>
                 <dth>함께</dth>
-                <ul class="menu-slide">
-                    <li><a th:href="@{/board/notice}"><span>공지사항</span></a></li>
-                    <li><a th:href="@{/board/question}"><span>질문답변</span></a></li>
-                    <li><a th:href="@{/}"><span>스터디</span></a></li>
-                    <li><a th:href="@{/}"><span>랭킹확인</span></a></li>
-                </ul>
+                <div class="sidebar">
+                    <ul class="menu-slide">
+                        <li><a th:href="@{/board/notice}" onclick="makeBold(this)" class="menu-item"><span>공지사항</span></a></li>
+                        <li><a th:href="@{/board/question}" onclick="makeBold(this)" class="menu-item"><span>질문답변</span></a></li>
+                        <li><a th:href="@{/}" onclick="makeBold(this)" class="menu-item"><span>스터디</span></a></li>
+                        <li><a th:href="@{/}" onclick="makeBold(this)" class="menu-item"><span>랭킹확인</span></a></li>
+                    </ul>
+                </div>
             </dl>
         </div>
-
     </div>
 </div>
 
@@ -58,11 +58,25 @@
     </div>
 </div>
 
+<!-- jQuery 로드 -->
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+<!-- 커스텀 스크립트 로드 -->
 <script>
+    function makeBold(element) {
+        // 모든 .menu-item 클래스를 가진 <a> 태그의 스타일을 초기화
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.style.fontWeight = 'normal';
+        });
 
-    document.getElementById("title").innerText = "MEGAZONE";
-
+        // 클릭한 <a> 태그의 스타일을 변경 (볼드체)
+        element.style.fontWeight = 'bold';
+    }
 </script>
 
+<script>
+    document.getElementById("title").innerText = "MEGAZONE";
+</script>
 </body>
 </html>

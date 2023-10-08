@@ -6,51 +6,76 @@
     <link rel="stylesheet" th:href="@{/css/pre-cbt.css}">
 </head>
 <body>
-<!-- HEADER -->
 <div th:insert="common/header.html" class="header"></div>
 
 <div class="view">
     <div class="check"><h3>혼자 > 기출문제</h3></div>
     <div class="enter">
-        <div class="bar">
-            <select id="sort1" name="sort" class="sort" onchange="ChangeSelect()">
-                <option name="9nationKeyword" id="9nationKeyword" value="9nationKeyword">9급 국가직</option>
-                <option name="9areaKeyword" id="9areaKeyword" value="9areaKeyword">9급 지방직</option>
-                <option name="7nationKeyword" id="7nationKeyword" value="7nationKeyword">7급 국가직</option>
-                <option name="7areaKeyword" id="7areaKeyword" value="7areaKeyword">7급 지방직</option>
-                <option name="fireKeyword" id="fireKeyword" value="fireKeyword">소방</option>
-                <option name="policeKeyword" id="policeKeyword" value="policeKeyword">경찰</option>
-            </select>
-        </div>
-        <div class="bar">
-            <select id="sort2" name="sort" class="sort" onchange="ChangeSelect()">
-                <option name="2023" id="2023" value="2023">2023</option>
-                <option name="2022" id="2022" value="2022">2022</option>
-                <option name="2021" id="2021" value="2021">2021</option>
-                <option name="2020" id="2020" value="2020">2020</option>
-                <option name="2019" id="2019" value="2019">2019</option>
-            </select>
-        </div>
-        <div>
-            <a class="btn" th:href="@{/private/cbt}">
-                <button class="write-btn">응시하기</button>
-            </a>
-        </div>
+        <form method="post" action="/private/cbt">
+            <div class="bar">
+                <label for="name"></label>
+                <select name="name" id="name" class="sort" onchange="updateOption()">
+                    <option value="경찰">경찰</option>
+                    <option value="소방">소방</option>
+                    <option value="9급 국가직">9급 국가직</option>
+                    <option value="9급 지방직">9급 지방직</option>
+                    <option value="7급 국가직">7급 국가직</option>
+                    <option value="7급 지방직">7급 지방직</option>
+                </select>
+            </div>
+            <div class="bar">
+                <label for="year"></label>
+                <select name="year" id="year" class="sort">
+                    <option value="2023">2023년</option>
+                    <option value="2022">2022년</option>
+                    <option value="2022">2021년</option>
+                    <option value="2022">2020년</option>
+                    <option value="2022">2019년</option>
+                </select>
+            </div>
+            <div class="bar">
+                <label for="type"></label>
+                <select name="type" id="type" class="sort">
+
+                </select>
+            </div>
+            <div class="btn">
+                <button type="submit" class="write-btn">응시하기</button>
+            </div>
+        </form>
     </div>
 </div>
 
 <script>
-    function ChangeSelect() {
 
-        let langSelect = document.getElementById("sort");
+    function updateOption() {
+        var name = document.getElementById("name").value;
+        var type = document.getElementById("type");
 
-        // select element에서 선택된 option의 value가 저장된다.
-        let selectValue = langSelect.options[langSelect.selectedIndex].value;
+        // name 값에 따라 type의 옵션을 변경
+        type.innerHTML = ""; // type 초기화
 
-        document.getElementById("keyword").setAttribute("name", selectValue);
-        document.getElementById("frm").setAttribute("action", "/admin/userList/" + selectValue);
-
+        if (name === "경찰") {
+            // 소방을 선택한 경우
+            var options = ["형사법", "형법", "경찰학", "형사소송법", "범죄학"];
+            for (var i = 0; i < options.length; i++) {
+                var option = document.createElement("option");
+                option.text = options[i];
+                type.add(option);
+            }
+        } else if (name === "소방") {
+            // 경찰을 선택한 경우
+            var options = ["소방학개론", "소방직", "소방관계법규", "행정법총론"];
+            for (var i = 0; i < options.length; i++) {
+                var option = document.createElement("option");
+                option.text = options[i];
+                type.add(option);
+            }
+        }
     }
+    // 초기 설정을 위해 한 번 호출
+    updateOption();
+
 </script>
 </body>
 </html>
