@@ -44,9 +44,6 @@ public class UserEntity extends TimeEntity {
     @Column(columnDefinition = "TEXT")
     private String filePath;
 
-    @OneToMany(mappedBy = "user") // CbtResult 엔티티의 user 필드와 매핑
-    private List<CbtResult> testResults = new ArrayList<>();
-
     @Builder
     public UserEntity(String id, String pw, String name, String phone, String tier, String gender, String state, String birthday, String filePath, Date date) {
         this.id = id;
