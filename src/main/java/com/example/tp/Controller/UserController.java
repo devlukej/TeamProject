@@ -86,15 +86,12 @@ public class UserController {
 
     @PostMapping("/private/myinfo")
     public String dispMyInfo(@AuthenticationPrincipal MemberUser user, Model model , UserDto userDto, MultipartFile file) throws IOException {
-
-        String imgPath = s3Service.upload(userDto.getFilePath(), file);
-        userDto.setFilePath(imgPath);
+        userDto.setFilePath(s3Service.upload(userDto.getFilePath(), file));
         userService.savePost(userDto);
-
-
         model.addAttribute("user", user);
         return "redirect:/myinfo";
     }
+
 
     @GetMapping("/private/wrong")
     public String dispEventWrite(@AuthenticationPrincipal MemberUser user, Model model) {

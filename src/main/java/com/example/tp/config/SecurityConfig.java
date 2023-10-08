@@ -51,9 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedPage("/denied")
                 .and()
-                // CSRF 비활성화
                 .csrf()
-                .ignoringAntMatchers("/login", "/logout");
+                .requireCsrfProtectionMatcher(new AntPathRequestMatcher("/login", "POST")) // CSRF 검사를 /login 경로의 POST 요청에만 적용
+                .and()
+                .authorizeRequests()
+                .antMatchers("/css/**", "/js/**", "/img/**", "/lib/**").permitAll(); // 정적 자원 무시
     }
 
 
