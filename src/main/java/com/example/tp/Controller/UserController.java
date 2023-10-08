@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 
 @Controller
 @AllArgsConstructor
 public class UserController {
+
     private UserService userService;
     private S3Service s3Service;
 
@@ -96,18 +96,6 @@ public class UserController {
         return "redirect:/myinfo";
     }
 
-    @GetMapping("/private/question")
-    public String dispEvent(@AuthenticationPrincipal MemberUser user, Model model) {
-
-        if (user == null) {
-            return "redirect:/login";
-        }
-
-
-        model.addAttribute("user", user);
-        return "board/question";
-    }
-
     @GetMapping("/private/wrong")
     public String dispEventWrite(@AuthenticationPrincipal MemberUser user, Model model) {
 
@@ -132,7 +120,7 @@ public class UserController {
         return "board/notice";
     }
 
-    @GetMapping("/board/board")
+    @GetMapping("/board/question")
     public String dispUserJoin(@AuthenticationPrincipal MemberUser user, Model model, @RequestParam(value = "page", defaultValue = "1") Integer pageNum) {
 
         if (user == null) {
@@ -146,24 +134,7 @@ public class UserController {
 
 //        model.addAttribute("userList", userList);
 
-        return "board/board";
-    }
-
-    @GetMapping("/admin/userList")
-    public String dispUserList(@AuthenticationPrincipal MemberUser user, Model model) {
-
-        if (user == null) {
-
-            return "redirect:/login";
-        }
-
-        List<UserDto> userList = userService.getPassUserlist("1");
-        model.addAttribute("user", user);
-
-
-        model.addAttribute("userList", userList);
-
-        return "admin/userList";
+        return "board/question";
     }
 
 //    //이름검색

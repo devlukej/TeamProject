@@ -4,6 +4,7 @@ import com.example.tp.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -32,27 +33,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                // 페이지 권한 설정
-                .antMatchers("/admin/**").hasRole("MANAGER")
-                .antMatchers("/user/**","/myinfo").hasAnyRole("MANAGER","USER")
-                .antMatchers("/","/login","/signup").permitAll()
-                .and() // 로그인 설정
+        http
+                .authorizeRequests()
+                .antMatchers("/", "/login", "/signup", "/private/pre-cbt", "/private/cbt").permitAll()
+                // 다른 URL 권한 설정
+                .and()
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/")
                 .usernameParameter("id")
                 .passwordParameter("pw")
                 .permitAll()
-                .and() // 로그아웃 설정
+                .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
                 .and()
-                // 403 예외처리 핸들링
-                .exceptionHandling().accessDeniedPage("/denied");
+                .exceptionHandling().accessDeniedPage("/denied")
+                .and()
+                // CSRF 비활성화
+                .csrf()
+                .ignoringAntMatchers("/login", "/logout");
     }
+
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {

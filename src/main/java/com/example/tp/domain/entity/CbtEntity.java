@@ -28,7 +28,7 @@ public class CbtEntity extends TimeEntity {
     private String num;
 
     @Column(length = 20)
-    private Integer name;
+    private String name;
 
     @Column(length = 20)
     private String type;
@@ -37,7 +37,7 @@ public class CbtEntity extends TimeEntity {
 
 
     @Builder
-    public CbtEntity(Integer count, Integer choice, Integer answer, String id, String num, Integer name, String type ) {
+    public CbtEntity(Integer count, Integer choice, Integer answer, String id, String num, String name, String type ) {
         this.count = count;
         this.choice = choice;
         this.answer = answer;

@@ -1,0 +1,31 @@
+<!-- TestCategorySelection.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>카테고리 선택</title>
+</head>
+<body>
+<form method="post" action="/private/cbt">
+    <label for="name">시험명:</label>
+    <select name="name" id="name">
+        <option value="소방">소방</option>
+        <option value="경찰">경찰</option>
+    </select>
+
+    <label for="year">출시년도:</label>
+    <select name="year" id="year">
+        <option value="2023">2023년</option>
+        <option value="2022">2022년</option>
+    </select>
+
+    <label for="type">과목:</label>
+    <select name="type" id="type">
+        <option value="형사법">형사법</option>
+        <option value="소방학개론">소방학개론</option>
+    </select>
+
+    <button type="submit">조회</button>
+</form>
+</body>
+</html>

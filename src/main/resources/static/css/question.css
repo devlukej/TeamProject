@@ -13,110 +13,77 @@ body {
     padding-top: 10px;
 }
 
-.title {
-    width: 100%;
-    text-align: center;
-    height: 60px;
-    display : flex;
-    justify-content : center;
-    align-items: center;
-}
-
-.box{
-    background-color: #D6E4FF;
-    height: 80px;
-    display : flex;
-    justify-content : center;
-    align-items: center;
-}
-.test {
+.bar {
     display: flex;
     justify-content: space-between;
-}
-.home {
-    font-weight: bold;
-    color: black;
-    font-size: 32px;
-    text-decoration: none;
-
-}
-.flow {
-    height: 600px;
-    overflow: auto;
+    width: 100%;
 }
 
-.left {
-    width: 70%;
+.sort {
+    width: 80%;
+    text-align: center;
 }
 
-.right {
+.btn {
     width: 30%;
 }
 
-.omr {
-    border: 1px solid black;
-    padding: 10px;
+.write-btn {
+    width: 80%;
+    float: right;
+}
+
+.search {
     display: flex;
+    width: 100%;
+    justify-content: end;
+    margin-bottom: 20px;
 }
 
-.question {
-    border: 1px solid black;
-    margin: 0 10px 0 10px;
+.size {
+    width: 30%;
+    height: 30px;
 }
 
-.sentence {
-    display : flex;
-    justify-content : center;
-    align-items: center;
-}
-
-.number {
+.search-btn {
+    height: 30px;
     width: 50px;
-    display : flex;
-    justify-content : center;
-    align-items: center;
 }
 
-.choose {
-    display : flex;
-    justify-content : center;
-    align-items: center;
+.write {
+    margin: 20px;
 }
 
-.top {
-    display: flex;
-    justify-content: space-between;
-}
-.qs {
-    display: flex;
-    text-align: left;
-    padding-left: 10px;
-}
-
-.qp {
-    text-align: right;
-    padding-right: 10px;
-}
-
-.bottom {
-    display: inline-block;
-    align-items: center;
-    text-align: left;
-}
-
-.q {
+.write-title {
+    font-weight: bold;
     margin-bottom: 10px;
-    padding-left: 20px;
-    color: blue;
 }
 
-.self_check { cursor:pointer;}
-.self_check input[type="radio"] {
-    width: 25px;
-    height: 25px;
-    border-radius: 15px;
-    border: 2px solid #f8415c;
-    background-color: white;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+.write-content {
+    margin-bottom: 10px;
+}
+
+.write-bottom {
+    display: flex;
+    width: 100%;
+}
+
+.write-left {
+    width: 50%;
+    display: flex;
+}
+
+.write-right {
+    width: 50%;
+    display: flex;
+    justify-content: end;
+}
+.right-box {
+    display: flex;
+}
+
+.enter {
+    margin: 20px;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
 }

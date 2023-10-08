@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MEGAZONE</title>
+    <link rel="stylesheet" th:href="@{/css/pre-cbt.css}">
+</head>
+<body>
+<!-- HEADER -->
+<div th:insert="common/header.html" class="header"></div>
+
+<div class="view">
+    <div class="check"><h3>혼자 > 기출문제</h3></div>
+    <div class="enter">
+        <div class="bar">
+            <select id="sort1" name="sort" class="sort" onchange="ChangeSelect()">
+                <option name="9nationKeyword" id="9nationKeyword" value="9nationKeyword">9급 국가직</option>
+                <option name="9areaKeyword" id="9areaKeyword" value="9areaKeyword">9급 지방직</option>
+                <option name="7nationKeyword" id="7nationKeyword" value="7nationKeyword">7급 국가직</option>
+                <option name="7areaKeyword" id="7areaKeyword" value="7areaKeyword">7급 지방직</option>
+                <option name="fireKeyword" id="fireKeyword" value="fireKeyword">소방</option>
+                <option name="policeKeyword" id="policeKeyword" value="policeKeyword">경찰</option>
+            </select>
+        </div>
+        <div class="bar">
+            <select id="sort2" name="sort" class="sort" onchange="ChangeSelect()">
+                <option name="2023" id="2023" value="2023">2023</option>
+                <option name="2022" id="2022" value="2022">2022</option>
+                <option name="2021" id="2021" value="2021">2021</option>
+                <option name="2020" id="2020" value="2020">2020</option>
+                <option name="2019" id="2019" value="2019">2019</option>
+            </select>
+        </div>
+        <div>
+            <a class="btn" th:href="@{/private/cbt}">
+                <button class="write-btn">응시하기</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function ChangeSelect() {
+
+        let langSelect = document.getElementById("sort");
+
+        // select element에서 선택된 option의 value가 저장된다.
+        let selectValue = langSelect.options[langSelect.selectedIndex].value;
+
+        document.getElementById("keyword").setAttribute("name", selectValue);
+        document.getElementById("frm").setAttribute("action", "/admin/userList/" + selectValue);
+
+    }
+</script>
+</body>
+</html>

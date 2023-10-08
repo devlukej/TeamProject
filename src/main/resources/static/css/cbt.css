@@ -1,0 +1,150 @@
+.view {
+    margin-top: 62px;
+    margin-left: 200px;
+}
+
+body {
+    background-color: #F6F6F6;
+}
+
+.check {
+    margin-left: 10px;
+    margin-bottom: 5px;
+    padding-top: 10px;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+    height: 60px;
+    display : flex;
+    justify-content : center;
+    align-items: center;
+}
+
+.box{
+    background-color: #D6E4FF;
+    height: 80px;
+    display : flex;
+    justify-content : center;
+    align-items: center;
+}
+.test {
+    display: flex;
+    justify-content: space-between;
+}
+.home {
+    font-weight: bold;
+    color: black;
+    font-size: 32px;
+    text-decoration: none;
+
+}
+.flow {
+    height: 600px;
+    overflow: auto;
+}
+
+.left {
+    width: 70%;
+}
+
+.right {
+    width: 30%;
+    user-select: none;
+}
+
+.omr {
+    border: 1px solid black;
+    padding: 10px;
+    display: flex;
+}
+
+.question {
+    border: 1px solid black;
+    margin: 0 10px 0 10px;
+}
+
+.sentence {
+    display : flex;
+    justify-content : center;
+    align-items: center;
+}
+
+.number {
+    width: 50px;
+    display : flex;
+    justify-content : center;
+    align-items: center;
+}
+
+.choose {
+    display : flex;
+    justify-content : center;
+    align-items: center;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+}
+.qs {
+    display: flex;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.qp {
+    text-align: right;
+    padding-right: 10px;
+}
+
+.bottom {
+    display: inline-block;
+    align-items: center;
+    text-align: left;
+}
+
+.q {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    color: blue;
+}
+
+.self_check {
+    cursor:pointer;
+}
+
+.self_check input[type="radio"] {
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    border: 2px solid #f8415c;
+    background-color: white;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.self_check input[type="radio"]:checked {
+    background-color: #f8415c;
+}
+
+.self_check input[type="radio"]:checked ~ span:first-of-type {
+    color: white;
+}
+
+input[type="radio"]:focus {
+  outline: none;
+}
+
+.self_check span:first-of-type {
+    position: relative;
+    left: -17px;
+    font-size: 15px;
+    color: #f8415c;
+}
+
+.self_check span {
+    position: relative;
+    top: -7px;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>결과 화면</title>
+</head>
+<body>
+<h1>결과 화면</h1>
+
+<!-- 결과를 여기에 표시 -->
+<div id="result">
+    <table>
+        <thead>
+        <tr>
+            <th>문제 제목</th>
+            <th>보기 1</th>
+            <th>보기 2</th>
+            <th>보기 3</th>
+            <th>보기 4</th>
+            <th>보기 5</th>
+            <th>정답</th>
+            <th>설명</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 결과 데이터를 반복해서 표시 -->
+        <tr th:each="result : ${results}">
+            <td th:text="${result.title}"></td>
+            <td th:text="${result.view1}"></td>
+            <td th:text="${result.view2}"></td>
+            <td th:text="${result.view3}"></td>
+            <td th:text="${result.view4}"></td>
+            <td th:text="${result.view5}"></td>
+            <td th:text="${result.answer}"></td>
+            <td th:text="${result.interpretation}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
