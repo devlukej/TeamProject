@@ -64,27 +64,25 @@
                             </div>
                             <div class="choose">
                                 <!-- 선택된 값을 input 필드에 저장 -->
-                                <input type="hidden" th:name="'testDtoList[' + ${num - 1} + '].questionNumber'" th:value="${num}">
                                 <label class="self_check">
-                                    <input type="radio" th:name="'testDtoList[' + ${num - 1} + '].answer'" value="1"><span>1</span>
+                                    <input type="radio" th:name="'num' + ${num}" value="1"><span>1</span>
                                 </label>
                                 <label class="self_check">
-                                    <input type="radio" th:name="'testDtoList[' + ${num - 1} + '].answer'" value="2"><span>2</span>
+                                    <input type="radio" th:name="'num' + ${num}" value="2"><span>2</span>
                                 </label>
                                 <label class="self_check">
-                                    <input type="radio" th:name="'testDtoList[' + ${num - 1} + '].answer'" value="3"><span>3</span>
+                                    <input type="radio" th:name="'num' + ${num}" value="3"><span>3</span>
                                 </label>
                                 <label class="self_check">
-                                    <input type="radio" th:name="'testDtoList[' + ${num - 1} + '].answer'" value="4"><span>4</span>
+                                    <input type="radio" th:name="'num' + ${num}" value="4"><span>4</span>
                                 </label>
                                 <label class="self_check">
-                                    <input type="radio" th:name="'testDtoList[' + ${num - 1} + '].answer'" value="5"><span>5</span>
+                                    <input type="radio" th:name="'num' + ${num}" value="5"><span>5</span>
                                 </label>
                             </div>
                         </div>
                     </th:block>
                 </div>
-                <input type="hidden" name="testDtoList" th:value="${testDtoList}">
                 <button type="submit">답안 제출</button>
             </form>
 
