@@ -1,5 +1,6 @@
 package com.example.tp.Controller;
 
+import com.example.tp.domain.entity.CbtResultEntity;
 import com.example.tp.service.MemberUser;
 import com.example.tp.service.TestServiceImpl;
 import com.example.tp.dto.TestDto;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class TestController {
@@ -35,23 +37,23 @@ public class TestController {
         return "board/pre-cbt"; // 카테고리 선택 HTML 페이지
     }
 
+    // 시험 문제를 표시하는 페이지
     @PostMapping("/private/cbt")
-    public String resultPage(@AuthenticationPrincipal MemberUser user,
-            @RequestParam("name") String name,
-            @RequestParam("year") String year,
-            @RequestParam("type") String type,
-            Model model) {
-
+    public String showCbt(@AuthenticationPrincipal MemberUser user,
+                          @RequestParam("name") String name,
+                          @RequestParam("year") String year,
+                          @RequestParam("subject") String subject, Model model) {
         if (user == null) {
-
             return "redirect:/login";
         }
 
-        List<TestDto> tests = testService.getQuestionsByCategories(name, year, type);
+        List<TestDto> tests = testService.getQuestionsByCategories(name, year, subject);
 
         model.addAttribute("user", user);
         model.addAttribute("tests", tests);
-        return "board/cbt"; // 결과 표시 HTML 페이지
+
+        return "board/cbt";
     }
+
 
 }

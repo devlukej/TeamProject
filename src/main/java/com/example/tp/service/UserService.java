@@ -1,6 +1,5 @@
 package com.example.tp.service;
 
-import com.example.tp.domain.Role;
 import com.example.tp.domain.entity.UserEntity;
 import com.example.tp.domain.repository.UserRepository;
 import com.example.tp.dto.UserDto;
@@ -28,6 +27,17 @@ public class UserService implements UserDetailsService {
 
     private static final int BLOCK_PAGE_NUM_COUNT = 10; // 블럭에 존재하는 페이지 번호 수
     private static final int PAGE_POST_COUNT = 15; // 한 페이지에 존재하는 게시글 수
+
+    public UserEntity getUserById(String userId) {
+        Optional<UserEntity> userEntityWrapper = userRepository.findById(userId);
+
+        if (userEntityWrapper.isEmpty()) {
+            throw new UsernameNotFoundException(userId);
+        }
+
+        return userEntityWrapper.get();
+    }
+
 
     @javax.transaction.Transactional
     public List<UserDto> getUserlist(Integer pageNum) {
@@ -237,24 +247,17 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         Optional<UserEntity> userEntityWrapper = userRepository.findById(id);
+
+        if (!userEntityWrapper.isPresent()) { // 사용자가 없는 경우
+            throw new UsernameNotFoundException(id);
+        }
+
         UserEntity userEntity = userEntityWrapper.get();
+        List<GrantedAuthority> authorities = new ArrayList<>();
 
         if (userEntityWrapper == null) {
             throw new UsernameNotFoundException(id);
         }
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-
-//        if (("1").equals(userEntity.getState()) && ("간부").equals(userEntity.getPosition())) {
-//            authorities.add(new SimpleGrantedAuthority(Role.MANAGER.getValue()));
-//        } else if (("1").equals(userEntity.getState()) && ("동아리원").equals(userEntity.getPosition())) {
-//            authorities.add(new SimpleGrantedAuthority(Role.USER.getValue()));
-//        } else if (("2").equals(userEntity.getState())) {
-//            authorities.add(new SimpleGrantedAuthority(Role.GUEST.getValue()));
-//        } else {
-//            authorities.add(new SimpleGrantedAuthority(Role.GUEST.getValue()));
-//        }
 
         return new MemberUser(userEntity.getId(), userEntity.getPw(), authorities, userEntity);
     }

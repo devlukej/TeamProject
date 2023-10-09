@@ -1,44 +1,38 @@
 package com.example.tp.domain.entity;
 
-import lombok.*;
+
+import com.example.tp.dto.CommentDTO;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(name = "comment")
-public class CommentEntity extends TimeEntity {
-
+@Table(name = "comment_table")
+public class CommentEntity extends BaseEntity {
     @Id
-    @Column(length = 20, nullable = false)
-    private Integer no;
-
-    @Column(length = 100, nullable = false)
-    private String content;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(length = 20, nullable = false)
-    private Integer recommend;
+    private String commentWriter;
 
-    @Column(length = 20, nullable = false)
-    private String id;
+    @Column
+    private String commentContents;
 
-    @Column(length = 20)
-    private String tier;
-
-    @Column(length = 20)
-    private Integer num;
-
+    /* Board:Comment = 1:N */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private BoardEntity boardEntity;
 
 
-    @Builder
-    public CommentEntity(Integer no, String content, Integer recommend, String id, String tier, Integer num) {
-        this.no = no;
-        this.content = content;
-        this.recommend = recommend;
-        this.id = id;
-        this.tier = tier;
-        this.num = num;
+    public static CommentEntity toSaveEntity(CommentDTO commentDTO, BoardEntity boardEntity) {
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setCommentWriter(commentDTO.getCommentWriter());
+        commentEntity.setCommentContents(commentDTO.getCommentContents());
+        commentEntity.setBoardEntity(boardEntity);
+        return commentEntity;
     }
 }

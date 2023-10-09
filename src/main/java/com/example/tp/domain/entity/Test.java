@@ -36,7 +36,7 @@ public class Test {
     @Column(length = 20)
     private String year;
     @Column(length = 20)
-    private String type;
+    private String subject;
     @Column(length = 20)
     private String name;
     @Column(length = 20)
@@ -44,7 +44,7 @@ public class Test {
 
     @Builder
     public Test(Long num, String title, String answer, String view1, String view2
-            , String view3, String view4, String view5, String interpretation, String year, String type, String name, String filePath) {
+            , String view3, String view4, String view5, String interpretation, String year, String subject, String name, String filePath) {
         this.answer = answer;
         this.num = num;
         this.title = title;
@@ -55,7 +55,7 @@ public class Test {
         this.view5 = view5;
         this.interpretation = interpretation;
         this.year = year;
-        this.type = type;
+        this.subject = subject;
         this.name = name;
         this.filePath = filePath;
     }

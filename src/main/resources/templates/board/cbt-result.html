@@ -2,34 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>시험 결과</title>
+    <title>Cbt Results</title>
 </head>
 <body>
-<h1>시험 결과</h1>
-<p>사용자 이름: <span th:text="${user.getUsername()}"></span></p>
-<p>총 점수: <span th:text="${totalScore}"></span></p>
+<!-- 시험 결과 -->
+<h2>시험 결과</h2>
+<p>총점: <span th:text="${totalScore}"></span></p>
+<p>정답 여부: <span th:text="${isCorrect ? '정답' : '오답'}"></span></p>
 
-<h2>각 문제 결과</h2>
+<!-- 시험 히스토리 -->
+<h2>시험 히스토리</h2>
 <table>
     <thead>
     <tr>
-        <th>문제 번호</th>
-        <th>문제 제목</th>
-        <th>사용자 답안</th>
-        <th>정답 여부</th>
-        <th>점수</th>
+        <th>시험 번호</th>
+        <th>총점</th>
     </tr>
     </thead>
     <tbody>
-    <th:block th:each="result, iterStat : ${cbtResults}">
-        <tr>
-            <td th:text="${iterStat.count}"></td>
-            <td th:text="${result.testTitle}"></td>
-            <td th:text="${result.userAnswer}"></td>
-            <td th:text="${result.correct ? '정답' : '오답'}"></td>
-            <td th:text="${result.score}"></td>
-        </tr>
-    </th:block>
+    <tr th:each="history : ${cbtHistories}">
+        <td th:text="${history.test.num}"></td>
+        <td th:text="${history.totalScore}"></td>
+    </tr>
     </tbody>
 </table>
 </body>

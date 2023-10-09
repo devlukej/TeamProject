@@ -9,7 +9,7 @@ import java.util.List;
 // TestRepository.java
 @Repository
 public interface TestRepository extends JpaRepository<Test, Long> {
-    List<Test> findByNameAndYearAndType(String name, String year, String type);
+    List<Test> findByNameAndYearAndSubject(String name, String year, String subject);
 
 
 }

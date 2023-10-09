@@ -21,9 +21,9 @@ public class TestServiceImpl {
         this.testRepository = testRepository;
     }
 
-    public List<TestDto> getQuestionsByCategories(String name, String year, String type) {
+    public List<TestDto> getQuestionsByCategories(String name, String year, String subject) {
 
-        List<Test> tests = testRepository.findByNameAndYearAndType(name, year, type);
+        List<Test> tests = testRepository.findByNameAndYearAndSubject(name, year, subject);
 
         return tests.stream()
                 .map(this::convertToDto)
@@ -46,7 +46,7 @@ public class TestServiceImpl {
         testDto.setFilePath(test.getFilePath());
         testDto.setName(test.getName());
         testDto.setYear(test.getYear());
-        testDto.setType(test.getType());
+        testDto.setSubject(test.getSubject());
         return testDto;
     }
 }

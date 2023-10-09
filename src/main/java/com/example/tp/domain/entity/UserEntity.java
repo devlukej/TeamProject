@@ -44,6 +44,13 @@ public class UserEntity extends TimeEntity {
     @Column(columnDefinition = "TEXT")
     private String filePath;
 
+    @OneToMany(mappedBy = "user")
+    private List<CbtResultEntity> cbtResults = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<CbtHistoryEntity> cbtHistories = new ArrayList<>();
+
+
     @Builder
     public UserEntity(String id, String pw, String name, String phone, String tier, String gender, String state, String birthday, String filePath, Date date) {
         this.id = id;
