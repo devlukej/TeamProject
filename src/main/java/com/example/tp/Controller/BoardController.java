@@ -5,10 +5,12 @@ import com.example.tp.dto.BoardDTO;
 import com.example.tp.dto.CommentDTO;
 import com.example.tp.service.BoardService;
 import com.example.tp.service.CommentService;
+import com.example.tp.service.MemberUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,12 +40,17 @@ public class BoardController {
     }
 
     @GetMapping("/public/question")
-    public String findAll(Model model,@PageableDefault(page = 1) Pageable pageable) {
+    public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable) {
 
         Page<BoardDTO> boardList = boardService.paging(pageable);
         int blockLimit = 3;
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
         int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
+
+        if (user == null) {
+
+            return "redirect:/login";
+        }
 
         // page 갯수 20개
         // 현재 사용자가 3페이지
@@ -52,7 +59,7 @@ public class BoardController {
         // 7 8 9
         // 보여지는 페이지 갯수 3개
         // 총 페이지 갯수 8개
-
+        model.addAttribute("user", user);
         model.addAttribute("boardList", boardList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
@@ -64,16 +71,25 @@ public class BoardController {
     }
 
     @GetMapping("/public/question/{id}")
-    public String findById(@PathVariable Long id, Model model,
+    public String findById(@AuthenticationPrincipal MemberUser user,
+            @PathVariable Long id, Model model,
                            @PageableDefault(page=1) Pageable pageable) {
         /*
             해당 게시글의 조회수를 하나 올리고
             게시글 데이터를 가져와서 detail.html에 출력
          */
+
+        if (user == null) {
+
+            return "redirect:/login";
+        }
+
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
         /* 댓글 목록 가져오기 */
         List<CommentDTO> commentDTOList = commentService.findAll(id);
+
+        model.addAttribute("user", user);
         model.addAttribute("commentList", commentDTOList);
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());
@@ -81,8 +97,15 @@ public class BoardController {
     }
 
     @GetMapping("/public/question/update/{id}")
-    public String updateForm(@PathVariable Long id, Model model) {
+    public String updateForm(@AuthenticationPrincipal MemberUser user,@PathVariable Long id, Model model) {
+
+        if (user == null) {
+
+            return "redirect:/login";
+        }
+
         BoardDTO boardDTO = boardService.findById(id);
+        model.addAttribute("user", user);
         model.addAttribute("boardUpdate", boardDTO);
         return "board/question/update";
     }

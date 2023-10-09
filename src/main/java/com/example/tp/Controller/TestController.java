@@ -1,6 +1,5 @@
 package com.example.tp.Controller;
 
-import com.example.tp.domain.entity.CbtResultEntity;
 import com.example.tp.service.MemberUser;
 import com.example.tp.service.TestServiceImpl;
 import com.example.tp.dto.TestDto;
@@ -43,6 +42,7 @@ public class TestController {
                           @RequestParam("name") String name,
                           @RequestParam("year") String year,
                           @RequestParam("subject") String subject, Model model) {
+
         if (user == null) {
             return "redirect:/login";
         }

@@ -52,31 +52,33 @@
                     <div class="write-right">
                         <div class="right-box">
                             <div class="best">
-                                추천 : 0
+                                추천 0
                             </div>
                             ㆍ
                             <div class="inquiry">
-                                <div th:text="${board.boardHits}"></div>
+                                조회&nbsp;<div th:text="${board.boardHits}"></div>
                             </div>
                             ㆍ
                             <div class="comment">
-                                댓글 : 1
+                                댓글 1
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div>
-            <a th:href="${boardList.hasPrevious()} ? @{/public/question/(page=${boardList.number})} : '#'">prev</a>
-            <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+        <div class="page">
+            <div class="paging">
+                <a th:href="${boardList.hasPrevious()} ? @{/public/question/(page=${boardList.number})} : '#'">prev</a>
+                <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
                 <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
                 <span th:unless="${page == boardList.number + 1}">
-                    <a th:href="@{/board/paging(page=${page})}" th:text="${page}"></a>
+                    <a th:href="@{/public/question/(page=${page})}" th:text="${page}"></a>
                 </span>
             </span>
 
-            <a th:href="${boardList.hasNext()} ? @{/public/question/(page=${boardList.number + 2})} : '#'">next</a>
+                <a th:href="${boardList.hasNext()} ? @{/public/question/(page=${boardList.number + 2})} : '#'">next</a>
+            </div>
         </div>
     </div>
 </div>

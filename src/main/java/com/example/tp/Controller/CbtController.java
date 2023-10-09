@@ -5,9 +5,11 @@ import com.example.tp.domain.entity.CbtResultEntity;
 import com.example.tp.domain.entity.Test;
 import com.example.tp.dto.TestDto;
 import com.example.tp.service.CbtResultService;
+import com.example.tp.service.MemberUser;
 import com.example.tp.service.TestServiceImpl;
 import com.example.tp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,12 +41,13 @@ public class CbtController {
     }
 
     @GetMapping("/cbt-result")
-    public String showCbtResult(Model model,@RequestParam("id") String id) {
+    public String showCbtResult(@AuthenticationPrincipal MemberUser user, Model model, @RequestParam("id") String id) {
         // 이곳에서 시험 결과 데이터를 가져와서 모델에 추가하거나 필요한 처리를 수행할 수 있습니다.
 
         // 예시 데이터를 모델에 추가
         model.addAttribute("totalScore", 80); // 총점 예시
         model.addAttribute("isCorrect", true); // 정답 여부 예시
+        model.addAttribute("user", user);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
