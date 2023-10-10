@@ -72,10 +72,6 @@ li {
     font-weight: normal;
 }
 
-a {
-    font-size: 12px;
-}
-
 b {
     font-size: 12px;
     font-weight: bold;
@@ -107,4 +103,12 @@ b {
     height: auto;
     overflow: hidden;
     margin-top: 30px;
+}
+
+.menu-slide a {
+    font-size: 12px;
+}
+
+.choice a {
+    font-size: 12px;
 }
