@@ -33,7 +33,7 @@ public class TestController {
         }
 
         model.addAttribute("user", user);
-        return "board/pre-cbt"; // 카테고리 선택 HTML 페이지
+        return "board/cbt/pre-cbt"; // 카테고리 선택 HTML 페이지
     }
 
     // 시험 문제를 표시하는 페이지
@@ -52,7 +52,7 @@ public class TestController {
         model.addAttribute("user", user);
         model.addAttribute("tests", tests);
 
-        return "board/cbt";
+        return "board/cbt/cbt";
     }
 
 

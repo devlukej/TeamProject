@@ -68,7 +68,7 @@ public class CbtController {
 
 
         // cbt-result 페이지로 이동
-        return "board/cbt-result"; // cbt-result HTML 페이지의 경로
+        return "board/cbt/cbt-result"; // cbt-result HTML 페이지의 경로
     }
 
     @PostMapping("/submit-cbt")
