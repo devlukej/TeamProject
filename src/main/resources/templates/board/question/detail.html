@@ -68,26 +68,33 @@
 
         <!-- 댓글 작성 부분 -->
         <div class="write-comment">
-            <div class="comment-box">
-                <input type="text" id="commentWriter" placeholder="작성자">
+            <div class="comment-box" th:if="${user}">
+                <div class="comment-username" th:text="${user.username}"></div>
                 <input type="text" id="commentContents" placeholder="내용">
             </div>
-            <button id="comment-write-btn" onclick="commentWrite()">댓글작성</button>
+            <button id="comment-write-btn" onclick="commentWrite()">등록</button>
         </div>
     </div>
 </div>
 </body>
 <script th:inline="javascript">
     const commentWrite = () => {
-        const writer = document.getElementById("commentWriter").value;
         const contents = document.getElementById("commentContents").value;
         const id = [[${board.id}]];
+
+        // 현재 로그인한 사용자의 정보를 가져옵니다.
+        const username = [[${user != null ? user.username : null}]];
+
+        if (!username) {
+            alert("로그인 후 댓글을 작성할 수 있습니다.");
+            return;
+        }
 
         $.ajax({
             type: "post",
             url: "/public/question/comment/save",
             data: {
-                "commentWriter": writer,
+                "commentWriter": username, // 로그인한 사용자의 이름을 작성자로 설정
                 "commentContents": contents,
                 "boardId": id
             },
@@ -106,20 +113,19 @@
                     newComment.className = 'detail-comment';
 
                     newComment.innerHTML = `
-                <div class="comment-top">
-                    <div class="comment-writer">${res[i].commentWriter}</div>
-                    <div class="comment-time">${res[i].commentCreatedTime}</div>
-                </div>
-                <div class="comment-body">
-                    <div class="comment-content">${res[i].commentContents}</div>
-                </div>
-                `;
+                    <div class="comment-top">
+                        <div class="comment-writer">${res[i].commentWriter}</div>
+                        <div class="comment-time">${res[i].commentCreatedTime}</div>
+                    </div>
+                    <div class="comment-body">
+                        <div class="comment-content">${res[i].commentContents}</div>
+                    </div>
+                    `;
 
                     // 새로운 댓글을 기존 댓글 아래에 추가합니다.
                     commentListContainer.appendChild(newComment);
                 }
 
-                document.getElementById('commentWriter').value = '';
                 document.getElementById('commentContents').value = '';
             },
             error: function (err) {

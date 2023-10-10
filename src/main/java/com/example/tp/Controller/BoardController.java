@@ -27,14 +27,24 @@ public class BoardController {
     @GetMapping("/public/save")
     public String saveForm(@AuthenticationPrincipal MemberUser user,Model model) {
 
+        if (user == null) {
+
+            return "redirect:/login";
+        }
+
         model.addAttribute("user", user);
         return "board/question/save";
     }
 
     @PostMapping("/public/save")
-    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
+    public String save(@AuthenticationPrincipal MemberUser user,@ModelAttribute BoardDTO boardDTO,Model model) throws IOException {
 
-        System.out.println("boardDTO = " + boardDTO);
+        if (user != null) {
+            // 현재 로그인한 사용자 정보를 이용하여 작성자 필드 설정
+            boardDTO.setBoardWriter(user.getUsername());
+        }
+
+        model.addAttribute("user", user);
         boardService.save(boardDTO);
 
        return "redirect:/public/question";

@@ -32,7 +32,13 @@ body {
 
 .write {
     display: flex;
-    width: 33%;
+    width: 100%;
+}
+
+.save-name {
+    width: 100%;
+    text-align: center;
+    user-select: none;
 }
 
 .save-header {
