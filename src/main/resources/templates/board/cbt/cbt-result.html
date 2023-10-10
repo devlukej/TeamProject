@@ -1,30 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cbt Results</title>
+    <title>CBT 결과</title>
 </head>
 <body>
-<!-- 시험 결과 -->
-<h2>시험 결과</h2>
-<p>총점: <span th:text="${totalScore}"></span></p>
-<p>정답 여부: <span th:text="${isCorrect ? '정답' : '오답'}"></span></p>
+<h1>CBT 결과</h1>
 
-<!-- 시험 히스토리 -->
-<h2>시험 히스토리</h2>
+<!-- 총점 표시 -->
+<p>총점: <span th:text="${totalScore}"></span>점</p>
+
+<!-- 개별 문제 결과 표시 -->
 <table>
-    <thead>
     <tr>
-        <th>시험 번호</th>
-        <th>총점</th>
+        <th>문제</th>
+        <th>선택한 답</th>
+        <th>정답 여부</th>
     </tr>
-    </thead>
-    <tbody>
-    <tr th:each="history : ${cbtHistories}">
-        <td th:text="${history.test.num}"></td>
-        <td th:text="${history.totalScore}"></td>
+    <tr th:each="result : ${cbtResults}">
+        <td th:text="${result.test.title}"></td>
+        <td th:text="${result.selectedAnswer}"></td>
+        <td th:text="${result.isCorrect ? '맞음' : '틀림'}"></td>
     </tr>
-    </tbody>
 </table>
+
+<!-- 다른 작업 또는 페이지로 이동할 수 있는 링크 추가 -->
+<a href="/">홈으로 돌아가기</a>
 </body>
 </html>

@@ -30,6 +30,19 @@ public class TestServiceImpl {
                 .collect(Collectors.toList());
     }
 
+    public Test getTestByTestId(Long testId) {
+        // 여기에 특정 테스트를 testId로 검색하여 반환하는 로직을 구현해야 합니다.
+        // 예를 들어, Spring Data JPA를 사용한다면 다음과 같이 구현할 수 있습니다.
+        // TestRepository는 Test 엔티티를 다루는 Spring Data JPA 리포지토리 인터페이스입니다.
+        return testRepository.findById(testId).orElse(null);
+    }
+
+
+    // 문제 번호로 시험 문제 가져오기
+    public Test getTestByQuestionNumber(Long questionNumber) {
+        return testRepository.findById(questionNumber)
+                .orElseThrow(() -> new RuntimeException("시험 문제를 찾을 수 없습니다."));
+    }
 
 
     private TestDto convertToDto(Test test) {

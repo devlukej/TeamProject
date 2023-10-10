@@ -42,6 +42,10 @@ public class Test {
     @Column(length = 20)
     private String filePath;
 
+    public boolean isCorrect(String selectedAnswer) {
+        return answer.equals(selectedAnswer);
+    }
+
     @Builder
     public Test(Long num, String title, String answer, String view1, String view2
             , String view3, String view4, String view5, String interpretation, String year, String subject, String name, String filePath) {

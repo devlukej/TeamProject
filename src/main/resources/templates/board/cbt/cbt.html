@@ -1,3 +1,4 @@
+<!-- cbt.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,94 +9,96 @@
 <body>
 <!-- HEADER -->
 <div th:insert="common/header.html" class="header"></div>
-<div class="view">
-    <div class="test">
-        <div id="question-container">
-            <div class="left">
-                <div class="check">
-                    <h3>혼자 ><span class="single-space">&nbsp;</span></h3>
-                    <h3>기출문제 ><span class="single-space">&nbsp;</span></h3>
-                    <h3 th:text="${tests[0].name}"></h3>
-                    <h3>시험 ><span class="single-space">&nbsp;</span></h3>
-                    <h3 th:text="${tests[0].year}"></h3>
-                    <h3>년도 ><span class="single-space">&nbsp;</span></h3>
-                    <h3 th:text="${tests[0].subject}"></h3>
-                    <h3>과목</h3>
-                </div>
-                <div class="flow">
-                    <div th:if="${not #lists.isEmpty(tests)}">
-                        <!-- tests 리스트가 비어있지 않은 경우에만 아래 내용을 표시합니다. -->
+<form id="cbt-form" action="/private/submit-cbt" method="post">
+    <div class="view">
+        <div class="test">
+            <div id="question-container">
+                <div class="left">
+                    <div class="check">
+                        <h3>혼자 ><span class="single-space">&nbsp;</span></h3>
+                        <h3>기출문제 ><span class="single-space">&nbsp;</span></h3>
+                        <h3 th:text="${tests[0].name}"></h3>
+                        <h3>시험 ><span class="single-space">&nbsp;</span></h3>
+                        <h3 th:text="${tests[0].year}"></h3>
+                        <h3>년도 ><span class="single-space">&nbsp;</span></h3>
+                        <h3 th:text="${tests[0].subject}"></h3>
+                        <h3>과목</h3>
                     </div>
-                    <div th:each="test,iterStat : ${tests}">
-                        <div class="question">
-                            <div class="top">
-                                <div class="qs">
-                                    <div class="number">
-                                        <h4 class="sentence" th:text="${iterStat.count}"></h4>
-                                        <h4>번</h4>
+                    <div class="flow">
+                        <div th:if="${not #lists.isEmpty(tests)}">
+                            <!-- tests 리스트가 비어있지 않은 경우에만 아래 내용을 표시합니다. -->
+                        </div>
+                        <div th:each="test,iterStat : ${tests}">
+                            <input type="hidden" name="testId" th:value="${test.num}">
+                            <div class="question">
+                                <div class="top">
+                                    <div class="qs">
+                                        <div class="number">
+                                            <h4 class="sentence" th:text="${iterStat.count}"></h4>
+                                            <h4>번</h4>
+                                        </div>
+                                        <h4 class="sentence"><span th:text="${test.title}"></span></h4>
                                     </div>
-                                    <h4 class="sentence"><span th:text="${test.title}"></span></h4>
+                                </div>
+                                <div class="bottom">
+                                    <div class="q">1.<span th:text="${test.view1}"></span></div>
+                                    <div class="q">2.<span th:text="${test.view2}"></span></div>
+                                    <div class="q">3.<span th:text="${test.view3}"></span></div>
+                                    <div class="q">4.<span th:text="${test.view4}"></span></div>
+                                    <div class="q">5.<span th:text="${test.view5}"></span></div>
                                 </div>
                             </div>
-                            <div class="bottom">
-                                <div class="q">1.<span th:text="${test.view1}"></span></div>
-                                <div class="q">2.<span th:text="${test.view2}"></span></div>
-                                <div class="q">3.<span th:text="${test.view3}"></span></div>
-                                <div class="q">4.<span th:text="${test.view4}"></span></div>
-                                <div class="q">5.<span th:text="${test.view5}"></span></div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="right">
-            <div class="check">
-                <h3>답안지</h3>
-            </div>
-            <div class="flow">
-                <!-- th:each 루프로 여러 질문에 대한 입력 필드 생성 -->
-                <th:block th:each="test,iterStat : ${tests}">
-                    <div class="omr">
-                        <div class="number1">
-                            <span th:text="${iterStat.count}"></span>
-                            <span>번</span>
+            <div class="right">
+                <div class="check">
+                    <h3>답안지</h3>
+                </div>
+                <div class="flow">
+                    <!-- th:each 루프로 여러 질문에 대한 입력 필드 생성 -->
+                    <th:block th:each="test,iterStat : ${tests}">
+                        <div class="omr">
+                            <div class="number1">
+                                <span th:text="${iterStat.count}"></span>
+                                <span>번</span>
+                            </div>
+                            <div class="choose">
+                                <!-- 선택된 값을 input 필드에 저장 -->
+                                <label class="self_check">
+                                    <input type="radio" th:name="'selectedAnswers[' + ${iterStat.index} + ']'"
+                                           value="1"><span>1</span>
+                                </label>
+                                <label class="self_check">
+                                    <input type="radio" th:name="'selectedAnswers[' + ${iterStat.index} + ']'"
+                                           value="2"><span>2</span>
+                                </label>
+                                <label class="self_check">
+                                    <input type="radio" th:name="'selectedAnswers[' + ${iterStat.index} + ']'"
+                                           value="3"><span>3</span>
+                                </label>
+                                <label class="self_check">
+                                    <input type="radio" th:name="'selectedAnswers[' + ${iterStat.index} + ']'"
+                                           value="4"><span>4</span>
+                                </label>
+                                <label class="self_check">
+                                    <input type="radio" th:name="'selectedAnswers[' + ${iterStat.index} + ']'"
+                                           value="5"><span>5</span>
+                                </label>
+                            </div>
                         </div>
-                        <div class="choose">
-                            <!-- 선택된 값을 input 필드에 저장 -->
-                            <label class="self_check">
-                                <input type="radio" th:name="'selectedAnswers[' + ${iterStat.index} + ']'"
-                                       value="1"><span>1</span>
-                            </label>
-                            <label class="self_check">
-                                <input type="radio" th:name="'selectedAnswers[' + ${iterStat.index} + ']'"
-                                       value="2"><span>2</span>
-                            </label>
-                            <label class="self_check">
-                                <input type="radio" th:name="'selectedAnswers[' + ${iterStat.index} + ']'"
-                                       value="3"><span>3</span>
-                            </label>
-                            <label class="self_check">
-                                <input type="radio" th:name="'selectedAnswers[' + ${iterStat.index} + ']'"
-                                       value="4"><span>4</span>
-                            </label>
-                            <label class="self_check">
-                                <input type="radio" th:name="'selectedAnswers[' + ${iterStat.index} + ']'"
-                                       value="5"><span>5</span>
-                            </label>
-                        </div>
-                    </div>
-                </th:block>
+                    </th:block>
+                </div>
+                <button id="submit-button" type="submit">답안 제출</button>
             </div>
-            <!-- testNum 입력 필드 추가 -->
-            <input type="text" name="testNum" id="testNum" value="123" style="display: none;">
-            <button id="submit-button" type="submit">답안 제출</button>
         </div>
     </div>
-</div>
+</form>
 <script>
     // 제출 버튼 클릭 시 실행되는 함수
     document.getElementById('submit-button').addEventListener('click', function () {
+
         // 사용자의 선택 항목을 수집하는 로직 추가
         var collectedData = [];
         var radioInputs = document.querySelectorAll('input[type="radio"]');
@@ -109,33 +112,24 @@
         });
 
         // 수집한 데이터를 JSON 형식으로 만듭니다.
-        var requestData = JSON.stringify({
+        var requestData = {
             testNum: document.getElementById('testNum').value,
             selectedAnswers: collectedData
-        });
+        };
 
         // 서버로 데이터를 전송하는 로직 추가
         fetch('/private/submit-cbt', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json', // JSON 형식으로 데이터 전송
             },
-            body: requestData,
+            body: JSON.stringify(requestData), // 요청 본문에 JSON 데이터 추가
         })
             .then(response => response.json())
             .then(data => {
-
                 // 결과를 처리하는 로직 추가
                 console.log('Response from server:', data);
-
-                // 여기에서 서버에서 받은 응답을 처리하는 로직을 작성하세요.
-                if (data && data.totalScore !== undefined) {
-                    // 성공적인 응답일 경우
-                    alert('시험 제출이 성공했습니다. 총점: ' + data.totalScore);
-                } else {
-                    // 실패한 경우 또는 다른 처리
-                    alert('시험 제출 중 오류가 발생했습니다.');
-                }
+                // 서버 응답을 처리하는 코드 작성
             })
             .catch(error => {
                 console.error('Error:', error);
