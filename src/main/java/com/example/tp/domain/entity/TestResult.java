@@ -9,7 +9,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "test_result")
-public class TestResult {
+public class TestResult extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +27,6 @@ public class TestResult {
 
     private boolean isCorrect;
 
-    private Date date;
-
     public TestResult() {
         // 기본 생성자
     }
@@ -39,6 +37,5 @@ public class TestResult {
         this.test = test;
         this.selectedAnswer = selectedAnswer;
         this.isCorrect = isCorrect;
-        this.date = new Date();
     }
 }

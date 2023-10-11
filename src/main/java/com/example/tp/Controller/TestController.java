@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -62,12 +63,11 @@ public class TestController {
 
         return "board/cbt/cbt";
     }
-
     @PostMapping("/private/submit-cbt")
-    public String submitCbt(@AuthenticationPrincipal MemberUser user_id, @AuthenticationPrincipal UserEntity user,
+    public String submitCbt(@AuthenticationPrincipal MemberUser user,
                             @RequestParam Map<String, String> requestParams, Model model) {
 
-        if (user_id == null) {
+        if (user == null) {
             return "redirect:/login";
         }
 
@@ -90,7 +90,7 @@ public class TestController {
                         boolean isCorrect = test.isCorrect(selectedAnswer);
 
                         TestResult testResult = new TestResult();
-                        testResult.setUser(user);
+                        testResult.setUser(user.getUserEntity());
                         testResult.setTest(test);
                         testResult.setSelectedAnswer(selectedAnswer);
                         testResult.setCorrect(isCorrect);
@@ -107,10 +107,11 @@ public class TestController {
             }
         }
 
-        model.addAttribute("user", user_id);
+        model.addAttribute("user", user);
         // 여기에서 원하는 처리 및 리다이렉션 수행
         return "redirect:/private/cbt-result";
     }
+
 
 
     @GetMapping("/private/cbt-result")

@@ -44,6 +44,7 @@ public class TestResultService {
         testResultDto.setSelectedAnswer(testResult.getSelectedAnswer());
         testResultDto.setCorrect(testResult.isCorrect());
 
+
         // TestResultDto와 TestResult 엔터티 간에 필드를 추가로 매핑하려면 이어서 설정합니다.
 
         return testResultDto;

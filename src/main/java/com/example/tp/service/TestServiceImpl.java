@@ -38,13 +38,6 @@ public class TestServiceImpl {
     }
 
 
-    // 문제 번호로 시험 문제 가져오기
-    public Test getTestByQuestionNumber(Long questionNumber) {
-        return testRepository.findById(questionNumber)
-                .orElseThrow(() -> new RuntimeException("시험 문제를 찾을 수 없습니다."));
-    }
-
-
     private TestDto convertToDto(Test test) {
         TestDto testDto = new TestDto();
         testDto.setNum(test.getNum());
