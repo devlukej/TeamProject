@@ -3,28 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <title>CBT 결과</title>
+    <link rel="stylesheet" th:href="@{/css/cbt-result.css}">
 </head>
 <body>
-<h1>CBT 결과</h1>
+<!-- HEADER -->
+<div th:insert="common/header.html" class="header"></div>
 
-<!-- 총점 표시 -->
-<p>총점: <span th:text="${totalScore}"></span>점</p>
+<div class="view">
+    <div class="check"><h3>혼자 > 기출문제 > 시험결과</h3></div>
+    <div class="enter">
+        <div class="flow">
+            <div th:each="userResult, iterStat : ${userResults}">
+                <div class="question">
+                    <div class="top">
+                        <div class="qs">
+                            <div class="number">
+                                <h4 class="sentence" th:text="${iterStat.index + 1}"></h4>
+                                <h4>번</h4>
+                            </div>
+                            <h4 class="sentence">
+<!--                                <span th:text="${userResult.test.title}"></span>-->
+                            </h4>
+                                    <span th:text="${userResult.answer}"></span>
+                                    <span th:text="${userResult.selectedAnswer}"></span>
+                            <span th:if="${userResult.correct}">정답</span>
+                            <span th:unless="${userResult.correct}">오답</span>
+                        </div>
+                    </div>
+                    <div class="bottom">
+<!--                        <div class="q">1.<span th:text="${userResult.test.view1}"></span></div>-->
+<!--                        <div class="q">2.<span th:text="${userResult.test.view2}"></span></div>-->
+<!--                        <div class="q">3.<span th:text="${userResult.test.view3}"></span></div>-->
+<!--                        <div class="q">4.<span th:text="${userResult.test.view4}"></span></div>-->
+<!--                        <div class="q">5.<span th:text="${userResult.test.view5}"></span></div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="check">
+                <h3>답안지</h3>
+            </div>
+            <div class="flow">
+                <!-- th:each 루프로 여러 질문에 대한 입력 필드 생성 -->
+                    <div class="omr">
+                        <div class="number1">
+                            <span>총점:</span>
+                        </div>
+                        <div class="choose">
+                            <p><span th:text="${totalScore}"></span>점/100점</p>
+                        </div>
+                    </div>
+            </div>
+            <button href="/">홈으로 돌아가기</button>
+        </div>
+    </div>
+</div>
 
-<!-- 개별 문제 결과 표시 -->
-<table>
-    <tr>
-        <th>문제</th>
-        <th>선택한 답</th>
-        <th>정답 여부</th>
-    </tr>
-    <tr th:each="result : ${cbtResults}">
-        <td th:text="${result.test.title}"></td>
-        <td th:text="${result.selectedAnswer}"></td>
-        <td th:text="${result.isCorrect ? '맞음' : '틀림'}"></td>
-    </tr>
-</table>
-
-<!-- 다른 작업 또는 페이지로 이동할 수 있는 링크 추가 -->
-<a href="/">홈으로 돌아가기</a>
 </body>
 </html>

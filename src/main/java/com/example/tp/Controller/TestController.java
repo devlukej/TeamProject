@@ -101,7 +101,7 @@ public class TestController {
                         boolean isCorrect = test.isCorrect(selectedAnswer);
 
                         if (isCorrect) {
-                            totalScore += 5; // 정답인 경우 총점 증가
+                            totalScore += 2.5; // 정답인 경우 총점 증가
                         }
 
                         TestResult testResult = new TestResult();
@@ -138,6 +138,7 @@ public class TestController {
         HttpSession session = request.getSession();
         session.setAttribute("totalScore", totalScore);
 
+        model.addAttribute("testResults", testResults);
 
         model.addAttribute("totalScore", totalScore); // totalScore는 총점 변수 이름
 
