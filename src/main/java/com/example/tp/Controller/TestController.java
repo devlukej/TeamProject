@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -63,30 +64,32 @@ public class TestController {
 
         return "board/cbt/cbt";
     }
+    @Transactional
     @PostMapping("/private/submit-cbt")
-    public String submitCbt(@AuthenticationPrincipal MemberUser user,
-                            @RequestParam Map<String, String> requestParams, Model model) {
-
+    public String submitCbt(@AuthenticationPrincipal MemberUser user, @RequestParam Map<String, String> requestParams, Model model) {
         if (user == null) {
             return "redirect:/login";
         }
 
-        // 선택한 답안 처리
-        for (String paramName : requestParams.keySet()) {
-            // 만약 paramName이 "testId"인 경우에만 처리
-            if ("testId".equals(paramName)) {
-                String testIdValue = requestParams.get(paramName);
+        List<TestResult> testResults = new ArrayList<>();
 
-                // "testId" 값을 Long으로 파싱
-                try {
-                    Long testId = Long.parseLong(testIdValue);
+        // 사용자의 선택 항목을 수집하는 로직 추가
+        for (String paramName : requestParams.keySet()) {
+            if (paramName.startsWith("selectedAnswers[")) {
+                String selectedAnswer = requestParams.get(paramName);
+
+                // paramName에서 인덱스를 추출
+                int index = Integer.parseInt(paramName.replace("selectedAnswers[", "").replace("]", ""));
+
+                // testId 관련 파라미터를 가져오고 null 체크를 수행
+                String testIdParamName = "testId[" + index + "]";
+                if (requestParams.containsKey(testIdParamName)) {
+                    Long testId = Long.parseLong(requestParams.get(testIdParamName));
 
                     // Test 엔터티에서 해당 테스트 가져오기
                     Test test = testService.getTestByTestId(testId);
 
                     if (test != null) {
-                        // 정답 여부 확인 및 결과 저장
-                        String selectedAnswer = requestParams.get("selectedAnswer");
                         boolean isCorrect = test.isCorrect(selectedAnswer);
 
                         TestResult testResult = new TestResult();
@@ -95,22 +98,24 @@ public class TestController {
                         testResult.setSelectedAnswer(selectedAnswer);
                         testResult.setCorrect(isCorrect);
 
-                        testResultService.saveTestResult(testResult);
+                        testResults.add(testResult);
                     } else {
-                        // 해당 테스트를 찾을 수 없는 경우 예외 처리
-                        // 처리할 내용 추가
+                        // 해당 테스트를 찾을 수 없는 경우 예외 처리 또는 처리할 내용을 추가
                     }
-                } catch (NumberFormatException e) {
-                    // "testId" 값을 숫자로 변환할 수 없는 경우 예외 처리
-                    // 처리할 내용 추가
+                } else {
+                    // testIdParamName이 없는 경우 처리할 내용을 추가
                 }
             }
         }
 
+        // testResults에 결과 저장
+        testResultService.saveAllTestResults(testResults);
+
         model.addAttribute("user", user);
-        // 여기에서 원하는 처리 및 리다이렉션 수행
         return "redirect:/private/cbt-result";
     }
+
+
 
 
 

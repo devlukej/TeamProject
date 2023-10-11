@@ -6,6 +6,7 @@ import com.example.tp.dto.TestResultDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,9 +20,13 @@ public class TestResultService {
         this.testResultRepository = testResultRepository;
     }
 
-    // 테스트 결과 저장
     public void saveTestResult(TestResult testResult) {
         testResultRepository.save(testResult);
+    }
+
+    @Transactional
+    public void saveAllTestResults(List<TestResult> testResults) {
+        testResultRepository.saveAll(testResults);
     }
 
 

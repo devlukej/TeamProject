@@ -45,6 +45,10 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+      springframework: DEBUG
+    com:
+      example:
+        tp: DEBUG
 
 
 cloud:
