@@ -17,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +73,7 @@ public class TestController {
     }
     @Transactional
     @PostMapping("/private/submit-cbt")
-    public String submitCbt(@AuthenticationPrincipal MemberUser user, @RequestParam Map<String, String> requestParams, Model model) {
+    public String submitCbt(@AuthenticationPrincipal MemberUser user, @RequestParam Map<String, String> requestParams, Model model, HttpServletRequest request) {
         if (user == null) {
             return "redirect:/login";
         }
@@ -132,6 +134,11 @@ public class TestController {
             testHistoryService.saveTestHistory(testHistory);
         }
 
+        // HttpSession 객체를 통해 totalScore를 세션에 저장
+        HttpSession session = request.getSession();
+        session.setAttribute("totalScore", totalScore);
+
+
         model.addAttribute("totalScore", totalScore); // totalScore는 총점 변수 이름
 
         model.addAttribute("user", user);
@@ -143,7 +150,7 @@ public class TestController {
 
 
     @GetMapping("/private/cbt-result")
-    public String showCbtResultPage(@AuthenticationPrincipal MemberUser user, Model model) {
+    public String showCbtResultPage(@AuthenticationPrincipal MemberUser user, Model model, HttpServletRequest request) {
 
         if (user == null) {
             return "redirect:/login";
@@ -152,7 +159,11 @@ public class TestController {
         // TestResult 엔티티에서 사용자의 결과 조회
         List<TestResultDto> userResults = testResultService.getUserResults(user.getUsername());
 
+        HttpSession session = request.getSession();
+        int totalScore = (int) session.getAttribute("totalScore");
+
         model.addAttribute("user", user);
+        model.addAttribute("totalScore", totalScore);
         model.addAttribute("userResults", userResults);
 
         return "board/cbt/cbt-result"; // 시험 결과를 표시하는 HTML 페이지
