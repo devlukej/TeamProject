@@ -20,10 +20,6 @@ public class TestResultService {
         this.testResultRepository = testResultRepository;
     }
 
-    public void saveTestResult(TestResult testResult) {
-        testResultRepository.save(testResult);
-    }
-
     @Transactional
     public void saveAllTestResults(List<TestResult> testResults) {
         testResultRepository.saveAll(testResults);

@@ -25,10 +25,20 @@ public class TestResult extends BaseEntity{
 
     private String selectedAnswer;
 
+    private String answer;
+
     private boolean isCorrect;
 
     public TestResult() {
         // 기본 생성자
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     @Builder

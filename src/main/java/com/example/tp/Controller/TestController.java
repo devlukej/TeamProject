@@ -1,11 +1,13 @@
 package com.example.tp.Controller;
 
+import com.example.tp.domain.entity.TestHistory;
 import com.example.tp.domain.entity.TestResult;
 import com.example.tp.domain.entity.Test;
 import com.example.tp.domain.entity.UserEntity;
 import com.example.tp.domain.repository.TestRepository;
 import com.example.tp.dto.TestResultDto;
 import com.example.tp.service.MemberUser;
+import com.example.tp.service.TestHistoryService;
 import com.example.tp.service.TestResultService;
 import com.example.tp.service.TestServiceImpl;
 import com.example.tp.dto.TestDto;
@@ -27,11 +29,14 @@ public class TestController {
     private final TestRepository testRepository;
     private final TestResultService testResultService;
 
+    private final TestHistoryService testHistoryService;
+
     @Autowired
-    public TestController(TestServiceImpl testService, TestRepository testRepository,TestResultService testResultService) {
+    public TestController(TestServiceImpl testService, TestRepository testRepository,TestResultService testResultService,TestHistoryService testHistoryService) {
         this.testService = testService;
         this.testRepository = testRepository;
         this.testResultService = testResultService;
+        this.testHistoryService = testHistoryService;
     }
 
     @GetMapping("/private/pre-cbt")
@@ -72,6 +77,7 @@ public class TestController {
         }
 
         List<TestResult> testResults = new ArrayList<>();
+        int totalScore = 0;
 
         // 사용자의 선택 항목을 수집하는 로직 추가
         for (String paramName : requestParams.keySet()) {
@@ -92,13 +98,19 @@ public class TestController {
                     if (test != null) {
                         boolean isCorrect = test.isCorrect(selectedAnswer);
 
+                        if (isCorrect) {
+                            totalScore += 5; // 정답인 경우 총점 증가
+                        }
+
                         TestResult testResult = new TestResult();
                         testResult.setUser(user.getUserEntity());
                         testResult.setTest(test);
                         testResult.setSelectedAnswer(selectedAnswer);
                         testResult.setCorrect(isCorrect);
+                        testResult.setAnswer(test.getAnswer());
 
                         testResults.add(testResult);
+
                     } else {
                         // 해당 테스트를 찾을 수 없는 경우 예외 처리 또는 처리할 내용을 추가
                     }
@@ -110,6 +122,17 @@ public class TestController {
 
         // testResults에 결과 저장
         testResultService.saveAllTestResults(testResults);
+
+        // TestHistory 엔터티 생성 및 저장
+        if (!testResults.isEmpty()) {
+            TestHistory testHistory = new TestHistory();
+            testHistory.setUserId(Long.parseLong(user.getUserEntity().getId()));
+            testHistory.setTotalScore(totalScore);
+
+            testHistoryService.saveTestHistory(testHistory);
+        }
+
+        model.addAttribute("totalScore", totalScore); // totalScore는 총점 변수 이름
 
         model.addAttribute("user", user);
         return "redirect:/private/cbt-result";
