@@ -29,6 +29,10 @@ public class TestResult extends BaseEntity{
 
     private boolean isCorrect;
 
+    @ManyToOne
+    @JoinColumn(name = "history_id")
+    private TestHistory testHistory; // history_id와의 관계
+
     public TestResult() {
         // 기본 생성자
     }

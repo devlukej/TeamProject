@@ -132,6 +132,13 @@ public class TestController {
             testHistory.setTotalScore(totalScore);
 
             testHistoryService.saveTestHistory(testHistory);
+            TestHistory savedHistory = testHistoryService.saveTestHistory(testHistory);
+
+            // TestResult 엔터티와 TestHistory 엔터티 연결
+            if (savedHistory != null) {
+                testResults.forEach(result -> result.setTestHistory(savedHistory));
+                testResultService.saveAllTestResults(testResults);
+            }
         }
 
         // HttpSession 객체를 통해 totalScore를 세션에 저장
