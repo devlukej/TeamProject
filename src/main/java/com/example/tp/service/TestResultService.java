@@ -43,10 +43,12 @@ public class TestResultService {
 
         testResultDto.setId(testResult.getId()); // TestResultDto에 있는 필드에 값을 설정합니다.
         testResultDto.setSelectedAnswer(testResult.getSelectedAnswer());
+        testResultDto.setAnswer(testResult.getAnswer());
         testResultDto.setCorrect(testResult.isCorrect());
 
 
         // TestResultDto와 TestResult 엔터티 간에 필드를 추가로 매핑하려면 이어서 설정합니다.
+        testResultDto.setTest(testResult.getTest());
 
         return testResultDto;
     }

@@ -22,9 +22,6 @@ public class BoardEntity extends BaseEntity {
     @Column(length = 20, nullable = false) // 크기 20, not null
     private String boardWriter;
 
-    @Column // 크기 255, null 가능
-    private String boardPass;
-
     @Column
     private String boardTitle;
 

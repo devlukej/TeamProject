@@ -10,52 +10,84 @@
 <div th:insert="common/header.html" class="header"></div>
 
 <div class="view">
-    <div class="check"><h3>혼자 > 기출문제 > 시험결과</h3></div>
-    <div class="enter">
-        <div class="flow">
-            <div th:each="userResult, iterStat : ${userResults}">
-                <div class="question">
-                    <div class="top">
-                        <div class="qs">
-                            <div class="number">
-                                <h4 class="sentence" th:text="${iterStat.index + 1}"></h4>
-                                <h4>번</h4>
+    <div class="test">
+        <div id="question-container">
+            <div class="left">
+                <div class="check"><h3>혼자 > 기출문제 > 시험결과</h3></div>
+                <div class="flow">
+                    <div th:each="userResult, iterStat : ${userResults.subList(userResults.size() - 10, userResults.size())}">
+                        <div class="question">
+                            <div class="top">
+                                <div class="qs">
+                                    <div class="number">
+                                        <h4 class="sentence" th:text="${iterStat.index + 1}"></h4>
+                                        <h4>번</h4>
+                                    </div>
+                                    <h4 class="sentence">
+                                        <span th:text="${userResult.test.title}"></span>
+                                    </h4>
+                                    <span th:if="!${userResult.correct}" th:text="'정답 : '+${userResult.answer}"></span>
+                                    <span th:if="${userResult.correct}">정답</span>
+                                </div>
                             </div>
-                            <h4 class="sentence">
-<!--                                <span th:text="${userResult.test.title}"></span>-->
-                            </h4>
-                                    <span th:text="${userResult.answer}"></span>
-                                    <span th:text="${userResult.selectedAnswer}"></span>
-                            <span th:if="${userResult.correct}">정답</span>
-                            <span th:unless="${userResult.correct}">오답</span>
+                            <div class="bottom">
+                                <div class="q">
+    <span th:text="${userResult.test.view1}"
+          th:classappend="${userResult.selectedAnswer} == 1
+                         ? (${userResult.correct} ? 'correct-answer' : 'wrong-answer')
+                         : ''"></span>
+                                </div>
+                                <div class="q">
+    <span th:text="${userResult.test.view2}"
+          th:classappend="${userResult.selectedAnswer} == 2
+                         ? (${userResult.correct} ? 'correct-answer' : 'wrong-answer')
+                         : ''"></span>
+                                </div>
+                                <div class="q">
+    <span th:text="${userResult.test.view3}"
+          th:classappend="${userResult.selectedAnswer} == 3
+                         ? (${userResult.correct} ? 'correct-answer' : 'wrong-answer')
+                         : ''"></span>
+                                </div>
+                                <div class="q">
+    <span th:text="${userResult.test.view4}"
+          th:classappend="${userResult.selectedAnswer} == 4
+                         ? (${userResult.correct} ? 'correct-answer' : 'wrong-answer')
+                         : ''"></span>
+                                </div>
+                                <div class="q">
+    <span th:text="${userResult.test.view5}"
+          th:classappend="${userResult.selectedAnswer} == 5
+                         ? (${userResult.correct} ? 'correct-answer' : 'wrong-answer')
+                         : ''"></span>
+                                </div>
+
+
+                            </div>
                         </div>
-                    </div>
-                    <div class="bottom">
-<!--                        <div class="q">1.<span th:text="${userResult.test.view1}"></span></div>-->
-<!--                        <div class="q">2.<span th:text="${userResult.test.view2}"></span></div>-->
-<!--                        <div class="q">3.<span th:text="${userResult.test.view3}"></span></div>-->
-<!--                        <div class="q">4.<span th:text="${userResult.test.view4}"></span></div>-->
-<!--                        <div class="q">5.<span th:text="${userResult.test.view5}"></span></div>-->
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="right">
             <div class="check">
-                <h3>답안지</h3>
+                <h3>결과</h3>
             </div>
             <div class="flow">
                 <!-- th:each 루프로 여러 질문에 대한 입력 필드 생성 -->
-                    <div class="omr">
-                        <div class="number1">
-                            <span>총점:</span>
-                        </div>
-                        <div class="choose">
-                            <p><span th:text="${totalScore}"></span>점/100점</p>
-                        </div>
+                <div class="omr">
+                    <div class="number1">
+                        <span>총점:</span>
                     </div>
+                    <div class="choose">
+                        <p><span th:text="${totalScore}"></span>점/100점</p>
+                    </div>
+                </div>
             </div>
-            <button href="/">홈으로 돌아가기</button>
+            <a th:href="@{/}">
+                <button>홈으로 돌아가기</button>
+            </a>
         </div>
     </div>
 </div>

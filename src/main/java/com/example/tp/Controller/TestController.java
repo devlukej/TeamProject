@@ -101,7 +101,7 @@ public class TestController {
                         boolean isCorrect = test.isCorrect(selectedAnswer);
 
                         if (isCorrect) {
-                            totalScore += 2.5; // 정답인 경우 총점 증가
+                            totalScore += 10; // 정답인 경우 총점 증가
                         }
 
                         TestResult testResult = new TestResult();

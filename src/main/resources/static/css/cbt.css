@@ -70,6 +70,7 @@ body {
     width: 30%;
     height: 90%;
     user-select: none;
+    margin-right: 20px;
 }
 
 .omr {
