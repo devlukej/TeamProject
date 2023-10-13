@@ -49,36 +49,41 @@
             </div>
         </div>
         <div class="right">
-            <div class="check">
-                <h3>답안지</h3>
-            </div>
-            <div class="flow">
+            <form th:action="@{/private/submit-wrong-cbt}" method="post">
+                <div class="check">
+                    <h3>답안지</h3>
+                </div>
+                <div class="flow">
                     <div class="omr">
                         <div class="choose">
                             <!-- 선택된 값을 input 필드에 저장 -->
                             <label class="self_check">
-                                <input type="radio" name="num"><span>1</span>
+                                <input type="radio" name="selectedAnswer" value="1"><span>1</span>
                             </label>
                             <label class="self_check">
-                                <input type="radio" name="num"><span>2</span>
+                                <input type="radio" name="selectedAnswer" value="2"><span>2</span>
                             </label>
                             <label class="self_check">
-                                <input type="radio" name="num"><span>3</span>
+                                <input type="radio" name="selectedAnswer" value="3"><span>3</span>
                             </label>
                             <label class="self_check">
-                                <input type="radio" name="num"><span>4</span>
+                                <input type="radio" name="selectedAnswer" value="4"><span>4</span>
                             </label>
                             <label class="self_check">
-                                <input type="radio" name="num"><span>5</span>
+                                <input type="radio" name="selectedAnswer" value="5"><span>5</span>
                             </label>
                         </div>
                     </div>
-            </div>
-            <button id="submit-button" type="submit">답안 제출</button>
+
+                </div>
+                <button id="submit-button" type="submit">답안 제출</button>
+                <input type="hidden" name="testResultId" th:value="${randomWrongResult.test.num}">
+            </form>
         </div>
     </div>
 </div>
 <script>
+
     function toggleAnswers() {
         var yourAnswerDiv = document.querySelector(".your-answer");
         var correctAnswerDiv = document.querySelector(".correct-answer");

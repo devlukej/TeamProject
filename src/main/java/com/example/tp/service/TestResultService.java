@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +26,16 @@ public class TestResultService {
         testResultRepository.saveAll(testResults);
     }
 
+    @Transactional
+    public void saveTestResult(TestResult testResult) {
+        testResultRepository.save(testResult);
+    }
+
+    public TestResult getTestResultById(Long testResultId) {
+        // testResultId를 사용하여 특정 TestResult 엔티티를 찾아서 반환
+        Optional<TestResult> resultOptional = testResultRepository.findById(testResultId);
+        return resultOptional.orElse(null); // 해당 ID에 해당하는 엔티티가 없으면 null 반환
+    }
 
     public List<TestResultDto> getUserResults(String userId) {
         // 사용자 이름(username)을 기준으로 해당 사용자의 시험 결과를 조회
@@ -53,11 +64,11 @@ public class TestResultService {
         return testResultDto;
     }
 
-    // 사용자가 틀린 문제 목록을 가져오는 메서드
     public List<TestResultDto> getUserWrongResults(String username) {
         List<TestResult> userResults = testResultRepository.findUserResultsByUsername(username);
 
-
+        // 변수 정의
+        List<TestResultDto> userWrongResults;
 
         // 사용자가 틀린 문제만 필터링
         List<TestResult> wrongResults = userResults.stream()
@@ -65,10 +76,13 @@ public class TestResultService {
                 .collect(Collectors.toList());
 
         // TestResult 엔티티를 TestResultDto로 변환
-        return wrongResults.stream()
+        userWrongResults = wrongResults.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+
+        return userWrongResults;
     }
+
 
 
 }

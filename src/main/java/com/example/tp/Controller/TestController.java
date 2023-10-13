@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -179,7 +180,7 @@ public class TestController {
     }
 
     @GetMapping("/private/wrong")
-    public String showRandomWrongQuestion(@AuthenticationPrincipal MemberUser user, Model model) {
+    public String showRandomWrongQuestion(@AuthenticationPrincipal MemberUser user, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         if (user == null) {
             return "redirect:/login";
         }
@@ -188,8 +189,9 @@ public class TestController {
         List<TestResultDto> userWrongResults = testResultService.getUserWrongResults(user.getUsername());
 
         if (userWrongResults.isEmpty()) {
-            // 사용자가 틀린 문제가 없으면 다른 처리를 할 수 있습니다.
-            return "redirect:/private/no-wrong"; // 또는 사용자가 틀린 문제가 없는 경우를 나타내는 다른 페이지로 이동
+            redirectAttributes.addFlashAttribute("noWrongResults", true);
+
+            return "redirect:/private/wrong-empty"; // 또는 사용자가 틀린 문제가 없는 경우를 나타내는 다른 페이지로 이동
         }
 
         Random random = new Random();
@@ -197,10 +199,94 @@ public class TestController {
         int randomIndex = random.nextInt(userWrongResults.size());
         TestResultDto randomWrongResult = userWrongResults.get(randomIndex);
 
+        session.setAttribute("currentWrongResultId", randomWrongResult.getId());
+
         model.addAttribute("user", user);
         model.addAttribute("randomWrongResult", randomWrongResult);
 
         return "board/wrong/wrong"; // 랜덤 틀린 문제를 표시하는 페이지
     }
 
+    @Transactional
+    @PostMapping("/private/submit-wrong-cbt")
+    public String submitWrongCbt(@AuthenticationPrincipal MemberUser user,
+                                 @RequestParam("testResultId") Long testResultId,
+                                 @RequestParam("selectedAnswer") String selectedAnswer,
+                                 Model model, HttpSession session) {
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        // 세션에서 현재 보여지는 틀린 문제의 ID를 가져옵니다
+        Long currentWrongResultId = (Long) session.getAttribute("currentWrongResultId");
+
+        // 기존 TestResult 엔티티를 찾습니다.
+        TestResult testResult = testResultService.getTestResultById(currentWrongResultId);
+
+        if (testResult != null) {
+
+            Test test = testResult.getTest(); // TestResult에 속한 테스트 가져오기
+            boolean isCorrect = test.isCorrect(selectedAnswer);
+
+
+            // 필드를 변경합니다.
+            testResult.setSelectedAnswer(selectedAnswer);
+            testResult.setCorrect(isCorrect);
+
+            if (testResult.isCorrect()) {
+                userService.increaseUserTier(user.getUserEntity(), 3);
+            }
+
+            // 변경된 엔티티를 저장합니다.
+            testResultService.saveTestResult(testResult);
+        } else {
+            // 해당 테스트 결과를 찾을 수 없는 경우 예외 처리 또는 처리할 내용을 추가
+        }
+
+        // 오답 노트로 이동
+        return "redirect:/private/wrong-result";
+    }
+
+    @GetMapping("/private/wrong-result")
+    public String showWrongResultPage(@AuthenticationPrincipal MemberUser user, Model model, HttpSession session) {
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        // 세션에서 현재 보여지는 틀린 문제의 ID를 가져옵니다
+        Long currentWrongResultId = (Long) session.getAttribute("currentWrongResultId");
+
+        // currentWrongResultId로부터 실제 TestResult 객체를 가져옵니다.
+        TestResult currentTestResult = testResultService.getTestResultById(currentWrongResultId);
+
+        // TestResult 객체가 null이 아닌지 확인
+        if (currentTestResult != null) {
+            // TestResult 객체로부터 Test 객체를 가져옵니다.
+            Test currentTest = currentTestResult.getTest();
+
+            model.addAttribute("user", user);
+            model.addAttribute("currentTestResult", currentTestResult);
+            model.addAttribute("currentTest", currentTest);
+
+            return "board/wrong/wrong-result"; // wrong-result 페이지로 이동
+        }
+
+        return "/";
+    }
+
+    @GetMapping("/private/wrong-empty")
+    public String showWrongEmpty(@AuthenticationPrincipal MemberUser user, Model model) {
+
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("user", user);
+
+        return "board/wrong/wrong-empty";
+    }
+
+
+
 }
+
