@@ -17,19 +17,20 @@
             <button class="search-btn">검색</button>
         </div>
         <div class="bar">
-            <select id="sort" name="sort" class="sort" onchange="ChangeSelect()">
-                <option name="9nationKeyword" id="9nationKeyword" value="9nationKeyword">9급 국가직</option>
-                <option name="9areaKeyword" id="9areaKeyword" value="9areaKeyword">9급 지방직</option>
-                <option name="7nationKeyword" id="7nationKeyword" value="7nationKeyword">7급 국가직</option>
-                <option name="7areaKeyword" id="7areaKeyword" value="7areaKeyword">7급 지방직</option>
-                <option name="fireKeyword" id="fireKeyword" value="fireKeyword">소방</option>
-                <option name="policeKeyword" id="policeKeyword" value="policeKeyword">경찰</option>
+            <select id="sort" name="category" class="sort" onchange="loadCategory(this)">
+                <option value="All">전체</option>
+                <option value="경찰">경찰</option>
+                <option value="소방">소방</option>
+                <option value="9급 국가직">9급 국가직</option>
+                <option value="9급 지방직">9급 지방직</option>
+                <option value="7급 국가직">7급 국가직</option>
+                <option value="7급 지방직">7급 지방직</option>
             </select>
             <div class="btn">
                 <button class="write-btn" onclick="saveReq()">글쓰기</button>
             </div>
         </div>
-        <div th:each="board: ${boardList}">
+        <div class="posts-container" th:each="board: ${boardList}">
             <div class="write">
                 <div class="write-title">
                     <a th:href="@{|/public/question/${board.id}|(page=${boardList.number + 1})}"
@@ -69,7 +70,7 @@
         </div>
         <div class="page">
             <div class="paging">
-                <a th:href="${boardList.hasPrevious()} ? @{/public/question/(page=${boardList.number})} : '#'">prev</a>
+                <a th:href="${boardList.hasPrevious()} ? @{/public/question/(page=${boardList.number})} : '#'">이전</a>
                 <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
                 <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
                 <span th:unless="${page == boardList.number + 1}">
@@ -77,24 +78,38 @@
                 </span>
             </span>
 
-                <a th:href="${boardList.hasNext()} ? @{/public/question/(page=${boardList.number + 2})} : '#'">next</a>
+                <a th:href="${boardList.hasNext()} ? @{/public/question/(page=${boardList.number + 2})} : '#'">다음</a>
             </div>
         </div>
     </div>
 </div>
 <script>
 
-    function ChangeSelect() {
-
-        let langSelect = document.getElementById("sort");
-
-        // select element에서 선택된 option의 value가 저장된다.
-        let selectValue = langSelect.options[langSelect.selectedIndex].value;
-
-        document.getElementById("keyword").setAttribute("name", selectValue);
-        document.getElementById("frm").setAttribute("action", "/admin/userList/" + selectValue);
-
+    function loadCategory(select) {
+        const category = select.value;
+        if (category === "All") {
+            // "전체"가 선택된 경우, 모든 게시글을 보여줍니다.
+            loadPosts("/public/question");
+        } else {
+            // 선택된 category 값으로 해당 카테고리의 게시글을 가져오는 AJAX 요청을 보냅니다.
+            loadPosts(`/public/question?category=${category}`);
+        }
     }
+
+    function loadPosts(url) {
+        // AJAX를 사용하여 해당 URL로 요청을 보내고, 응답을 받아서 게시글 목록을 업데이트합니다.
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                // 받은 HTML 데이터를 특정 영역에 업데이트
+                const postsContainer = document.getElementById("posts-container");
+                postsContainer.innerHTML = data;
+            })
+            .catch(error => console.error("Error: " + error));
+    }
+
+
+
 
     const saveReq = () => {
         location.href = "/public/save";

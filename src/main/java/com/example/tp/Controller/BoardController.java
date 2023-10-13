@@ -59,9 +59,16 @@ public class BoardController {
     }
 
     @GetMapping("/public/question")
-    public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable) {
+    public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable,@RequestParam(value = "category", required = false) String category) {
 
-        Page<BoardDTO> boardList = boardService.paging(pageable);
+        Page<BoardDTO> boardList;
+
+        if (category != null) {
+            boardList = boardService.pagingByCategory(category, pageable);
+        } else {
+            boardList = boardService.paging(pageable);
+        }
+
         int blockLimit = 3;
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
         int endPage = Math.min(startPage + blockLimit - 1, boardList.getTotalPages());

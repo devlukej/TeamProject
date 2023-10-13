@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>MEGAZONE</title>
-    <link rel="stylesheet" th:href="@{/css/detail.css}">
+    <link rel="stylesheet" th:href="@{/css/n-detail.css}">
     <!-- jquery cdn -->
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"
             integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
@@ -22,7 +22,7 @@
                     <div th:text="${notice.noticeWriter}"></div>
                 </div>
                 <div class="time">
-                    <div class="time-center" th:text="${notice.noticeCreatedTime}"></div>
+                    <div class="time-center" th:text="*{#temporals.format(notice.noticeCreatedTime,'yyyy-MM-dd HH:mm:ss')}"></div>
                 </div>
                 <div class="inquiry">
                     <div>조회&nbsp;:&nbsp;</div>
@@ -30,9 +30,9 @@
                 </div>
             </div>
             <div class="detail-btn">
-                <button onclick="listReq()">목록</button>
-                <button onclick="updateReq()">수정</button>
-                <button onclick="deleteReq()">삭제</button>
+                <button onclick="listReq()" >목록</button>
+                <button onclick="updateReq()" th:if="${user.userEntity.state == '1'}">수정</button>
+                <button onclick="deleteReq()" th:if="${user.userEntity.state == '1'}">삭제</button>
             </div>
             <div class="detail-body">
                 <div class="detail-title">

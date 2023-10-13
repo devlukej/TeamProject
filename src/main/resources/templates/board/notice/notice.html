@@ -17,14 +17,6 @@
             <button class="search-btn">검색</button>
         </div>
         <div class="bar">
-            <select id="sort" name="sort" class="sort" onchange="ChangeSelect()">
-                <option name="9nationKeyword" id="9nationKeyword" value="9nationKeyword">9급 국가직</option>
-                <option name="9areaKeyword" id="9areaKeyword" value="9areaKeyword">9급 지방직</option>
-                <option name="7nationKeyword" id="7nationKeyword" value="7nationKeyword">7급 국가직</option>
-                <option name="7areaKeyword" id="7areaKeyword" value="7areaKeyword">7급 지방직</option>
-                <option name="fireKeyword" id="fireKeyword" value="fireKeyword">소방</option>
-                <option name="policeKeyword" id="policeKeyword" value="policeKeyword">경찰</option>
-            </select>
             <div class="btn">
                 <button class="write-btn" th:if="${user.userEntity.state == '1'}" onclick="saveReq()">글쓰기</button>
             </div>
@@ -51,16 +43,8 @@
                     </div>
                     <div class="write-right">
                         <div class="right-box">
-                            <div class="best">
-                                추천 0
-                            </div>
-                            ㆍ
                             <div class="inquiry">
                                 조회&nbsp;<div th:text="${notice.noticeHits}"></div>
-                            </div>
-                            ㆍ
-                            <div class="comment">
-                                댓글 1
                             </div>
                         </div>
                     </div>
@@ -69,7 +53,7 @@
         </div>
         <div class="page">
             <div class="paging">
-                <a th:href="${noticeList.hasPrevious()} ? @{/public/notice/(page=${noticeList.number})} : '#'">prev</a>
+                <a th:href="${noticeList.hasPrevious()} ? @{/public/notice/(page=${noticeList.number})} : '#'">이전</a>
                 <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
                 <span th:if="${page == noticeList.number + 1}" th:text="${page}"></span>
                 <span th:unless="${page == noticeList.number + 1}">
@@ -77,7 +61,7 @@
                 </span>
             </span>
 
-                <a th:href="${noticeList.hasNext()} ? @{/public/notice/(page=${noticeList.number + 2})} : '#'">next</a>
+                <a th:href="${noticeList.hasNext()} ? @{/public/notice/(page=${noticeList.number + 2})} : '#'">다음</a>
             </div>
         </div>
     </div>

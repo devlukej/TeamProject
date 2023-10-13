@@ -76,8 +76,12 @@ public class BoardService {
                 boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
 
         // 목록: id, writer, title, hits, createdTime
-        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardContents(), board.getBoardHits(), board.getCreatedTime()));
+        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardContents(), board.getBoardHits(), board.getCreatedTime(), board.getCategory()));
         return boardDTOS;
+    }
+
+    public Page<BoardDTO> pagingByCategory(String category, Pageable pageable) {
+        return boardRepository.findByCategory(category, pageable);
     }
 }
 

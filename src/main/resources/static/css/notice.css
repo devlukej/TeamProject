@@ -15,7 +15,6 @@ body {
 
 .bar {
     display: flex;
-    justify-content: space-between;
     width: 100%;
 }
 
@@ -30,12 +29,13 @@ button {
 }
 
 .btn {
-    width: 30%;
+    width: 100%;
 }
 
 .write-btn {
-    width: 80%;
+    width: 100%;
     float: right;
+    height: 30px;
 }
 
 .search {
@@ -93,15 +93,7 @@ button {
     border-bottom: 1px solid black;
 }
 
-.best {
-    display: flex;
-}
-
 .inquiry {
-    display: flex;
-}
-
-.comment {
     display: flex;
 }
 

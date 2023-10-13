@@ -21,14 +21,16 @@ public class BoardDTO {
     private int boardHits;
     private LocalDateTime boardCreatedTime;
     private LocalDateTime boardUpdatedTime;
+    private String category;
 
-    public BoardDTO(Long id, String boardWriter, String boardTitle, String boardContents, int boardHits, LocalDateTime boardCreatedTime) {
+    public BoardDTO(Long id, String boardWriter, String boardTitle, String boardContents, int boardHits, LocalDateTime boardCreatedTime, String category) {
         this.id = id;
         this.boardWriter = boardWriter;
         this.boardTitle = boardTitle;
         this.boardContents = boardContents;
         this.boardHits = boardHits;
         this.boardCreatedTime = boardCreatedTime;
+        this.category = category;
     }
 
     public static BoardDTO toBoardDTO(BoardEntity boardEntity) {
@@ -40,6 +42,7 @@ public class BoardDTO {
         boardDTO.setBoardHits(boardEntity.getBoardHits());
         boardDTO.setBoardCreatedTime(boardEntity.getCreatedTime());
         boardDTO.setBoardUpdatedTime(boardEntity.getUpdatedTime());
+        boardDTO.setCategory(boardEntity.getCategory());
 
         return boardDTO;
     }

@@ -22,7 +22,7 @@
                     <div th:text="${board.boardWriter}"></div>
                 </div>
                 <div class="time">
-                    <div class="time-center" th:text="${board.boardCreatedTime}"></div>
+                    <div class="time-center" th:text="*{#temporals.format(board.boardCreatedTime,'yyyy-MM-dd HH:mm:ss')}"></div>
                 </div>
                 <div class="inquiry">
                     <div>조회&nbsp;:&nbsp;</div>
@@ -54,7 +54,7 @@
                         <div th:text="${comment.commentWriter}"></div>
                     </div>
                     <div class="comment-time">
-                        <div th:text="${comment.commentCreatedTime}"></div>
+                        <div th:text="*{#temporals.format(comment.commentCreatedTime,'yyyy-MM-dd HH:mm:ss')}"></div>
                     </div>
                 </div>
                 <div class="comment-body">
