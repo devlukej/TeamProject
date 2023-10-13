@@ -10,34 +10,72 @@
 <div th:insert="common/header.html" class="header"></div>
 
 <div class="view">
-    <div class="check"><h3>혼자 > 오답노트</h3></div>
-
-    <div class="box">
-
-        <div class="question">
-            <div class="top">
-                <h4 class="sentence" th:text="${randomWrongResult.test.title}"></h4>
-                <div class="your-answer" style="display: none;">
-                    <p>선택한 답: <span th:text="${randomWrongResult.selectedAnswer}"></span></p>
-                </div>
-                <div class="correct-answer" style="display: none;">
-                    <p>올바른 답: <span th:text="${randomWrongResult.test.answer}"></span></p>
+    <div class="test">
+        <div id="question-container">
+            <div class="left">
+                <div class="check"><h3>혼자 > 오답노트</h3></div>
+                <div class="flow">
+                    <div class="question">
+                        <div class="top">
+                            <div class="qs">
+                                <h4 class="sentence" th:text="${randomWrongResult.test.title}"></h4>
+                                <div class="your-answer" style="display: none;">
+                                    <p>선택한 답: <span th:text="${randomWrongResult.selectedAnswer}"></span></p>
+                                </div>
+                                <div class="correct-answer" style="display: none;">
+                                    <p>올바른 답: <span th:text="${randomWrongResult.test.answer}"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom">
+                            <div class="q">1.<span th:text="${randomWrongResult.test.view1}"></span></div>
+                            <div class="q">2.<span th:text="${randomWrongResult.test.view2}"></span></div>
+                            <div class="q">3.<span th:text="${randomWrongResult.test.view3}"></span></div>
+                            <div class="q">4.<span th:text="${randomWrongResult.test.view4}"></span></div>
+                            <div class="q">5.<span th:text="${randomWrongResult.test.view5}"></span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="bottom">
-                <div class="q">1.<span th:text="${randomWrongResult.test.view1}"></span></div>
-                <div class="q">2.<span th:text="${randomWrongResult.test.view2}"></span></div>
-                <div class="q">3.<span th:text="${randomWrongResult.test.view3}"></span></div>
-                <div class="q">4.<span th:text="${randomWrongResult.test.view4}"></span></div>
-                <div class="q">5.<span th:text="${randomWrongResult.test.view5}"></span></div>
+            <div class="bottom-box">
+                <div>
+                    <a th:href="@{/private/wrong}">
+                        <button class="idk">문제 넘어가기</button>
+                    </a>
+                </div>
+                <div>
+                    <button class="show-answer" onclick="toggleAnswers()">정답 보기</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div>
-        <a th:href="@{/private/wrong}"><button class="idk">문제 넘어가기</button></a>
-    </div>
-    <div>
-        <button class="show-answer" onclick="toggleAnswers()">정답 보기</button>
+        <div class="right">
+            <div class="check">
+                <h3>답안지</h3>
+            </div>
+            <div class="flow">
+                    <div class="omr">
+                        <div class="choose">
+                            <!-- 선택된 값을 input 필드에 저장 -->
+                            <label class="self_check">
+                                <input type="radio" name="num"><span>1</span>
+                            </label>
+                            <label class="self_check">
+                                <input type="radio" name="num"><span>2</span>
+                            </label>
+                            <label class="self_check">
+                                <input type="radio" name="num"><span>3</span>
+                            </label>
+                            <label class="self_check">
+                                <input type="radio" name="num"><span>4</span>
+                            </label>
+                            <label class="self_check">
+                                <input type="radio" name="num"><span>5</span>
+                            </label>
+                        </div>
+                    </div>
+            </div>
+            <button id="submit-button" type="submit">답안 제출</button>
+        </div>
     </div>
 </div>
 <script>
