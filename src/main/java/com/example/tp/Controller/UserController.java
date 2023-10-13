@@ -1,7 +1,9 @@
 package com.example.tp.Controller;
 
+import com.example.tp.dto.NoticeDTO;
 import com.example.tp.dto.UserDto;
 import com.example.tp.service.MemberUser;
+import com.example.tp.service.NoticeService;
 import com.example.tp.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,15 +25,19 @@ public class UserController {
 
     private UserService userService;
     private S3Service s3Service;
+    private NoticeService noticeService;
 
     @GetMapping("/")
     public String list(@AuthenticationPrincipal MemberUser user, Model model) {
+
+        List<NoticeDTO> latestNotices = noticeService.findLatestNotices(5);
 
         if (user == null) {
 
             return "redirect:/login";
         }
 
+        model.addAttribute("noticeList", latestNotices);
         model.addAttribute("user", user);
         return "board/main";
     }

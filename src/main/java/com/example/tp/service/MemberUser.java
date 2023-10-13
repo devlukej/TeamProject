@@ -19,4 +19,8 @@ public class MemberUser extends User {
 
         return userEntity;
     }
+
+    public String getState() {
+        return userEntity.getState();
+    }
 }

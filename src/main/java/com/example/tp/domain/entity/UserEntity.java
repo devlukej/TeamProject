@@ -39,14 +39,14 @@ public class UserEntity extends TimeEntity {
     private String state;
 
     @ColumnDefault("0")
-    private String tier;
+    private Integer tier;
 
     @Column(columnDefinition = "TEXT")
     private String filePath;
 
 
     @Builder
-    public UserEntity(String id, String pw, String name, String phone, String tier, String gender, String state, String birthday, String filePath, Date date) {
+    public UserEntity(String id, String pw, String name, String phone, Integer tier, String gender, String state, String birthday, String filePath, Date date) {
         this.id = id;
         this.pw = pw;
         this.name = name;

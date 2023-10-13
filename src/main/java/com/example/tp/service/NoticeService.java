@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 
 // DTO -> Entity (Entity Class)
 // Entity -> DTO (DTO Class)
@@ -24,6 +27,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class NoticeService {
     private final NoticeRepository noticeRepository;
+
+    private ModelMapper modelMapper = new ModelMapper();
     public void save(NoticeDTO noticeDTO) throws IOException {
 
             NoticeEntity noticeEntity = NoticeEntity.toSaveEntity(noticeDTO);
@@ -79,6 +84,21 @@ public class NoticeService {
         Page<NoticeDTO> noticeDTOS = noticeEntities.map(notice -> new NoticeDTO(notice.getId(), notice.getNoticeWriter(), notice.getNoticeTitle(), notice.getNoticeContents(), notice.getNoticeHits(), notice.getCreatedTime()));
         return noticeDTOS;
     }
+
+    public List<NoticeDTO> findLatestNotices(int count) {
+        Page<NoticeEntity> latestNoticeEntities = noticeRepository.findAll(
+                PageRequest.of(0, count, Sort.by(Sort.Direction.DESC, "createdTime"))
+        );
+        List<NoticeDTO> latestNotices = convertToNoticeDTOList(latestNoticeEntities.getContent());
+        return latestNotices;
+    }
+
+    public List<NoticeDTO> convertToNoticeDTOList(List<NoticeEntity> noticeEntities) {
+        return noticeEntities.stream()
+                .map(noticeEntity -> modelMapper.map(noticeEntity, NoticeDTO.class))
+                .collect(Collectors.toList());
+    }
+
 }
 
 

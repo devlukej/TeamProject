@@ -57,23 +57,15 @@
             <dl class="notice">
                 <dt style="font-weight: bold">
                     <div>공지사항</div>
-                    <a class="plus" th:href="@{/board/notice}">+ 더보기</a>
+                    <a class="plus" th:href="@{/public/notice}">+ 더보기</a>
                 </dt>
                 <ul>
-                    <div class="li">
-                        <li><a href="#" class="main_text"><span>1</span> - now having a board</a></li>
-                    </div>
-                    <div class="li">
-                        <li><a href="#" class="main_text"><span>2</span> - now having a board</a></li>
-                    </div>
-                    <div class="li">
-                        <li><a href="#" class="main_text"><span>3</span> - now having a board</a></li>
-                    </div>
-                    <div class="li">
-                        <li><a href="#" class="main_text"><span>4</span> - now having a board</a></li>
-                    </div>
-                    <div class="li">
-                        <li><a href="#" class="main_text"><span>5</span> - now having a board</a></li>
+                    <div class="li" th:each="notice, i : ${noticeList}">
+                        <li>
+                            <a th:href="@{|/public/notice/${notice.id}|}" class="main_text">
+                                <span th:text="${i.index + 1}"></span> - <span th:text="${notice.noticeTitle}"></span>
+                            </a>
+                        </li>
                     </div>
                 </ul>
             </dl>

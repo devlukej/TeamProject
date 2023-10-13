@@ -10,7 +10,7 @@
 <div th:insert="common/header.html" class="header"></div>
 
 <div class="view">
-    <div class="check"><h3>함께 > 질문답변</h3></div>
+    <div class="check"><h3>함께 > 공지사항</h3></div>
     <div class="enter">
         <div class="search">
             <input class="size" name="nameKeyword" id="keyword" type="text">
@@ -26,7 +26,7 @@
                 <option name="policeKeyword" id="policeKeyword" value="policeKeyword">경찰</option>
             </select>
             <div class="btn">
-                <button class="write-btn" onclick="saveReq()">글쓰기</button>
+                <button class="write-btn" th:if="${user.userEntity.state == '1'}" onclick="saveReq()">글쓰기</button>
             </div>
         </div>
         <div th:each="notice: ${noticeList}">

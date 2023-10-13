@@ -51,6 +51,9 @@ public class UserService implements UserDetailsService {
                     .id(userEntity.getId())
                     .name(userEntity.getName())
                     .phone(userEntity.getPhone())
+                    .state(userEntity.getState())
+                    .birthday(userEntity.getBirthday())
+                    .gender(userEntity.getGender())
                     .tier(userEntity.getTier())
                     .build();
 
@@ -254,6 +257,15 @@ public class UserService implements UserDetailsService {
 
         UserEntity userEntity = userEntityWrapper.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
+
+
+        // 사용자의 state 값을 가져와서 권한을 설정
+        if ("1".equals(userEntity.getState())) {
+            authorities.add(new SimpleGrantedAuthority("manager"));
+        } else {
+            authorities.add(new SimpleGrantedAuthority("user"));
+        }
+
 
         if (userEntityWrapper == null) {
             throw new UsernameNotFoundException(id);

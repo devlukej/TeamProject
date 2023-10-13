@@ -26,8 +26,8 @@
                                     <h4 class="sentence">
                                         <span th:text="${userResult.test.title}"></span>
                                     </h4>
-                                    <span th:if="!${userResult.correct}" th:text="'정답 : '+${userResult.answer}"></span>
-                                    <span th:if="${userResult.correct}">정답</span>
+                                    <span th:if="!${userResult.correct}" th:text="'정답 : '+${userResult.answer}" class="correct-answer"></span>
+                                    <span th:if="${userResult.correct}" class="correct-answer">정답</span>
                                 </div>
                             </div>
                             <div class="bottom">
