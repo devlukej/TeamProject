@@ -20,8 +20,4 @@ public abstract class TimeEntity {
     @CreatedDate
     @Column(updatable = false)
     private LocalDate createDate;
-
-    @UpdateTimestamp
-    @Column(insertable = false)
-    private LocalDateTime updatedTime;
 }

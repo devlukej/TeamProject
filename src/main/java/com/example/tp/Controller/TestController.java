@@ -6,10 +6,7 @@ import com.example.tp.domain.entity.Test;
 import com.example.tp.domain.entity.UserEntity;
 import com.example.tp.domain.repository.TestRepository;
 import com.example.tp.dto.TestResultDto;
-import com.example.tp.service.MemberUser;
-import com.example.tp.service.TestHistoryService;
-import com.example.tp.service.TestResultService;
-import com.example.tp.service.TestServiceImpl;
+import com.example.tp.service.*;
 import com.example.tp.dto.TestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,12 +30,15 @@ public class TestController {
 
     private final TestHistoryService testHistoryService;
 
+    private final UserService userService;
+
     @Autowired
-    public TestController(TestServiceImpl testService, TestRepository testRepository,TestResultService testResultService,TestHistoryService testHistoryService) {
+    public TestController(TestServiceImpl testService, TestRepository testRepository,TestResultService testResultService,TestHistoryService testHistoryService,UserService userService) {
         this.testService = testService;
         this.testRepository = testRepository;
         this.testResultService = testResultService;
         this.testHistoryService = testHistoryService;
+        this.userService = userService;
     }
 
     @GetMapping("/private/pre-cbt")
@@ -102,6 +102,7 @@ public class TestController {
 
                         if (isCorrect) {
                             totalScore += 10; // 정답인 경우 총점 증가
+                            userService.increaseUserTier(user.getUserEntity(), 3);
                         }
 
                         TestResult testResult = new TestResult();

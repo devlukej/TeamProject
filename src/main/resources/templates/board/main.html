@@ -39,7 +39,12 @@
                 </div>
                 <div class="info">
                     <p class="info_text">등급</p>
-                    <p class="info_data"><span>골드</span></p>
+                    <p class="info_data">
+                        <span th:if="${user.userEntity.tier > 300}">골드<span th:text="'(' + ${user.userEntity.tier} + ')'" ></span></span>
+                        <span th:if="${user.userEntity.tier > 100 and user.userEntity.tier <= 300}">실버<span th:text="'(' + ${user.userEntity.tier} + ')'" ></span></span>
+                        <span th:if="${user.userEntity.tier > 30 and user.userEntity.tier <= 100}">브론즈<span th:text="'(' + ${user.userEntity.tier} + ')'" ></span></span>
+                        <span th:if="${user.userEntity.tier <= 30}">기본<span th:text="'(' + ${user.userEntity.tier} + ')'" ></span></span>
+                    </p>
                 </div>
             </div>
         </div>

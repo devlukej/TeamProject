@@ -132,6 +132,14 @@ public class UserService implements UserDetailsService {
         return pageList;
     }
 
+    @Transactional
+    public void increaseUserTier(UserEntity user, int incrementAmount) {
+        int currentTier = user.getTier();
+        currentTier += incrementAmount;
+        user.setTier(currentTier);
+        userRepository.save(user);
+    }
+
 
 //    //이름검색
 //    @javax.transaction.Transactional

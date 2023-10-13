@@ -6,6 +6,7 @@ import com.example.tp.dto.CommentDTO;
 import com.example.tp.service.BoardService;
 import com.example.tp.service.CommentService;
 import com.example.tp.service.MemberUser;
+import com.example.tp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
     private final CommentService commentService;
+    private final UserService userService;
 
     @GetMapping("/public/save")
     public String saveForm(@AuthenticationPrincipal MemberUser user,Model model) {
@@ -46,6 +48,11 @@ public class BoardController {
 
         model.addAttribute("user", user);
         boardService.save(boardDTO);
+
+        if (user != null) {
+            // 현재 로그인한 사용자의 tier를 3씩 증가시킵니다.
+            userService.increaseUserTier(user.getUserEntity(), 3);
+        }
 
        return "redirect:/public/question";
 
