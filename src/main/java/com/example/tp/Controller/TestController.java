@@ -3,7 +3,6 @@ package com.example.tp.Controller;
 import com.example.tp.domain.entity.TestHistory;
 import com.example.tp.domain.entity.TestResult;
 import com.example.tp.domain.entity.Test;
-import com.example.tp.domain.entity.UserEntity;
 import com.example.tp.domain.repository.TestRepository;
 import com.example.tp.dto.TestResultDto;
 import com.example.tp.service.*;
@@ -20,6 +19,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Controller
 public class TestController {
@@ -176,6 +176,31 @@ public class TestController {
         model.addAttribute("userResults", userResults);
 
         return "board/cbt/cbt-result"; // 시험 결과를 표시하는 HTML 페이지
+    }
+
+    @GetMapping("/private/wrong")
+    public String showRandomWrongQuestion(@AuthenticationPrincipal MemberUser user, Model model) {
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        // 사용자의 틀린 문제 목록을 가져옵니다.
+        List<TestResultDto> userWrongResults = testResultService.getUserWrongResults(user.getUsername());
+
+        if (userWrongResults.isEmpty()) {
+            // 사용자가 틀린 문제가 없으면 다른 처리를 할 수 있습니다.
+            return "redirect:/private/no-wrong"; // 또는 사용자가 틀린 문제가 없는 경우를 나타내는 다른 페이지로 이동
+        }
+
+        Random random = new Random();
+        // 랜덤 문제 선택
+        int randomIndex = random.nextInt(userWrongResults.size());
+        TestResultDto randomWrongResult = userWrongResults.get(randomIndex);
+
+        model.addAttribute("user", user);
+        model.addAttribute("randomWrongResult", randomWrongResult);
+
+        return "board/wrong/wrong"; // 랜덤 틀린 문제를 표시하는 페이지
     }
 
 }

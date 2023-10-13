@@ -1,6 +1,7 @@
 package com.example.tp.domain.entity;
 
 import lombok.*;
+import org.modelmapper.internal.bytebuddy.implementation.bind.annotation.Default;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -29,6 +30,8 @@ public class TestResult extends BaseEntity{
 
     private boolean isCorrect;
 
+    private String reAnswer;
+
     @ManyToOne
     @JoinColumn(name = "history_id")
     private TestHistory testHistory; // history_id와의 관계
@@ -46,10 +49,11 @@ public class TestResult extends BaseEntity{
     }
 
     @Builder
-    public TestResult(UserEntity user, Test test, String selectedAnswer, boolean isCorrect) {
+    public TestResult(UserEntity user, Test test, String selectedAnswer, boolean isCorrect, String reAnswer) {
         this.user = user;
         this.test = test;
         this.selectedAnswer = selectedAnswer;
         this.isCorrect = isCorrect;
+        this.reAnswer = reAnswer;
     }
 }

@@ -98,48 +98,6 @@ public class UserController {
         return "redirect:/myinfo";
     }
 
-
-    @GetMapping("/private/wrong")
-    public String dispEventWrite(@AuthenticationPrincipal MemberUser user, Model model) {
-
-        if (user == null) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("user", user);
-        return "board/wrong";
-    }
-
-
-    @GetMapping("/board/notice")
-    public String dispNotice(@AuthenticationPrincipal MemberUser user, Model model) {
-
-        if (user == null) {
-
-            return "redirect:/login";
-        }
-
-        model.addAttribute("user", user);
-        return "board/notice";
-    }
-
-    @GetMapping("/board/question")
-    public String dispUserJoin(@AuthenticationPrincipal MemberUser user, Model model, @RequestParam(value = "page", defaultValue = "1") Integer pageNum) {
-
-        if (user == null) {
-
-            return "redirect:/login";
-        }
-
-//        List<UserDto> userList = userService.getJoinUserlist("0");
-        model.addAttribute("user", user);
-
-
-//        model.addAttribute("userList", userList);
-
-        return "board/cbt/question";
-    }
-
 //    //이름검색
 //    @GetMapping("/admin/userList/nameKeyword")
 //    public String searchUserName(@RequestParam(value = "nameKeyword") String nameKeyword, Model model, @AuthenticationPrincipal MemberUser user) {

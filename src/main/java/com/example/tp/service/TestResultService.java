@@ -53,6 +53,23 @@ public class TestResultService {
         return testResultDto;
     }
 
+    // 사용자가 틀린 문제 목록을 가져오는 메서드
+    public List<TestResultDto> getUserWrongResults(String username) {
+        List<TestResult> userResults = testResultRepository.findUserResultsByUsername(username);
+
+
+
+        // 사용자가 틀린 문제만 필터링
+        List<TestResult> wrongResults = userResults.stream()
+                .filter(result -> !result.isCorrect())
+                .collect(Collectors.toList());
+
+        // TestResult 엔티티를 TestResultDto로 변환
+        return wrongResults.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
 
 }
 

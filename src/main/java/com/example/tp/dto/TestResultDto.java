@@ -15,6 +15,7 @@ public class TestResultDto {
     private String answer;
     private Test test; // 시험 문제 정보 (TestDto 사용)
     private LocalDateTime TestResultCreatedTime;
+    private  String reAnswer;
 
     public boolean isCorrect() {
         return correct;

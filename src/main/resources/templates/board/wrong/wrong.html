@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>MEGAZONE</title>
+    <link rel="stylesheet" th:href="@{/css/wrong.css}">
+</head>
+<body>
+<!-- HEADER -->
+<div th:insert="common/header.html" class="header"></div>
+
+<div class="view">
+    <div class="check"><h3>혼자 > 오답노트</h3></div>
+
+    <div class="box">
+
+        <div class="question">
+            <div class="top">
+                <h4 class="sentence" th:text="${randomWrongResult.test.title}"></h4>
+                <div class="your-answer" style="display: none;">
+                    <p>선택한 답: <span th:text="${randomWrongResult.selectedAnswer}"></span></p>
+                </div>
+                <div class="correct-answer" style="display: none;">
+                    <p>올바른 답: <span th:text="${randomWrongResult.test.answer}"></span></p>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="q">1.<span th:text="${randomWrongResult.test.view1}"></span></div>
+                <div class="q">2.<span th:text="${randomWrongResult.test.view2}"></span></div>
+                <div class="q">3.<span th:text="${randomWrongResult.test.view3}"></span></div>
+                <div class="q">4.<span th:text="${randomWrongResult.test.view4}"></span></div>
+                <div class="q">5.<span th:text="${randomWrongResult.test.view5}"></span></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a th:href="@{/private/wrong}"><button class="idk">문제 넘어가기</button></a>
+    </div>
+    <div>
+        <button class="show-answer" onclick="toggleAnswers()">정답 보기</button>
+    </div>
+</div>
+<script>
+    function toggleAnswers() {
+        var yourAnswerDiv = document.querySelector(".your-answer");
+        var correctAnswerDiv = document.querySelector(".correct-answer");
+
+        // Toggle the display style of the answer divs
+        if (yourAnswerDiv.style.display === "none") {
+            yourAnswerDiv.style.display = "block";
+            correctAnswerDiv.style.display = "block";
+        } else {
+            yourAnswerDiv.style.display = "none";
+            correctAnswerDiv.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>
