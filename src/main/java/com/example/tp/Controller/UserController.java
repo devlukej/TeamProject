@@ -6,6 +6,8 @@ import com.example.tp.service.MemberUser;
 import com.example.tp.service.NoticeService;
 import com.example.tp.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -26,6 +30,7 @@ public class UserController {
     private UserService userService;
     private S3Service s3Service;
     private NoticeService noticeService;
+
 
     @GetMapping("/")
     public String list(@AuthenticationPrincipal MemberUser user, Model model) {
@@ -97,6 +102,20 @@ public class UserController {
         model.addAttribute("user", user);
         return "redirect:/myinfo";
     }
+
+    @PostMapping("/checkDuplicateId")
+    public ResponseEntity<Map<String, String>> checkDuplicateId(@RequestParam("id") String id) {
+        Map<String, String> response = new HashMap<>();
+
+        if (userService.isIdUnique(id)) {
+            response.put("message", "available");
+        } else {
+            response.put("message", "duplicate");
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
 
 //    //이름검색
 //    @GetMapping("/admin/userList/nameKeyword")

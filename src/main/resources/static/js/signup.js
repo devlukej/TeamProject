@@ -42,6 +42,8 @@ function signUpCheck() {
 
         // 아이디 확인
         if (id == "") {
+            document.getElementById("idError").style.display = "block";
+            document.getElementById("idAvailability").style.display = "none";
             document.getElementById("idError").innerHTML = "아이디가 올바르지 않습니다."
             document.getElementById("id").focus()
 

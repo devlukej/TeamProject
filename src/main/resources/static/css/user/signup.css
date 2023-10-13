@@ -56,12 +56,6 @@
     display: none;
 }
 
-.rdobtn {
-    width: 35%;
-    float: right;
-    margin-top: 5px;
-}
-
 .rdobtn input[type="radio"] + span {
     display: inline-block;
     border: 1px solid black;
@@ -79,7 +73,7 @@
 }
 
 .areabox {
-    margin-left: 10px;
+    padding: 30px 300px;
 }
 
 .body {
@@ -92,14 +86,14 @@
     margin-top: 10px;
 }
 
-s {
+.s {
     color: #FF0000;
     text-decoration: none;
     font-weight: bold;
     font-size: 20px;
 }
 
-d {
+.d {
     font-weight: bold;
     font-size: 20px;
     vertical-align: middle;
@@ -108,64 +102,99 @@ d {
 .textarea {
     padding-left: 10px;
     background-color: rgba(214, 228, 255, 0.5);
-    float: right;
-    margin-right: 10px;
     border-radius: 20px;
-    width: 70%;
+    width: 100%;
     height: 40px;
     border: solid black 1px;
 }
 
 .name {
-    display: inline-block;
+    display: flex;
     width: 100%;
     height: 100%;
+    margin-bottom: 10px;
 }
 
 .id {
-    display: inline-block;
+    display: flex;
     width: 100%;
     height: 100%;
+    margin-bottom: 10px;
 }
 
 .pw {
-    display: inline-block;
+    display: flex;
     width: 100%;
     height: 100%;
+    margin-bottom: 10px;
 }
 
 .checkpw {
-    display: inline-block;
+    display: flex;
     width: 100%;
     height: 100%;
+    margin-bottom: 10px;
 }
 
 .birthday {
-    display: inline-block;
+    display: flex;
     width: 100%;
     height: 100%;
+    margin-bottom: 10px;
 }
 
 .phone {
-    display: inline-block;
+    display: flex;
     width: 100%;
     height: 100%;
+    margin-bottom: 10px;
 }
 
 .gender {
-    display: inline-block;
+    display: flex;
     width: 100%;
     height: 100%;
+    margin-bottom: 10px;
+}
+
+.left {
+    width: 150px;
+    display: flex;
+    justify-content: center;
+}
+
+.left1 {
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.left-top {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.left-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.right {
+    width: 100%;
 }
 
 .btn {
-    display: block;
     margin: 10px auto 10px auto;
     border: 1px solid black;
     background: #D6E4FF;
-    width: 35%;
+    width: 100%;
     height: 54px;
-    border-radius: 5px;
     font-size: 20px;
     font-weight: bold;
     display: flex;
@@ -174,23 +203,34 @@ d {
 }
 
 .error {
-    padding: 5px 0;
+    padding: 5px 0 5px 10px;
     width: 70%;
-    float: right;
-    font-size: 1px;
+    font-size: 10px;
     height: 25px;
     color: rgba(248, 42, 42, 0.7);
     font-weight: 800;
+    user-select: none;
+}
+
+.error1 {
+    padding: 5px 0;
+    width: 100%;
+    font-size: 10px;
+    height: 25px;
+    color: rgba(248, 42, 42, 0.7);
+    font-weight: 800;
+    user-select: none;
+    text-align: center;
 }
 
 .pwerror {
-    padding: 5px 0;
+    padding: 5px 0 5px 10px;
     width: 70%;
-    float: right;
-    font-size: 1px;
+    font-size: 10px;
     height: 25px;
     color: rgba(248, 42, 42, 0.7);
     font-weight: 800;
+    user-select: none;
 }
 
 
@@ -276,4 +316,25 @@ body {
 
 label {
     user-select: none;
+}
+
+.id-check {
+    display: flex;
+    background: #D6E4FF;
+    border: 1px solid;
+    border-radius: 30px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.gender-css {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.idAvailability {
+    padding: 5px 0 5px 10px;
+    font-size: 10px;
 }

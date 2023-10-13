@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="kr" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta charset="UTF-8">
     <title>UNPLUGGED</title>
-    <link rel="stylesheet" th:href="@{/css/signup.css}">
+    <link rel="stylesheet" th:href="@{/css/user/signup.css}">
     <link rel="stylesheet" th:href="@{/css/index.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/signup.js"></script>
 </head>
 <body>
@@ -26,65 +27,99 @@
     <div class="body">
         <div class="areabox">
             <div class="name">
-                <d>이름</d>
-                <s>*</s>
-                <input class="textarea" id="name" name="name" type="text" placeholder="이름 입력">
+                <div class="left">
+                    <label for="name" class="d">이름</label>
+                    <span class="s">*</span>
+                </div>
+                <div class="right">
+                    <input class="textarea" id="name" name="name" type="text" placeholder="이름 입력">
+                    <div id="nameError" class="error"></div>
+                </div>
             </div>
-            <div id="nameError" class="error"></div>
 
             <div class="id">
-                <d>아이디</d>
-                <s>*</s>
-                <input class="textarea" id="id" name="id" type="text" placeholder="아이디 입력">
+                <div class="left1">
+                    <div class="left-top">
+                        <label for="id" class="d">아이디</label>
+                        <span class="s">*</span>
+                    </div>
+                    <div class="left-bottom">
+                        <button type="button" class="id-check" onclick="checkDuplicateId()">중복 확인</button>
+                    </div>
+                </div>
+                <div class="right">
+                    <input class="textarea" id="id" name="id" type="text" placeholder="아이디 입력"
+                           onblur="checkDuplicateId()">
+                    <div id="idError" class="error"></div>
+                    <div id="idAvailability" class="idAvailability" style="display: none"></div>
+                </div>
             </div>
-            <div id="idError" class="error"></div>
 
             <div class="pw">
-                <d>비밀번호</d>
-                <s>*</s>
-                <input class="textarea" id="pw" name="pw" type="password" placeholder="비밀번호 입력">
+                <div class="left">
+                    <label for="pw" class="d">비밀번호</label>
+                    <span class="s">*</span>
+                </div>
+                <div class="right">
+                    <input class="textarea" id="pw" name="pw" type="password" placeholder="비밀번호 입력">
+                    <div id="pwError" class="pwerror"></div>
+                </div>
             </div>
-            <div id="pwError" class="pwerror"></div>
 
             <div class="checkpw">
-                <d>재확인</d>
-                <s>*</s>
-                <input class="textarea" id="checkpw" name="checkpw" type="password" placeholder="비밀번호 재입력">
+                <div class="left">
+                    <label for="checkpw" class="d">재확인</label>
+                    <span class="s">*</span>
+                </div>
+                <div class="right">
+                    <input class="textarea" id="checkpw" name="checkpw" type="password" placeholder="비밀번호 재입력">
+                    <div id="checkpwError" class="pwerror"></div>
+                </div>
             </div>
-            <div id="checkpwError" class="pwerror"></div>
 
             <div class="birthday">
-                <d>생년월일</d>
-                <s>*</s>
-                <input class="textarea" id="birthday" name="birthday" type="date">
+                <div class="left">
+                    <label for="birthday" class="d">생년월일</label>
+                    <span class="s">*</span>
+                </div>
+                <div class="right">
+                    <input class="textarea" id="birthday" name="birthday" type="date">
+                    <div id="birthdayError" class="error"></div>
+                </div>
             </div>
-            <div id="birthdayError" class="error"></div>
 
             <div class="phone">
-                <d>연락처</d>
-                <s>*</s>
-                <input class="textarea" id="phone" name="phone" type="text" maxlength="11" oninput="changePhone()"
-                       placeholder="-제외하고 입력">
+                <div class="left">
+                    <label for="birthday" class="d">연락처</label>
+                    <span class="s">*</span>
+                </div>
+                <div class="right">
+                    <input class="textarea" id="phone" name="phone" type="text" maxlength="11" oninput="changePhone()"
+                           placeholder="-제외하고 입력">
+                    <div id="phoneError" class="error"></div>
+                </div>
             </div>
-            <div id="phoneError" class="error"></div>
 
             <div class="gender">
-                <d>성별</d>
-                <s>*</s>
-                <label class="rdobtn"><input id="gender_man" type="radio" name="gender"
-                                             value="남"><span>남자</span></label>
-                <label class="rdobtn"><input id="gender_woman" type="radio" name="gender"
-                                             value="여"><span>여자</span></label>
+                <div class="left">
+                    <span class="d">성별</span>
+                    <span class="s">*</span>
+                </div>
+                <div class="right">
+                    <div class="gender-css">
+                        <label class="rdobtn"><input id="gender_man" type="radio" name="gender"
+                                                     value="남"><span>남자</span></label>
+                        <label class="rdobtn"><input id="gender_woman" type="radio" name="gender"
+                                                     value="여"><span>여자</span></label>
+                    </div>
+                    <div id="genderError" class="error1"></div>
+                </div>
             </div>
-            <div id="genderError" class="error"></div>
 
-            <div class="agree">
+            <div class="signup">
+                <a class="btn" id="signup_submit" onclick="javascript:signUpCheck()"><label
+                        class="check-btn">가입하기</label></a>
             </div>
-        </div>
-
-        <div class="signup">
-            <a class="btn" id="signup_submit" onclick="javascript:signUpCheck()"><label
-                    class="check-btn">가입하기</label></a>
         </div>
     </div>
 </form>
@@ -136,6 +171,46 @@
         });
 
     });
+
+    function checkDuplicateId() {
+        var id = document.getElementById("id").value;
+        var idAvailability = document.getElementById("idAvailability");
+        idAvailability.innerHTML = '';
+
+        if (id === "") {
+            return;
+        }
+
+        // Ajax 요청을 보내고 서버에서 아이디 중복 여부를 확인
+        $.ajax({
+            url: '/checkDuplicateId',
+            type: 'POST',
+            data: {id: id},
+            dataType: 'json', // JSON 형식의 응답을 기대함
+            success: function (response) {
+                var idAvailability = document.getElementById("idAvailability");
+                idAvailability.innerHTML = '';
+
+                if (response.message === 'available') {
+                    document.getElementById("idError").style.display = "none";
+                    document.getElementById("idAvailability").style.display = "block";
+                    idAvailability.innerHTML = '사용 가능한 아이디입니다.';
+                    idAvailability.style.color = 'green';
+                } else if (response.message === 'duplicate') {
+                    document.getElementById("idError").style.display = "none";
+                    document.getElementById("idAvailability").style.display = "block";
+                    idAvailability.innerHTML = '이미 사용 중인 아이디입니다.';
+                    idAvailability.style.color = 'red';
+                }
+            }
+            ,
+            error: function (error) {
+                // 오류 처리
+            }
+        });
+
+    }
+
 
 </script>
 </body>
