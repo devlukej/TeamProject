@@ -8,83 +8,81 @@
 <body>
 <!-- HEADER -->
 <div th:insert="common/header.html" class="header"></div>
-
-<div class="view">
-    <div class="check"><h3>함께 > 질문답변</h3></div>
-    <div class="enter">
-        <div class="search">
-            <input class="size" name="nameKeyword" id="keyword" type="text">
-            <button class="search-btn">검색</button>
-        </div>
-        <div class="bar">
-            <select id="sort" name="category" class="sort" onchange="loadCategory(this)">
-                <option value="All">전체</option>
-                <option value="경찰">경찰</option>
-                <option value="소방">소방</option>
-                <option value="9급 국가직">9급 국가직</option>
-                <option value="9급 지방직">9급 지방직</option>
-                <option value="7급 국가직">7급 국가직</option>
-                <option value="7급 지방직">7급 지방직</option>
-            </select>
-            <div class="btn">
-                <button class="write-btn" onclick="saveReq()">글쓰기</button>
+<div id="posts-container">
+    <div class="view">
+        <div class="check"><h3>함께 > 질문답변</h3></div>
+        <div class="enter">
+            <div class="search">
+                <input class="size" name="nameKeyword" id="keyword" type="text">
+                <button class="search-btn">검색</button>
             </div>
-        </div>
-        <div class="posts-container" th:each="board: ${boardList}">
-            <div class="write">
-                <div class="write-title">
-                    <a th:href="@{|/public/question/${board.id}|(page=${boardList.number + 1})}"
-                       th:text="${board.boardTitle}"></a>
-                </div>
-                <div class="write-content">
-                    <div th:text="${board.boardContents}"></div>
-                </div>
-                <div class="write-bottom">
-                    <div class="write-left">
-                        <div class="user-name">
-                            <div th:text="${board.boardWriter}"></div>
-                        </div>
-                        ㆍ
-                        <div class="write-time">
-                            <div th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></div>
-                        </div>
-
-                    </div>
-                    <div class="write-right">
-                        <div class="right-box">
-                            <div class="best">
-                                추천 0
-                            </div>
-                            ㆍ
-                            <div class="inquiry">
-                                조회&nbsp;<div th:text="${board.boardHits}"></div>
-                            </div>
-                            ㆍ
-                            <div class="comment">
-                                댓글 1
-                            </div>
-                        </div>
-                    </div>
+            <div class="bar">
+                <select id="sort" name="category" class="sort" onchange="loadCategory(this)">
+                    <option value="All">전체</option>
+                    <option value="경찰">경찰</option>
+                    <option value="소방">소방</option>
+                    <option value="9급 국가직">9급 국가직</option>
+                    <option value="9급 지방직">9급 지방직</option>
+                    <option value="7급 국가직">7급 국가직</option>
+                    <option value="7급 지방직">7급 지방직</option>
+                </select>
+                <div class="btn">
+                    <button class="write-btn" onclick="saveReq()">글쓰기</button>
                 </div>
             </div>
-        </div>
-        <div class="page">
-            <div class="paging">
-                <a th:href="${boardList.hasPrevious()} ? @{/public/question/(page=${boardList.number})} : '#'">이전</a>
-                <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+            <div th:each="board: ${boardList}">
+                <div class="write">
+                    <div class="write-title">
+                        <a th:href="@{|/public/question/${board.id}|(page=${boardList.number + 1})}"
+                           th:text="${board.boardTitle}"></a>
+                    </div>
+                    <div class="write-content">
+                        <div th:text="${board.boardContents}"></div>
+                    </div>
+                    <div class="write-bottom">
+                        <div class="write-left">
+                            <div class="user-name">
+                                <div th:text="${board.boardWriter}"></div>
+                            </div>
+                            ㆍ
+                            <div class="write-time">
+                                <div th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></div>
+                            </div>
+                        </div>
+                        <div class="write-right">
+                            <div class="right-box">
+                                <div class="best">
+                                    추천 0
+                                </div>
+                                ㆍ
+                                <div class="inquiry">
+                                    조회&nbsp;<div th:text="${board.boardHits}"></div>
+                                </div>
+                                ㆍ
+                                <div class="comment">
+                                    댓글 1
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="paging">
+                    <a th:href="${boardList.hasPrevious()} ? @{/public/question/(page=${boardList.number})} : '#'">이전</a>
+                    <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
                 <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
                 <span th:unless="${page == boardList.number + 1}">
                     <a th:href="@{/public/question/(page=${page})}" th:text="${page}"></a>
                 </span>
             </span>
-
-                <a th:href="${boardList.hasNext()} ? @{/public/question/(page=${boardList.number + 2})} : '#'">다음</a>
+                    <a th:href="${boardList.hasNext()} ? @{/public/question/(page=${boardList.number + 2})} : '#'">다음</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <script>
-
     function loadCategory(select) {
         const category = select.value;
         if (category === "All") {
@@ -108,13 +106,9 @@
             .catch(error => console.error("Error: " + error));
     }
 
-
-
-
     const saveReq = () => {
         location.href = "/public/save";
     }
-
 </script>
 </body>
 </html>

@@ -59,13 +59,15 @@ public class BoardController {
     }
 
     @GetMapping("/public/question")
-    public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable,@RequestParam(value = "category", required = false) String category) {
+    public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable, @RequestParam(value = "category", required = false) String category) {
 
         Page<BoardDTO> boardList;
 
         if (category != null) {
+            // 카테고리가 선택된 경우, 해당 카테고리에 맞게 게시글을 필터링
             boardList = boardService.pagingByCategory(category, pageable);
         } else {
+            // 카테고리가 선택되지 않은 경우, 모든 게시글을 가져옴
             boardList = boardService.paging(pageable);
         }
 
@@ -89,9 +91,6 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-
-        // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
-        List<BoardDTO> boardDTOList = boardService.findAll();
 
         return "board/question/question";
     }
