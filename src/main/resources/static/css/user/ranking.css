@@ -1,0 +1,28 @@
+.view {
+    margin-top: 62px;
+    margin-left: 200px;
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    background-color: #F6F6F6;
+}
+
+.check {
+    margin-left: 10px;
+    margin-bottom: 5px;
+    padding-top: 10px;
+}
+
+.enter {
+    margin: 0 80px;
+    padding-bottom: 30px;
+    user-select: none;
+
+}
+
+.table {
+    width: 100%;
+    text-align: center;
+}

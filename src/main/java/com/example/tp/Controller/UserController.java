@@ -84,6 +84,22 @@ public class UserController {
     }
 
     // 내 정보 페이지
+    @GetMapping("/public/ranking")
+    public String dispRanking(@AuthenticationPrincipal MemberUser user, Model model) {
+
+        if (user == null) {
+
+            return "redirect:/login";
+        }
+
+        List<UserEntity> ranking = rankingService.getRankingSortedByTier();
+
+        model.addAttribute("ranking", ranking);
+        model.addAttribute("user", user);
+        return "user/ranking";
+    }
+
+    // 내 정보 페이지
     @GetMapping("/private/myinfo")
     public String dispMyInfo(@AuthenticationPrincipal MemberUser user, Model model) {
 

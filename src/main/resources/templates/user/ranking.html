@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/user/ranking.css}">
+</head>
+<body>
+<!-- HEADER -->
+<div th:insert="common/header.html" class="header"></div>
+
+<div class="view">
+    <div class="check"><h3>함께 > 랭킹</h3></div>
+    <div class="enter">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="rank-top">순위</th>
+                <th class="rank-top">닉네임</th>
+                <th class="rank-top">활동 점수</th>
+                <th class="rank-top">티어</th>
+            </tr>
+            </thead>
+            <tbody class="rank-body">
+            <tr th:each="user, rowStat : ${ranking}">
+                <td class="rank-column" th:text="${rowStat.count}">1</td>
+                <td class="rank-column" th:text="${user.nickname}">닉네임</td>
+                <td class="rank-column" th:text="${user.tier}">활동 점수</td>
+                <td>
+                    <span class="rank-column" th:if="${user.tier >= 300}">골드</span>
+                    <span class="rank-column" th:if="${user.tier >= 100 && user.tier < 300}">실버</span>
+                    <span class="rank-column" th:if="${user.tier >= 30 && user.tier < 100}">브론즈</span>
+                    <span class="rank-column" th:if="${user.tier < 30}">기본</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
