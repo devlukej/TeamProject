@@ -25,8 +25,10 @@ public class BoardDTO {
 
     private Long commentCount;
 
+    private int recommendCount;
 
-    public BoardDTO(Long id, String boardWriter, String boardTitle, String boardContents, int boardHits, LocalDateTime boardCreatedTime, String category) {
+
+    public BoardDTO(Long id, String boardWriter, String boardTitle, String boardContents, int boardHits, LocalDateTime boardCreatedTime, String category, int recommendCount) {
         this.id = id;
         this.boardWriter = boardWriter;
         this.boardTitle = boardTitle;
@@ -34,6 +36,7 @@ public class BoardDTO {
         this.boardHits = boardHits;
         this.boardCreatedTime = boardCreatedTime;
         this.category = category;
+        this.recommendCount = recommendCount;
     }
 
     public static BoardDTO toBoardDTO(BoardEntity boardEntity) {
@@ -46,6 +49,7 @@ public class BoardDTO {
         boardDTO.setBoardCreatedTime(boardEntity.getCreatedTime());
         boardDTO.setBoardUpdatedTime(boardEntity.getUpdatedTime());
         boardDTO.setCategory(boardEntity.getCategory());
+        boardDTO.setRecommendCount(boardEntity.getRecommendCount());
 
         return boardDTO;
     }

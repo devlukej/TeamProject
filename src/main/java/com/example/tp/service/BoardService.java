@@ -47,6 +47,10 @@ public class BoardService {
             Long commentCount = commentRepository.countByBoardEntity(boardEntity);
             boardDTO.setCommentCount(commentCount);
             boardDTOList.add(boardDTO);
+
+            int recommendCount = boardEntity.getRecommendCount();
+            boardDTO.setRecommendCount(recommendCount);
+
         }
         return boardDTOList;
     }
@@ -79,6 +83,9 @@ public class BoardService {
         if (optionalBoardEntity.isPresent()) {
             BoardEntity boardEntity = optionalBoardEntity.get();
             BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
+
+            int recommendCount = boardEntity.getRecommendCount();
+            boardDTO.setRecommendCount(recommendCount);
             return boardDTO;
         } else {
             return null;
@@ -104,7 +111,7 @@ public class BoardService {
                 boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
 
         // 목록: id, writer, title, hits, createdTime
-        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardContents(), board.getBoardHits(), board.getCreatedTime(), board.getCategory()));
+        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardContents(), board.getBoardHits(), board.getCreatedTime(), board.getCategory(), board.getRecommendCount()));
         return boardDTOS;
     }
 

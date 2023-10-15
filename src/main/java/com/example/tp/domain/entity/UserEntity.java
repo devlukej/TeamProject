@@ -4,9 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -47,6 +45,11 @@ public class UserEntity extends TimeEntity {
     @Column(columnDefinition = "TEXT")
     private String filePath;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "recommended_boards", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "board_id")
+    private Set<Long> recommendedBoardIds = new HashSet<>();
+
 
     @Builder
     public UserEntity(String id, String pw, String name, String nickname, String phone, Integer tier, String gender, String state, String birthday, String filePath, Date date) {
@@ -62,4 +65,6 @@ public class UserEntity extends TimeEntity {
         this.filePath = filePath;
 
     }
+
+
 }

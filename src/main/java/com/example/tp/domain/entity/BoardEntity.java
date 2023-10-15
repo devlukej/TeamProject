@@ -37,6 +37,9 @@ public class BoardEntity extends BaseEntity {
     @Column
     private String category;
 
+    @Column(columnDefinition = "integer default 0")
+    private int recommendCount;
+
 
     public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
@@ -56,6 +59,12 @@ public class BoardEntity extends BaseEntity {
         boardEntity.setBoardHits(boardDTO.getBoardHits());
         return boardEntity;
     }
+
+    public int getRecommendCount() {
+        return this.recommendCount;
+    }
+
+
 }
 
 

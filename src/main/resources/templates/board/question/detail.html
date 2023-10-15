@@ -22,7 +22,8 @@
                     <div th:text="${board.boardWriter}"></div>
                 </div>
                 <div class="time">
-                    <div class="time-center" th:text="*{#temporals.format(board.boardCreatedTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+                    <div class="time-center"
+                         th:text="*{#temporals.format(board.boardCreatedTime,'yyyy-MM-dd HH:mm:ss')}"></div>
                 </div>
                 <div class="inquiry">
                     <div>조회&nbsp;:&nbsp;</div>
@@ -43,9 +44,9 @@
                 <div class="detail-content">
                     <div th:text="${board.boardContents}"></div>
                 </div>
+                <button class="btn-primary" th:attr="data-board-id=${board.id}" onclick="recommendBoard(this)">추천</button>
             </div>
         </div>
-
         <!-- 댓글 출력 부분 -->
         <div id="comment-list-container">
             <div th:each="comment: ${commentList}" class="detail-comment">
@@ -78,6 +79,7 @@
 </div>
 </body>
 <script th:inline="javascript">
+
     const commentWrite = () => {
         const contents = document.getElementById("commentContents").value;
         const id = [[${board.id}]];
@@ -134,9 +136,37 @@
         });
     }
 
+    function recommendBoard(button) {
+        const boardId = button.getAttribute('data-board-id');
+        console.log('recommendBoard called');
+        button.disabled = true; // 버튼 비활성화
 
+        // 버튼 클릭 이벤트 핸들러를 제거하여 중복 호출을 방지
+        button.removeEventListener('click', recommendBoard);
 
-
+        fetch(`/public/question/recommend/${boardId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ boardId: boardId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    if (data.recommended === "true") {
+                        alert("이미 추천한 게시물입니다.");
+                    } else {
+                        alert("게시물을 성공적으로 추천했습니다.");
+                    }
+                }
+            })
+            .catch(error => console.error("Error: " + error))
+            .finally(() => {
+                button.disabled = false; // 버튼 활성화
+            });
+    }
 
 
 
@@ -145,15 +175,18 @@
         const page = [[${page}]];
         location.href = "/public/question/?page=" + page;
     }
+
     const updateReq = () => {
         console.log("수정 요청");
         const id = [[${board.id}]];
         location.href = "/public/question/update/" + id;
     }
+
     const deleteReq = () => {
         console.log("삭제 요청");
         const id = [[${board.id}]];
         location.href = "/public/question/delete/" + id;
     }
+
 </script>
 </html>

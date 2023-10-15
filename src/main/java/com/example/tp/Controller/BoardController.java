@@ -2,7 +2,10 @@ package com.example.tp.Controller;
 
 
 import com.example.tp.domain.entity.BoardEntity;
+import com.example.tp.domain.entity.UserEntity;
+import com.example.tp.domain.repository.BoardRepository;
 import com.example.tp.domain.repository.CommentRepository;
+import com.example.tp.domain.repository.UserRepository;
 import com.example.tp.dto.BoardDTO;
 import com.example.tp.dto.CommentDTO;
 import com.example.tp.service.BoardService;
@@ -13,13 +16,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,6 +36,10 @@ public class BoardController {
     private final UserService userService;
 
     private final CommentRepository commentRepository;
+
+    private final BoardRepository boardRepository;
+
+    private final UserRepository userRepository;
 
     @GetMapping("/public/save")
     public String saveForm(@AuthenticationPrincipal MemberUser user,Model model) {
@@ -77,6 +88,14 @@ public class BoardController {
             Long commentCount = commentRepository.countByBoardEntity(boardEntity);
             board.setCommentCount(commentCount);
         }
+
+        for (BoardDTO board : boardList) {
+            Long boardId = board.getId();
+            BoardEntity boardEntity = boardService.getBoardEntityById(boardId);
+            int recommendCount = boardEntity.getRecommendCount(); // 게시물의 추천 수
+            board.setRecommendCount(recommendCount); // 추천 수 설정
+        }
+
 
         int blockLimit = 3;
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
@@ -160,6 +179,36 @@ public class BoardController {
 
         return "redirect:/public/question";
     }
+
+    @PostMapping("/public/question/recommend/{id}")
+    public ResponseEntity<Map<String, String>> recommend(@PathVariable("id") Long id, @AuthenticationPrincipal MemberUser user) {
+        Map<String, String> response = new HashMap<>();
+        if (user == null) {
+            response.put("message", "로그인 후 추천할 수 있습니다.");
+            response.put("recommended", "false");
+        } else {
+            BoardEntity board = boardService.getBoardEntityById(id);
+            UserEntity currentUser = user.getUserEntity();
+            if (currentUser.getRecommendedBoardIds().contains(id)) {
+                response.put("message", "이미 추천한 게시물입니다.");
+                response.put("recommended", "true");
+            } else {
+                board.setRecommendCount(board.getRecommendCount() + 1);
+                currentUser.getRecommendedBoardIds().add(id);
+                boardRepository.save(board);
+                userRepository.save(currentUser);
+                response.put("message", "게시물을 성공적으로 추천했습니다.");
+                response.put("recommended", "true");
+            }
+        }
+        return ResponseEntity.ok(response);
+    }
+
+
+
+
+
+
 
 }
 
