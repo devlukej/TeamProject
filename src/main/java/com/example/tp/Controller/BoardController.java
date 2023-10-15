@@ -1,6 +1,8 @@
 package com.example.tp.Controller;
 
 
+import com.example.tp.domain.entity.BoardEntity;
+import com.example.tp.domain.repository.CommentRepository;
 import com.example.tp.dto.BoardDTO;
 import com.example.tp.dto.CommentDTO;
 import com.example.tp.service.BoardService;
@@ -25,6 +27,8 @@ public class BoardController {
     private final BoardService boardService;
     private final CommentService commentService;
     private final UserService userService;
+
+    private final CommentRepository commentRepository;
 
     @GetMapping("/public/save")
     public String saveForm(@AuthenticationPrincipal MemberUser user,Model model) {
@@ -53,7 +57,6 @@ public class BoardController {
         return "redirect:/public/question";
     }
 
-
     @GetMapping("/public/question")
     public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable, @RequestParam(value = "category", required = false) String category) {
 
@@ -65,6 +68,14 @@ public class BoardController {
         } else {
             // 카테고리가 선택되지 않은 경우, 모든 게시글을 가져옴
             boardList = boardService.paging(pageable);
+        }
+
+// 각 게시글에 대한 댓글 수를 계산하고 추가
+        for (BoardDTO board : boardList) {
+            Long boardId = board.getId();
+            BoardEntity boardEntity = boardService.getBoardEntityById(boardId);
+            Long commentCount = commentRepository.countByBoardEntity(boardEntity);
+            board.setCommentCount(commentCount);
         }
 
         int blockLimit = 3;
@@ -83,6 +94,8 @@ public class BoardController {
         // 7 8 9
         // 보여지는 페이지 갯수 3개
         // 총 페이지 갯수 8개
+
+
         model.addAttribute("user", user);
         model.addAttribute("boardList", boardList);
         model.addAttribute("startPage", startPage);
@@ -90,6 +103,7 @@ public class BoardController {
 
         return "board/question/question";
     }
+
 
     @GetMapping("/public/question/{id}")
     public String findById(@AuthenticationPrincipal MemberUser user,

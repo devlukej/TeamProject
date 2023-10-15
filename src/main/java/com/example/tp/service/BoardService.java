@@ -3,6 +3,7 @@ package com.example.tp.service;
 
 import com.example.tp.domain.entity.BoardEntity;
 import com.example.tp.domain.repository.BoardRepository;
+import com.example.tp.domain.repository.CommentRepository;
 import com.example.tp.dto.BoardDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import javax.persistence.EntityNotFoundException;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ import java.util.Optional;
 public class BoardService {
     private final BoardRepository boardRepository;
 
+    private final CommentRepository commentRepository;
+
     public void save(BoardDTO boardDTO, MemberUser user) throws IOException {
 
         boardDTO.setBoardWriter(user.getNickname());
@@ -33,14 +38,34 @@ public class BoardService {
         boardRepository.save(boardEntity);
     }
 
-    @Transactional
     public List<BoardDTO> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
         List<BoardDTO> boardDTOList = new ArrayList<>();
-        for (BoardEntity boardEntity: boardEntityList) {
-            boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));
+        for (BoardEntity boardEntity : boardEntityList) {
+            BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
+            // 댓글 수 계산 및 설정
+            Long commentCount = commentRepository.countByBoardEntity(boardEntity);
+            boardDTO.setCommentCount(commentCount);
+            boardDTOList.add(boardDTO);
         }
         return boardDTOList;
+    }
+
+    public class EntityNotFoundException extends RuntimeException {
+        public EntityNotFoundException(String entityName, Long entityId) {
+            super("Entity " + entityName + " with ID " + entityId + " not found");
+        }
+    }
+
+
+    public BoardEntity getBoardEntityById(Long boardId) {
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(boardId);
+        if (optionalBoardEntity.isPresent()) {
+            return optionalBoardEntity.get();
+        } else {
+            String entityName = "BoardEntity"; // 엔티티 이름
+            throw new EntityNotFoundException(entityName, boardId);
+        }
     }
 
     @Transactional

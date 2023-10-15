@@ -23,6 +23,9 @@ public class BoardDTO {
     private LocalDateTime boardUpdatedTime;
     private String category;
 
+    private Long commentCount;
+
+
     public BoardDTO(Long id, String boardWriter, String boardTitle, String boardContents, int boardHits, LocalDateTime boardCreatedTime, String category) {
         this.id = id;
         this.boardWriter = boardWriter;
