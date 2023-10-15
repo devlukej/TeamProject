@@ -11,6 +11,7 @@ function signUpCheck() {
     // let pwdCheck;
     // pwdCheck = /^(?=.*\d)(?=.*[a-z])(?=\\S+$).{8,20}$/;
     let name = document.getElementById("name").value
+    let nickname = document.getElementById("nickname").value
     let id = document.getElementById("id").value
     let pw = document.getElementById("pw").value
     let checkpw = document.getElementById("checkpw").value
@@ -24,7 +25,7 @@ function signUpCheck() {
     let form = document.getElementById('form');
 
 
-    if (name != "" && id != "" && pw !== "" && checkpw !== "" && phone != "" && birthday != "" && (gender_woman || gender_man)) {
+    if (name != "" && id != "" && pw !== "" && checkpw !== "" && phone != "" && birthday != "" && (gender_woman || gender_man) && nickname != "") {
 
         form.submit();
 
@@ -37,6 +38,16 @@ function signUpCheck() {
 
         } else {
             document.getElementById("nameError").innerHTML = ""
+
+        }
+
+        // 이름 확인
+        if (nickname == "") {
+            document.getElementById("nicknameError").innerHTML = "닉네임이 올바르지 않습니다."
+            document.getElementById("nickname").focus()
+
+        } else {
+            document.getElementById("nicknameError").innerHTML = ""
 
         }
 
@@ -66,19 +77,6 @@ function signUpCheck() {
             document.getElementById("pwError").innerHTML = ""
 
         }
-
-        // if (!pwdCheck.test(pw.value) || pw == "") {
-        //     document.getElementById("checkpwError").style.color = "rgba(248,42,42,0.7)";
-        //     document.getElementById("pwError").innerHTML = "영문+숫자+특수문자 하나이상 8~20자리 사용해야합니다."
-        //     document.getElementById("checkpwError").innerText = ""
-        //     document.getElementById("pw").innerText = ""
-        //     document.getElementById("checkpw").innerText = ""
-        //     document.getElementById("pw").focus()
-        //
-        // } else {
-        //     document.getElementById("pwError").innerHTML = ""
-        //     document.getElementById("checkpw").innerText = ""
-        // }
 
 
         // 연락처 확인

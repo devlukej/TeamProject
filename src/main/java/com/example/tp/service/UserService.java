@@ -28,59 +28,6 @@ public class UserService implements UserDetailsService {
     private static final int BLOCK_PAGE_NUM_COUNT = 10; // 블럭에 존재하는 페이지 번호 수
     private static final int PAGE_POST_COUNT = 15; // 한 페이지에 존재하는 게시글 수
 
-    public UserEntity getUserById(String userId) {
-        Optional<UserEntity> userEntityWrapper = userRepository.findById(userId);
-
-        if (userEntityWrapper.isEmpty()) {
-            throw new UsernameNotFoundException(userId);
-        }
-
-        return userEntityWrapper.get();
-    }
-
-
-    @javax.transaction.Transactional
-    public List<UserDto> getUserlist(Integer pageNum) {
-        Page<UserEntity> page = userRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.DESC, "date")));
-
-        List<UserEntity> userEntities = page.getContent();
-        List<UserDto> userDtoList = new ArrayList<>();
-
-        for (UserEntity userEntity : userEntities) {
-            UserDto userDTO = UserDto.builder()
-                    .id(userEntity.getId())
-                    .name(userEntity.getName())
-                    .phone(userEntity.getPhone())
-                    .state(userEntity.getState())
-                    .birthday(userEntity.getBirthday())
-                    .gender(userEntity.getGender())
-                    .tier(userEntity.getTier())
-                    .build();
-
-            userDtoList.add(userDTO);
-        }
-
-        return userDtoList;
-    }
-
-    @javax.transaction.Transactional
-    public List<UserDto> getPassUserlist(String state) {
-
-
-        List<UserEntity> userEntities = userRepository.findByState("1");
-
-        List<UserDto> userDtoList = new ArrayList<>();
-
-        if (userEntities.isEmpty()) return userDtoList;
-
-
-        for (UserEntity userEntity : userEntities) {
-            userDtoList.add(this.convertEntityToDto(userEntity));
-        }
-
-        return userDtoList;
-    }
-
     @Transactional
     public void increaseUserTier(UserEntity user, int incrementAmount) {
         int currentTier = user.getTier();
@@ -93,6 +40,13 @@ public class UserService implements UserDetailsService {
     @javax.transaction.Transactional
     public boolean isIdUnique(String id) {
         Optional<UserEntity> userEntityWrapper = userRepository.findById(id);
+        return !userEntityWrapper.isPresent();
+    }
+
+    //닉네임 중복 검사
+    @javax.transaction.Transactional
+    public boolean isNicknameUnique(String nickname) {
+        Optional<UserEntity> userEntityWrapper = userRepository.findByNickname(nickname);
         return !userEntityWrapper.isPresent();
     }
 
@@ -120,6 +74,7 @@ public class UserService implements UserDetailsService {
         return UserDto.builder()
                 .id(userEntity.getId())
                 .name(userEntity.getName())
+                .nickname(userEntity.getNickname())
                 .phone(userEntity.getPhone())
                 .tier(userEntity.getTier())
                 .filePath(userEntity.getFilePath())

@@ -69,7 +69,7 @@
         <!-- 댓글 작성 부분 -->
         <div class="write-comment">
             <div class="comment-box" th:if="${user}">
-                <div class="comment-username" th:text="${user.username}"></div>
+                <div class="comment-username" th:text="${user.nickname}"></div>
                 <input type="text" id="commentContents" placeholder="내용">
             </div>
             <button id="comment-write-btn" onclick="commentWrite()">등록</button>

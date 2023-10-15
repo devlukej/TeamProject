@@ -39,24 +39,20 @@ public class BoardController {
     }
 
     @PostMapping("/public/save")
-    public String save(@AuthenticationPrincipal MemberUser user,@ModelAttribute BoardDTO boardDTO,Model model) throws IOException {
-
+    public String save(@AuthenticationPrincipal MemberUser user, @ModelAttribute BoardDTO boardDTO, Model model) throws IOException {
         if (user != null) {
             // 현재 로그인한 사용자 정보를 이용하여 작성자 필드 설정
-            boardDTO.setBoardWriter(user.getUsername());
-        }
-
-        model.addAttribute("user", user);
-        boardService.save(boardDTO);
-
-        if (user != null) {
-            // 현재 로그인한 사용자의 tier를 3씩 증가시킵니다.
+            boardDTO.setBoardWriter(user.getNickname());
             userService.increaseUserTier(user.getUserEntity(), 3);
         }
 
-       return "redirect:/public/question";
+        boardService.save(boardDTO, user);
 
+        model.addAttribute("user", user);
+
+        return "redirect:/public/question";
     }
+
 
     @GetMapping("/public/question")
     public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable, @RequestParam(value = "category", required = false) String category) {

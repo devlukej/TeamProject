@@ -24,6 +24,8 @@ public class UserDto {
     private String name;
     //    @Pattern(regexp = "^[1-9]{11}$", message = "연락처는 11자리수여야 합니다.")
 //    @NotBlank(message = "연락처는 필수 입력 값입니다.")
+
+    private  String nickname;
     private String phone;
     //    @Pattern(regexp = "^[1-9]{8}$", message = "학번은 8자리수여야 합니다.")
     private Integer tier;
@@ -45,6 +47,7 @@ public class UserDto {
                 .id(id)
                 .pw(pw)
                 .name(name)
+                .nickname(nickname)
                 .phone(phone)
                 .tier(tier)
                 .gender(gender)
@@ -55,10 +58,11 @@ public class UserDto {
     }
 
     @Builder
-    public UserDto(String id, String pw, String name, String phone, Integer tier, String gender, String state, String birthday, LocalDate createDate , String filePath , String imgFullPath) {
+    public UserDto(String id, String pw, String name, String nickname, String phone, Integer tier, String gender, String state, String birthday, LocalDate createDate , String filePath , String imgFullPath) {
         this.id = id;
         this.pw = pw;
         this.name = name;
+        this.nickname = nickname;
         this.phone = phone;
         this.tier = tier;
         this.gender = gender;

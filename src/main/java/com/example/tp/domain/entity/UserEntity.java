@@ -26,6 +26,9 @@ public class UserEntity extends TimeEntity {
     @Column(length = 20, nullable = false)
     private String name;
 
+    @Column(length = 20, nullable = false, unique = true)
+    private String nickname;
+
     @Column(length = 20)
     private String phone;
 
@@ -46,10 +49,11 @@ public class UserEntity extends TimeEntity {
 
 
     @Builder
-    public UserEntity(String id, String pw, String name, String phone, Integer tier, String gender, String state, String birthday, String filePath, Date date) {
+    public UserEntity(String id, String pw, String name, String nickname, String phone, Integer tier, String gender, String state, String birthday, String filePath, Date date) {
         this.id = id;
         this.pw = pw;
         this.name = name;
+        this.nickname = nickname;
         this.phone = phone;
         this.tier = tier;
         this.gender = gender;

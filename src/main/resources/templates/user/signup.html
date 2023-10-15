@@ -26,6 +26,7 @@
 <form id="form" th:action="@{/signup}" method="post" modelAttribute="userDto">
     <div class="body">
         <div class="areabox">
+
             <div class="name">
                 <div class="left">
                     <label for="name" class="d">이름</label>
@@ -37,14 +38,23 @@
                 </div>
             </div>
 
+            <div class="nickname">
+                <div class="left">
+                    <label for="nickname" class="d">닉네임</label>
+                    <span class="s">*</span>
+                </div>
+                <div class="right">
+                    <input class="textarea" id="nickname" name="nickname" type="text" placeholder="닉네임 입력" onblur="checkDuplicateNickname()">
+                    <div id="nicknameError" class="error"></div>
+                    <div id="nicknameAvailability" class="nicknameAvailability" style="display: none"></div>
+                </div>
+            </div>
+
             <div class="id">
-                <div class="left1">
+                <div class="left">
                     <div class="left-top">
                         <label for="id" class="d">아이디</label>
                         <span class="s">*</span>
-                    </div>
-                    <div class="left-bottom">
-                        <button type="button" class="id-check" onclick="checkDuplicateId()">중복 확인</button>
                     </div>
                 </div>
                 <div class="right">
@@ -201,6 +211,45 @@
                     document.getElementById("idAvailability").style.display = "block";
                     idAvailability.innerHTML = '이미 사용 중인 아이디입니다.';
                     idAvailability.style.color = 'red';
+                }
+            }
+            ,
+            error: function (error) {
+                // 오류 처리
+            }
+        });
+
+    }
+
+    function checkDuplicateNickname() {
+        var nickname = document.getElementById("nickname").value;
+        var nicknameAvailability = document.getElementById("nicknameAvailability");
+        nicknameAvailability.innerHTML = '';
+
+        if (id === "") {
+            return;
+        }
+
+        // Ajax 요청을 보내고 서버에서 아이디 중복 여부를 확인
+        $.ajax({
+            url: '/checkDuplicateNickname',
+            type: 'POST',
+            data: {nickname: nickname},
+            dataType: 'json', // JSON 형식의 응답을 기대함
+            success: function (response) {
+                var nicknameAvailability = document.getElementById("nicknameAvailability");
+                nicknameAvailability.innerHTML = '';
+
+                if (response.message === 'available') {
+                    document.getElementById("nicknameError").style.display = "none";
+                    document.getElementById("nicknameAvailability").style.display = "block";
+                    nicknameAvailability.innerHTML = '사용 가능한 닉네임입니다.';
+                    nicknameAvailability.style.color = 'green';
+                } else if (response.message === 'duplicate') {
+                    document.getElementById("nicknameError").style.display = "none";
+                    document.getElementById("nicknameAvailability").style.display = "block";
+                    nicknameAvailability.innerHTML = '이미 사용 중인 닉네임입니다.';
+                    nicknameAvailability.style.color = 'red';
                 }
             }
             ,

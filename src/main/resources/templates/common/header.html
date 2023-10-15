@@ -48,7 +48,7 @@
         <div class="login">
             <div class="msg">
                 <b sec:authorize="isAuthenticated()"><span
-                        th:text="${user.userEntity.name}"></span><span> 님 어서오세요.</span></b>
+                        th:text="${user.userEntity.nickname}"></span><span> 님 어서오세요.</span></b>
             </div>
             <div class="choice">
                 <a sec:authorize="isAuthenticated()" th:href="@{/private/myinfo}">내정보</a>

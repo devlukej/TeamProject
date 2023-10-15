@@ -23,4 +23,8 @@ public class MemberUser extends User {
     public String getState() {
         return userEntity.getState();
     }
+
+    public String getNickname() {
+        return userEntity.getNickname();
+    }
 }

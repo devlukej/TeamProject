@@ -29,7 +29,9 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
 
     private ModelMapper modelMapper = new ModelMapper();
-    public void save(NoticeDTO noticeDTO) throws IOException {
+    public void save(NoticeDTO noticeDTO, MemberUser user) throws IOException {
+
+            noticeDTO.setNoticeWriter(user.getNickname());
 
             NoticeEntity noticeEntity = NoticeEntity.toSaveEntity(noticeDTO);
             noticeRepository.save(noticeEntity);

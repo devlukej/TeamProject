@@ -3,6 +3,7 @@ package com.example.tp.service;
 
 import com.example.tp.domain.entity.BoardEntity;
 import com.example.tp.domain.entity.CommentEntity;
+import com.example.tp.domain.entity.UserEntity;
 import com.example.tp.domain.repository.BoardRepository;
 import com.example.tp.domain.repository.CommentRepository;
 import com.example.tp.dto.CommentDTO;
@@ -19,13 +20,13 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
 
-    public Long save(CommentDTO commentDTO) {
+    public Long save(CommentDTO commentDTO, UserEntity commentWriter) {
         /* 부모엔티티(BoardEntity) 조회 */
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(commentDTO.getBoardId());
         if (optionalBoardEntity.isPresent()) {
             BoardEntity boardEntity = optionalBoardEntity.get();
-            CommentEntity comment2Entity = CommentEntity.toSaveEntity(commentDTO, boardEntity);
-            return commentRepository.save(comment2Entity).getId();
+            CommentEntity commentEntity = CommentEntity.toSaveEntity(commentDTO, boardEntity, commentWriter);
+            return commentRepository.save(commentEntity).getId();
         } else {
             return null;
         }

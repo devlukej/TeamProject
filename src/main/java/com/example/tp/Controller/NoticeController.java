@@ -43,11 +43,12 @@ public class NoticeController {
 
         if (user != null) {
             // 현재 로그인한 사용자 정보를 이용하여 작성자 필드 설정
-            noticeDTO.setNoticeWriter(user.getUsername());
+            noticeDTO.setNoticeWriter(user.getNickname());
         }
 
+        noticeService.save(noticeDTO, user);
+
         model.addAttribute("user", user);
-        noticeService.save(noticeDTO);
 
        return "redirect:/public/notice";
 

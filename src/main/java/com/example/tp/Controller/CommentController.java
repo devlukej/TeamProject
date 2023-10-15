@@ -1,5 +1,6 @@
 package com.example.tp.Controller;
 
+import com.example.tp.domain.entity.UserEntity;
 import com.example.tp.dto.CommentDTO;
 import com.example.tp.service.CommentService;
 import com.example.tp.service.UserService;
@@ -22,8 +23,8 @@ public class CommentController {
     @PostMapping("/public/question/comment/save")
     public ResponseEntity save(@ModelAttribute CommentDTO commentDTO, @AuthenticationPrincipal MemberUser user) {
         if (user != null) {
-            commentDTO.setCommentWriter(user.getUsername()); // 현재 로그인한 사용자의 아이디를 작성자로 설정
-            Long saveResult = commentService.save(commentDTO);
+            UserEntity commentWriter = user.getUserEntity(); // 현재 로그인한 사용자의 아이디를 작성자로 설정
+            Long saveResult = commentService.save(commentDTO, commentWriter);
             if (saveResult != null) {
                 List<CommentDTO> commentDTOList = commentService.findAll(commentDTO.getBoardId());
 

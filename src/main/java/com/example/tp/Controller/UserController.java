@@ -116,6 +116,18 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/checkDuplicateNickname")
+    public ResponseEntity<Map<String, String>> checkDuplicateNickname(@RequestParam("nickname") String nickname) {
+        Map<String, String> response = new HashMap<>();
+
+        if (userService.isNicknameUnique(nickname)) {
+            response.put("message", "available");
+        } else {
+            response.put("message", "duplicate");
+        }
+
+        return ResponseEntity.ok(response);
+    }
 
 //    //이름검색
 //    @GetMapping("/admin/userList/nameKeyword")

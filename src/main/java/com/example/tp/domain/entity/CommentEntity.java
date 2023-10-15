@@ -28,11 +28,16 @@ public class CommentEntity extends BaseEntity {
     private BoardEntity boardEntity;
 
 
-    public static CommentEntity toSaveEntity(CommentDTO commentDTO, BoardEntity boardEntity) {
+    public static CommentEntity toSaveEntity(CommentDTO commentDTO, BoardEntity boardEntity,UserEntity commentWriter) {
         CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setCommentWriter(commentDTO.getCommentWriter());
         commentEntity.setCommentContents(commentDTO.getCommentContents());
         commentEntity.setBoardEntity(boardEntity);
+        commentEntity.setCommentWriter(commentWriter);
         return commentEntity;
     }
+    public void setCommentWriter(UserEntity commentWriter) {
+        this.commentWriter = commentWriter.getNickname(); // UserEntity의 nickname 필드 사용
+    }
+
+
 }

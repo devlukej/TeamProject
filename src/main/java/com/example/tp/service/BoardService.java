@@ -24,10 +24,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
-    public void save(BoardDTO boardDTO) throws IOException {
 
-            BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
-            boardRepository.save(boardEntity);
+    public void save(BoardDTO boardDTO, MemberUser user) throws IOException {
+
+        boardDTO.setBoardWriter(user.getNickname());
+
+        BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
+        boardRepository.save(boardEntity);
     }
 
     @Transactional
