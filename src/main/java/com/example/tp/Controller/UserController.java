@@ -1,11 +1,11 @@
 package com.example.tp.Controller;
 
+import com.example.tp.domain.entity.UserEntity;
 import com.example.tp.dto.NoticeDTO;
 import com.example.tp.dto.UserDto;
-import com.example.tp.service.MemberUser;
-import com.example.tp.service.NoticeService;
-import com.example.tp.service.UserService;
+import com.example.tp.service.*;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.example.tp.service.S3Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -31,17 +30,22 @@ public class UserController {
     private S3Service s3Service;
     private NoticeService noticeService;
 
+    private RankingService rankingService;
+
 
     @GetMapping("/")
     public String list(@AuthenticationPrincipal MemberUser user, Model model) {
 
         List<NoticeDTO> latestNotices = noticeService.findLatestNotices(5);
 
+        List<UserEntity> ranking = rankingService.getRankingSortedByTier();
+
         if (user == null) {
 
             return "redirect:/login";
         }
 
+        model.addAttribute("ranking", ranking);
         model.addAttribute("noticeList", latestNotices);
         model.addAttribute("user", user);
         return "board/main";

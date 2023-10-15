@@ -44,10 +44,14 @@
                 <div class="info">
                     <p class="info_text">등급</p>
                     <p class="info_data">
-                        <span th:if="${user.userEntity.tier > 300}">골드<span th:text="'(' + ${user.userEntity.tier} + ')'" ></span></span>
-                        <span th:if="${user.userEntity.tier > 100 and user.userEntity.tier <= 300}">실버<span th:text="'(' + ${user.userEntity.tier} + ')'" ></span></span>
-                        <span th:if="${user.userEntity.tier > 30 and user.userEntity.tier <= 100}">브론즈<span th:text="'(' + ${user.userEntity.tier} + ')'" ></span></span>
-                        <span th:if="${user.userEntity.tier <= 30}">기본<span th:text="'(' + ${user.userEntity.tier} + ')'" ></span></span>
+                        <span th:if="${user.userEntity.tier > 300}">골드<span
+                                th:text="'(' + ${user.userEntity.tier} + ')'"></span></span>
+                        <span th:if="${user.userEntity.tier > 100 and user.userEntity.tier <= 300}">실버<span
+                                th:text="'(' + ${user.userEntity.tier} + ')'"></span></span>
+                        <span th:if="${user.userEntity.tier > 30 and user.userEntity.tier <= 100}">브론즈<span
+                                th:text="'(' + ${user.userEntity.tier} + ')'"></span></span>
+                        <span th:if="${user.userEntity.tier <= 30}">기본<span
+                                th:text="'(' + ${user.userEntity.tier} + ')'"></span></span>
                     </p>
                 </div>
             </div>
@@ -83,14 +87,32 @@
             <dl class="notice">
                 <ul>
                     <dt style="font-weight: bold">
-                        <div>시험일정</div>
+                        <div>랭킹</div>
                         <a class="plus" th:href="@{/user/event}">+ 더보기</a>
                     </dt>
-                    <li><a href="#" class="main_text"><span>1</span> - now having a board</a></li>
-                    <li><a href="#" class="main_text"><span>2</span> - now having a board</a></li>
-                    <li><a href="#" class="main_text"><span>3</span> - now having a board</a></li>
-                    <li><a href="#" class="main_text"><span>4</span> - now having a board</a></li>
-                    <li><a href="#" class="main_text"><span>5</span> - now having a board</a></li>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="rank-top">순위</th>
+                            <th class="rank-top">닉네임</th>
+                            <th class="rank-top">활동 점수</th>
+                            <th class="rank-top">티어</th>
+                        </tr>
+                        </thead>
+                        <tbody class="rank-body">
+                        <tr th:each="user, rowStat : ${ranking.subList(0, 5)}">
+                            <td class="rank-column" th:text="${rowStat.count}">1</td>
+                            <td class="rank-column" th:text="${user.nickname}">닉네임</td>
+                            <td class="rank-column" th:text="${user.tier}">활동 점수</td>
+                            <td>
+                                <span class="rank-column" th:if="${user.tier >= 300}">골드</span>
+                                <span class="rank-column" th:if="${user.tier >= 100 && user.tier < 300}">실버</span>
+                                <span class="rank-column" th:if="${user.tier >= 30 && user.tier < 100}">브론즈</span>
+                                <span class="rank-column" th:if="${user.tier < 30}">기본</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </ul>
             </dl>
         </div>

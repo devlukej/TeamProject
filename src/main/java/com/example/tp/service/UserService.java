@@ -4,9 +4,6 @@ import com.example.tp.domain.entity.UserEntity;
 import com.example.tp.domain.repository.UserRepository;
 import com.example.tp.dto.UserDto;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -27,6 +25,7 @@ public class UserService implements UserDetailsService {
 
     private static final int BLOCK_PAGE_NUM_COUNT = 10; // 블럭에 존재하는 페이지 번호 수
     private static final int PAGE_POST_COUNT = 15; // 한 페이지에 존재하는 게시글 수
+
 
     @Transactional
     public void increaseUserTier(UserEntity user, int incrementAmount) {
