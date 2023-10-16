@@ -79,55 +79,16 @@ button {
     height: 100%;
 }
 
-.boardContents {
+.questionContents {
     height: 100%;
     width: 100%;
     resize: none;
     overflow: hidden;
 }
 
-.boardTitle {
+.questionTitle {
     width: 100%;
     text-align: center;
     height: 30px;
 }
 
-.detail-comment {
-    padding: 10px;
-    border-bottom: 1px solid;
-}
-
-.comment-top {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.comment-writer {
-    font-weight: bold;
-}
-
-.write-comment {
-    padding: 10px 0;
-    display: flex;
-    justify-content: space-between;
-}
-
-.comment-box {
-    height: 30px;
-    width: 100%;
-}
-
-#commentWriter {
-    height: 100%;
-    width: 15%;
-}
-
-#commentContents {
-    height: 100%;
-    width: 70%;
-}
-
-#comment-write-btn {
-
-}

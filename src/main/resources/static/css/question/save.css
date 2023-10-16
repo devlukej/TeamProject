@@ -67,14 +67,14 @@ button {
     height: 100%;
 }
 
-.boardContents {
+.questionContents {
     height: 100%;
     width: 100%;
     resize: none;
     overflow: hidden;
 }
 
-.boardTitle {
+.questionTitle {
     width: 100%;
     text-align: center;
     height: 30px;
