@@ -26,3 +26,11 @@ body {
     width: 100%;
     text-align: center;
 }
+
+.rank-column {
+    padding-top: 10px;
+}
+
+#nickname {
+    font-weight: bold;
+}

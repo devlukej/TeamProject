@@ -76,7 +76,7 @@
                     <div class="li" th:each="notice, i : ${noticeList}">
                         <li>
                             <a th:href="@{|/public/notice/${notice.id}|}" class="main_text">
-                                <span th:text="${i.index + 1}"></span> - <span th:text="${notice.noticeTitle}"></span>
+                                <span th:text="${i.index + 1}"></span> - <span class="notice-color" th:text="${notice.noticeTitle}"></span>
                             </a>
                         </li>
                     </div>
@@ -88,7 +88,7 @@
                 <ul>
                     <dt style="font-weight: bold">
                         <div>랭킹</div>
-                        <a class="plus" th:href="@{/user/event}">+ 더보기</a>
+                        <a class="plus" th:href="@{/public/ranking}">+ 더보기</a>
                     </dt>
                     <table class="table">
                         <thead>
@@ -102,7 +102,7 @@
                         <tbody class="rank-body">
                         <tr th:each="user, rowStat : ${ranking.subList(0, 5)}">
                             <td class="rank-column" th:text="${rowStat.count}">1</td>
-                            <td class="rank-column" th:text="${user.nickname}">닉네임</td>
+                            <td id="nickname" class="rank-column" th:text="${user.nickname}">닉네임</td>
                             <td class="rank-column" th:text="${user.tier}">활동 점수</td>
                             <td>
                                 <span class="rank-column" th:if="${user.tier >= 300}">골드</span>

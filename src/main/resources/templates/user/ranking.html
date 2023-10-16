@@ -24,7 +24,7 @@
             <tbody class="rank-body">
             <tr th:each="user, rowStat : ${ranking}">
                 <td class="rank-column" th:text="${rowStat.count}">1</td>
-                <td class="rank-column" th:text="${user.nickname}">닉네임</td>
+                <td id="nickname" class="rank-column" th:text="${user.nickname}">닉네임</td>
                 <td class="rank-column" th:text="${user.tier}">활동 점수</td>
                 <td>
                     <span class="rank-column" th:if="${user.tier >= 300}">골드</span>

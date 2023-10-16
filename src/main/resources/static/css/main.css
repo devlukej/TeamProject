@@ -115,3 +115,11 @@ li {
 .rank-column {
     padding-top: 10px;
 }
+
+.notice-color{
+    color: #ff0053;
+}
+
+#nickname {
+    font-weight: bold;
+}
