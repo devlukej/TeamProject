@@ -50,6 +50,11 @@ public class UserEntity extends TimeEntity {
     @Column(name = "board_id")
     private Set<Long> recommendedBoardIds = new HashSet<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "recommended_question", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "board_id")
+    private Set<Long> recommendedQuestionIds = new HashSet<>();
+
 
     @Builder
     public UserEntity(String id, String pw, String name, String nickname, String phone, Integer tier, String gender, String state, String birthday, String filePath, Date date) {

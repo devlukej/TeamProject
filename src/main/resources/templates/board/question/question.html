@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Luke</title>
+    <link rel="stylesheet" th:href="@{/css/question/question.css}">
+</head>
+<body>
+<!-- HEADER -->
+<div th:insert="common/header.html" class="header"></div>
+<div id="posts-container">
+    <div class="view">
+        <div class="check"><h3>함께 > 질문답변</h3></div>
+        <div class="enter">
+            <div class="search">
+                <input class="size" name="nameKeyword" id="keyword" type="text">
+                <button class="search-btn">검색</button>
+            </div>
+            <div class="bar">
+                <select id="sort" name="category" class="sort" onchange="loadCategory(this)">
+                    <option value="All">전체</option>
+                    <option value="경찰">경찰</option>
+                    <option value="소방">소방</option>
+                    <option value="9급 국가직">9급 국가직</option>
+                    <option value="9급 지방직">9급 지방직</option>
+                    <option value="7급 국가직">7급 국가직</option>
+                    <option value="7급 지방직">7급 지방직</option>
+                </select>
+                <div class="btn">
+                    <button class="write-btn" onclick="saveReq()">글쓰기</button>
+                </div>
+            </div>
+            <div th:each="question: ${questionList}">
+                <div class="write">
+                    <div class="write-title">
+                        <a th:href="@{|/public/question/${question.id}|(page=${questionList.number + 1})}"
+                           th:text="${question.questionTitle}"></a>
+                    </div>
+                    <div class="write-content">
+                        <div th:text="${question.questionContents}"></div>
+                    </div>
+                    <div class="write-bottom">
+                        <div class="write-left">
+                            <div class="user-name">
+                                <div th:text="${question.questionWriter}"></div>
+                            </div>
+                            ㆍ
+                            <div class="write-time">
+                                <div th:text="*{#temporals.format(question.questionCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></div>
+                            </div>
+                        </div>
+                        <div class="write-right">
+                            <div class="right-box">
+                                <div class="best">
+                                    추천 &nbsp;<div th:text="${question.recommendCount}"></div>
+                                </div>
+                                ㆍ
+                                <div class="inquiry">
+                                    조회&nbsp;<div th:text="${question.questionHits}"></div>
+                                </div>
+                                ㆍ
+                                <div class="comment">
+                                    댓글&nbsp;<div th:text="${question.commentCount}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page">
+                <div class="paging">
+                    <a th:href="${questionList.hasPrevious()} ? @{/public/question/(page=${questionList.number})} : '#'">이전</a>
+                    <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+                <span th:if="${page == questionList.number + 1}" th:text="${page}"></span>
+                <span th:unless="${page == questionList.number + 1}">
+                    <a th:href="@{/public/question/(page=${page})}" th:text="${page}"></a>
+                </span>
+            </span>
+                    <a th:href="${questionList.hasNext()} ? @{/public/question/(page=${questionList.number + 2})} : '#'">다음</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function loadCategory(select) {
+        const category = select.value;
+        if (category === "All") {
+            // "전체"가 선택된 경우, 모든 게시글을 보여줍니다.
+            loadPosts("/public/question");
+        } else {
+            // 선택된 category 값으로 해당 카테고리의 게시글을 가져오는 AJAX 요청을 보냅니다.
+            loadPosts(`/public/question?category=${category}`);
+        }
+    }
+
+    function loadPosts(url) {
+        // AJAX를 사용하여 해당 URL로 요청을 보내고, 응답을 받아서 게시글 목록을 업데이트합니다.
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                // 받은 HTML 데이터를 특정 영역에 업데이트
+                const postsContainer = document.getElementById("posts-container");
+                postsContainer.innerHTML = data;
+            })
+            .catch(error => console.error("Error: " + error));
+    }
+
+    const saveReq = () => {
+        location.href = "/public/question/save";
+    }
+</script>
+</body>
+</html>

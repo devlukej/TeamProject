@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Luke</title>
+    <link rel="stylesheet" th:href="@{/css/question/detail.css}">
+    <!-- jquery cdn -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- HEADER -->
+<div th:insert="common/header.html" class="header"></div>
+
+<div class="view">
+    <div class="check"><h3>함께 > 질문답변</h3></div>
+    <div class="enter">
+        <div class="detail">
+            <div class="detail-header">
+                <div class="write">
+                    <div>작성자&nbsp;:&nbsp;</div>
+                    <div th:text="${question.questionWriter}"></div>
+                </div>
+                <div class="time">
+                    <div class="time-center"
+                         th:text="*{#temporals.format(question.questionCreatedTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+                </div>
+                <div class="inquiry">
+                    <div>조회&nbsp;:&nbsp;</div>
+                    <div th:text="${question.questionHits}"></div>
+                </div>
+            </div>
+            <div class="detail-btn">
+                <button onclick="listReq()">목록</button>
+                <button onclick="updateReq()">수정</button>
+                <button onclick="deleteReq()">삭제</button>
+            </div>
+            <div class="detail-body">
+                <div class="detail-title">
+                    <div th:text="${question.questionTitle}"></div>
+                </div>
+            </div>
+            <div class="detail-footer">
+                <div class="detail-content">
+                    <div th:text="${question.questionContents}"></div>
+                </div>
+                <button class="btn-primary" th:attr="data-question-id=${question.id}" onclick="recommendquestion(this)">추천</button>
+            </div>
+        </div>
+        <!-- 댓글 출력 부분 -->
+        <div id="comment-list-container">
+            <div th:each="comment: ${qcommentList}" class="detail-comment">
+                <div class="comment-top">
+                    <div class="comment-writer">
+                        <div th:text="${comment.commentWriter}"></div>
+                    </div>
+                    <div class="comment-time">
+                        <div th:text="*{#temporals.format(comment.commentCreatedTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+                    </div>
+                </div>
+                <div class="comment-body">
+                    <div class="comment-content">
+                        <div th:text="${comment.commentContents}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 댓글 작성 부분 -->
+        <div class="write-comment">
+            <div class="comment-box" th:if="${user}">
+                <div class="comment-username" th:text="${user.nickname}"></div>
+                <input type="text" id="commentContents" placeholder="내용">
+            </div>
+            <button id="comment-write-btn" onclick="commentWrite()">등록</button>
+        </div>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+
+    const commentWrite = () => {
+        const contents = document.getElementById("commentContents").value;
+        const id = [[${question.id}]];
+
+        // 현재 로그인한 사용자의 정보를 가져옵니다.
+        const username = [[${user != null ? user.username : null}]];
+
+        if (!username) {
+            alert("로그인 후 댓글을 작성할 수 있습니다.");
+            return;
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/public/question/comment/save",
+            data: {
+                "commentWriter": username, // 로그인한 사용자의 이름을 작성자로 설정
+                "commentContents": contents,
+                "questionId": id
+            },
+            success: function (res) {
+                console.log("요청성공", res);
+
+                // 기존 댓글을 삭제합니다.
+                const commentListContainer = document.getElementById('comment-list-container');
+                while (commentListContainer.firstChild) {
+                    commentListContainer.removeChild(commentListContainer.firstChild);
+                }
+
+                // 새로운 댓글들을 추가합니다.
+                for (let i in res) {
+                    const newComment = document.createElement('div');
+                    newComment.className = 'detail-comment';
+
+                    newComment.innerHTML = `
+                    <div class="comment-top">
+                        <div class="comment-writer">${res[i].commentWriter}</div>
+                        <div class="comment-time">${res[i].commentCreatedTime}</div>
+                    </div>
+                    <div class="comment-body">
+                        <div class="comment-content">${res[i].commentContents}</div>
+                    </div>
+                    `;
+
+                    // 새로운 댓글을 기존 댓글 아래에 추가합니다.
+                    commentListContainer.appendChild(newComment);
+                }
+
+                document.getElementById('commentContents').value = '';
+            },
+            error: function (err) {
+                console.log("요청실패", err);
+            }
+        });
+    }
+
+    function recommendquestion(button) {
+        const questionId = button.getAttribute('data-question-id');
+        console.log('recommendquestion called');
+        button.disabled = true; // 버튼 비활성화
+
+        // 버튼 클릭 이벤트 핸들러를 제거하여 중복 호출을 방지
+        button.removeEventListener('click', recommendquestion);
+
+        fetch(`/public/question/recommend/${questionId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ questionId: questionId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    if (data.recommended === "true") {
+                        alert("이미 추천한 게시물입니다.");
+                    } else {
+                        alert("게시물을 성공적으로 추천했습니다.");
+                    }
+                }
+            })
+            .catch(error => console.error("Error: " + error))
+            .finally(() => {
+                button.disabled = false; // 버튼 활성화
+            });
+    }
+
+
+
+    const listReq = () => {
+        console.log("목록 요청");
+        const page = [[${page}]];
+        location.href = "/public/question/?page=" + page;
+    }
+
+    const updateReq = () => {
+        console.log("수정 요청");
+        const id = [[${question.id}]];
+        location.href = "/public/question/update/" + id;
+    }
+
+    const deleteReq = () => {
+        console.log("삭제 요청");
+        const id = [[${question.id}]];
+        location.href = "/public/question/delete/" + id;
+    }
+
+</script>
+</html>
