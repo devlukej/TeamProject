@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Luke</title>
-    <link rel="stylesheet" th:href="@{/css/question/question.css}">
+    <link rel="stylesheet" th:href="@{/css/board/board.css}">
 </head>
 <body>
 <!-- HEADER -->
@@ -33,7 +33,7 @@
             <div th:each="board: ${boardList}">
                 <div class="write">
                     <div class="write-title">
-                        <a th:href="@{|/public/question/${board.id}|(page=${boardList.number + 1})}"
+                        <a th:href="@{|/public/board/${board.id}|(page=${boardList.number + 1})}"
                            th:text="${board.boardTitle}"></a>
                     </div>
                     <div class="write-content">
@@ -69,14 +69,14 @@
             </div>
             <div class="page">
                 <div class="paging">
-                    <a th:href="${boardList.hasPrevious()} ? @{/public/question/(page=${boardList.number})} : '#'">이전</a>
+                    <a th:href="${boardList.hasPrevious()} ? @{/public/board/(page=${boardList.number})} : '#'">이전</a>
                     <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
                 <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
                 <span th:unless="${page == boardList.number + 1}">
-                    <a th:href="@{/public/question/(page=${page})}" th:text="${page}"></a>
+                    <a th:href="@{/public/board/(page=${page})}" th:text="${page}"></a>
                 </span>
             </span>
-                    <a th:href="${boardList.hasNext()} ? @{/public/question/(page=${boardList.number + 2})} : '#'">다음</a>
+                    <a th:href="${boardList.hasNext()} ? @{/public/board/(page=${boardList.number + 2})} : '#'">다음</a>
                 </div>
             </div>
         </div>
@@ -87,10 +87,10 @@
         const category = select.value;
         if (category === "All") {
             // "전체"가 선택된 경우, 모든 게시글을 보여줍니다.
-            loadPosts("/public/question");
+            loadPosts("/public/board");
         } else {
             // 선택된 category 값으로 해당 카테고리의 게시글을 가져오는 AJAX 요청을 보냅니다.
-            loadPosts(`/public/question?category=${category}`);
+            loadPosts(`/public/board?category=${category}`);
         }
     }
 
@@ -107,7 +107,7 @@
     }
 
     const saveReq = () => {
-        location.href = "/public/save";
+        location.href = "/public/board/save";
     }
 </script>
 </body>

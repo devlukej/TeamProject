@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Luke</title>
-    <link rel="stylesheet" th:href="@{/css/question/update.css}">
+    <link rel="stylesheet" th:href="@{/css/board/update.css}">
 </head>
 <body>
 <!-- HEADER -->
@@ -12,7 +12,7 @@
 <div class="view">
     <div class="check"><h3>함께 > 질문답변</h3></div>
     <div class="enter">
-        <form action="/public/question/update" method="post" name="updateForm">
+        <form action="/public/board/update" method="post" name="updateForm">
             <div class="detail">
                 <div class="detail-header">
                     <input type="hidden" name="id" th:value="${boardUpdate.id}">

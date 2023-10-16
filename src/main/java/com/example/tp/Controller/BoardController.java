@@ -41,7 +41,7 @@ public class BoardController {
 
     private final UserRepository userRepository;
 
-    @GetMapping("/public/save")
+    @GetMapping("/public/board/save")
     public String saveForm(@AuthenticationPrincipal MemberUser user,Model model) {
 
         if (user == null) {
@@ -50,10 +50,10 @@ public class BoardController {
         }
 
         model.addAttribute("user", user);
-        return "board/question/save";
+        return "board/board/save";
     }
 
-    @PostMapping("/public/save")
+    @PostMapping("/public/board/save")
     public String save(@AuthenticationPrincipal MemberUser user, @ModelAttribute BoardDTO boardDTO, Model model) throws IOException {
         if (user != null) {
             // 현재 로그인한 사용자 정보를 이용하여 작성자 필드 설정
@@ -65,10 +65,10 @@ public class BoardController {
 
         model.addAttribute("user", user);
 
-        return "redirect:/public/question";
+        return "redirect:/public/board";
     }
 
-    @GetMapping("/public/question")
+    @GetMapping("/public/board")
     public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable, @RequestParam(value = "category", required = false) String category) {
 
         Page<BoardDTO> boardList;
@@ -120,11 +120,11 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        return "board/question/question";
+        return "board/board/board";
     }
 
 
-    @GetMapping("/public/question/{id}")
+    @GetMapping("/public/board/{id}")
     public String findById(@AuthenticationPrincipal MemberUser user,
             @PathVariable Long id, Model model,
                            @PageableDefault(page=1) Pageable pageable) {
@@ -147,10 +147,10 @@ public class BoardController {
         model.addAttribute("commentList", commentDTOList);
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());
-        return "board/question/detail";
+        return "board/board/detail";
     }
 
-    @GetMapping("/public/question/update/{id}")
+    @GetMapping("/public/board/update/{id}")
     public String updateForm(@AuthenticationPrincipal MemberUser user,@PathVariable Long id, Model model) {
 
         if (user == null) {
@@ -161,26 +161,26 @@ public class BoardController {
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("user", user);
         model.addAttribute("boardUpdate", boardDTO);
-        return "board/question/update";
+        return "board/board/update";
     }
 
-    @PostMapping("/public/question/update")
+    @PostMapping("/public/board/update")
     public String update(@ModelAttribute BoardDTO boardDTO, Model model) {
         BoardDTO board = boardService.update(boardDTO);
         model.addAttribute("board", board);
 //        return "redirect:detail";
 
-        return "redirect:/public/question/" + boardDTO.getId();
+        return "redirect:/public/board/" + boardDTO.getId();
     }
 
-    @GetMapping("/public/question/delete/{id}")
+    @GetMapping("/public/board/delete/{id}")
     public String delete(@PathVariable Long id) {
         boardService.delete(id);
 
-        return "redirect:/public/question";
+        return "redirect:/public/board";
     }
 
-    @PostMapping("/public/question/recommend/{id}")
+    @PostMapping("/public/board/recommend/{id}")
     public ResponseEntity<Map<String, String>> recommend(@PathVariable("id") Long id, @AuthenticationPrincipal MemberUser user) {
         Map<String, String> response = new HashMap<>();
         if (user == null) {

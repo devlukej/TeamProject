@@ -20,7 +20,7 @@ import java.util.List;
 public class CommentController {
     private final CommentService commentService;
     private final UserService userService;
-    @PostMapping("/public/question/comment/save")
+    @PostMapping("/public/board/comment/save")
     public ResponseEntity save(@ModelAttribute CommentDTO commentDTO, @AuthenticationPrincipal MemberUser user) {
         if (user != null) {
             UserEntity commentWriter = user.getUserEntity(); // 현재 로그인한 사용자의 아이디를 작성자로 설정
