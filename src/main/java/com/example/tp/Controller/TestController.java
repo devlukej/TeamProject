@@ -34,7 +34,7 @@ public class TestController {
     private final UserService userService;
 
     @Autowired
-    public TestController(TestServiceImpl testService, TestRepository testRepository,TestResultService testResultService,TestHistoryService testHistoryService,UserService userService) {
+    public TestController(TestServiceImpl testService, TestRepository testRepository, TestResultService testResultService, TestHistoryService testHistoryService, UserService userService) {
         this.testService = testService;
         this.testRepository = testRepository;
         this.testResultService = testResultService;
@@ -44,11 +44,6 @@ public class TestController {
 
     @GetMapping("/private/pre-cbt")
     public String categorySelectionPage(@AuthenticationPrincipal MemberUser user, Model model) {
-
-        if (user == null) {
-
-            return "redirect:/login";
-        }
 
         model.addAttribute("user", user);
         return "board/cbt/pre-cbt"; // 카테고리 선택 HTML 페이지
@@ -72,9 +67,11 @@ public class TestController {
 
         return "board/cbt/cbt";
     }
+
     @Transactional
     @PostMapping("/private/submit-cbt")
     public String submitCbt(@AuthenticationPrincipal MemberUser user, @RequestParam Map<String, String> requestParams, Model model, HttpServletRequest request) {
+
         if (user == null) {
             return "redirect:/login";
         }
@@ -156,9 +153,6 @@ public class TestController {
     }
 
 
-
-
-
     @GetMapping("/private/cbt-result")
     public String showCbtResultPage(@AuthenticationPrincipal MemberUser user, Model model, HttpServletRequest request) {
 
@@ -181,17 +175,25 @@ public class TestController {
 
     @GetMapping("/private/wrong")
     public String showRandomWrongQuestion(@AuthenticationPrincipal MemberUser user, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
-        if (user == null) {
-            return "redirect:/login";
-        }
 
-        // 사용자의 틀린 문제 목록을 가져옵니다.
-        List<TestResultDto> userWrongResults = testResultService.getUserWrongResults(user.getUsername());
+        List<TestResultDto> userWrongResults = null;
 
-        if (userWrongResults.isEmpty()) {
+        if (user != null) {
+            model.addAttribute("user", user);
+
+            userWrongResults = testResultService.getUserWrongResults(user.getUsername());
+
+            if (userWrongResults.isEmpty()) {
+                redirectAttributes.addFlashAttribute("noWrongResults", true);
+
+                return "redirect:/private/wrong-empty"; // 또는 사용자가 틀린 문제가 없는 경우를 나타내는 다른 페이지로 이동
+            }
+        } else {
+
             redirectAttributes.addFlashAttribute("noWrongResults", true);
 
-            return "redirect:/private/wrong-empty"; // 또는 사용자가 틀린 문제가 없는 경우를 나타내는 다른 페이지로 이동
+            return "redirect:/private/wrong-empty";
+
         }
 
         Random random = new Random();
@@ -201,10 +203,10 @@ public class TestController {
 
         session.setAttribute("currentWrongResultId", randomWrongResult.getId());
 
-        model.addAttribute("user", user);
         model.addAttribute("randomWrongResult", randomWrongResult);
 
         return "board/wrong/wrong"; // 랜덤 틀린 문제를 표시하는 페이지
+
     }
 
     @Transactional
@@ -249,6 +251,7 @@ public class TestController {
 
     @GetMapping("/private/wrong-result")
     public String showWrongResultPage(@AuthenticationPrincipal MemberUser user, Model model, HttpSession session) {
+
         if (user == null) {
             return "redirect:/login";
         }
@@ -277,15 +280,15 @@ public class TestController {
     @GetMapping("/private/wrong-empty")
     public String showWrongEmpty(@AuthenticationPrincipal MemberUser user, Model model) {
 
-        if (user == null) {
-            return "redirect:/login";
-        }
-
         model.addAttribute("user", user);
 
         return "board/wrong/wrong-empty";
     }
 
+    @GetMapping("/api/testHistories")
+    public List<TestHistory> getTestHistories(@RequestParam String userId) {
+        return testHistoryService.getTestHistoryByUserIdAndDate(userId);
+    }
 
 
 }

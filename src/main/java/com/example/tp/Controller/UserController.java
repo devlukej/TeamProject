@@ -1,17 +1,21 @@
 package com.example.tp.Controller;
 
+import com.example.tp.domain.entity.TestHistory;
 import com.example.tp.domain.entity.UserEntity;
 import com.example.tp.dto.NoticeDTO;
 import com.example.tp.dto.UserDto;
 import com.example.tp.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,24 +36,29 @@ public class UserController {
 
     private RankingService rankingService;
 
+    private TestHistoryService testHistoryService;
+
 
     @GetMapping("/")
     public String list(@AuthenticationPrincipal MemberUser user, Model model) {
+
+        if (user != null) {
+
+            model.addAttribute("user", user);
+        }
 
         List<NoticeDTO> latestNotices = noticeService.findLatestNotices(5);
 
         List<UserEntity> ranking = rankingService.getRankingSortedByTier();
 
-        if (user == null) {
-
-            return "redirect:/login";
-        }
 
         model.addAttribute("ranking", ranking);
         model.addAttribute("noticeList", latestNotices);
-        model.addAttribute("user", user);
+
         return "board/main";
     }
+
+
 
     // 회원가입 페이지
     @GetMapping("/signup")
@@ -87,11 +96,6 @@ public class UserController {
     @GetMapping("/public/ranking")
     public String dispRanking(@AuthenticationPrincipal MemberUser user, Model model) {
 
-        if (user == null) {
-
-            return "redirect:/login";
-        }
-
         List<UserEntity> ranking = rankingService.getRankingSortedByTier();
 
         model.addAttribute("ranking", ranking);
@@ -120,6 +124,7 @@ public class UserController {
         userDto.setFilePath(s3Service.upload(userDto.getFilePath(), file));
         userService.savePost(userDto);
         model.addAttribute("user", user);
+
         return "redirect:/myinfo";
     }
 

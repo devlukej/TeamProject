@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Luke</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 </head>
 <body>
 <!-- HEADER -->
@@ -19,31 +20,51 @@
                 </dt>
                 <div class="info">
                     <p class="info_text">이름</p>
-                    <p class="info_data"><span th:text="${user.userEntity.name}"></span></p>
+                    <p class="info_data" th:if="${#authorization.expression('isAuthenticated()')}"><span th:text="${user.userEntity.name}"></span></p>
+                    <p class="info_data" th:unless="${#authorization.expression('isAuthenticated()')}">
+                        <span></span>
+                    </p>
                 </div>
                 <div class="info">
                     <p class="info_text">닉네임</p>
-                    <p class="info_data"><span th:text="${user.userEntity.nickname}"></span></p>
+                    <p class="info_data" th:if="${#authorization.expression('isAuthenticated()')}"><span th:text="${user.userEntity.nickname}"></span></p>
+                    <p class="info_data" th:unless="${#authorization.expression('isAuthenticated()')}">
+                        <span></span>
+                    </p>
                 </div>
                 <div class="info">
                     <p class="info_text">성별</p>
-                    <p class="info_data"><span th:text="${user.userEntity.gender}"></span></p>
+                    <p class="info_data" th:if="${#authorization.expression('isAuthenticated()')}">
+                        <span th:text="${user.userEntity.gender}"></span>
+                    </p>
+                    <p class="info_data" th:unless="${#authorization.expression('isAuthenticated()')}">
+                        <span></span>
+                    </p>
                 </div>
                 <div class="info">
                     <p class="info_text">아이디</p>
-                    <p class="info_data"><span th:text="${user.userEntity.id}"></span></p>
+                    <p class="info_data" th:if="${#authorization.expression('isAuthenticated()')}"><span th:text="${user.userEntity.id}"></span></p>
+                    <p class="info_data" th:unless="${#authorization.expression('isAuthenticated()')}">
+                        <span></span>
+                    </p>
                 </div>
                 <div class="info">
                     <p class="info_text">생년월일</p>
-                    <p class="info_data"><span th:text="${user.userEntity.birthday}"></span></p>
+                    <p class="info_data" th:if="${#authorization.expression('isAuthenticated()')}"><span th:text="${user.userEntity.birthday}"></span></p>
+                    <p class="info_data" th:unless="${#authorization.expression('isAuthenticated()')}">
+                        <span></span>
+                    </p>
                 </div>
                 <div class="info">
                     <p class="info_text">가입일</p>
-                    <p class="info_data"><span th:text="${user.userEntity.createDate}"></span></p>
+                    <p class="info_data" th:if="${#authorization.expression('isAuthenticated()')}"><span th:text="${user.userEntity.createDate}"></span></p>
+                    <p class="info_data" th:unless="${#authorization.expression('isAuthenticated()')}">
+                        <span></span>
+                    </p>
                 </div>
                 <div class="info">
                     <p class="info_text">등급</p>
-                    <p class="info_data">
+                    <p class="info_data" th:if="${#authorization.expression('isAuthenticated()')}">
                         <span th:if="${user.userEntity.tier > 300}">골드<span
                                 th:text="'(' + ${user.userEntity.tier} + ')'"></span></span>
                         <span th:if="${user.userEntity.tier > 100 and user.userEntity.tier <= 300}">실버<span
@@ -52,6 +73,9 @@
                                 th:text="'(' + ${user.userEntity.tier} + ')'"></span></span>
                         <span th:if="${user.userEntity.tier <= 30}">기본<span
                                 th:text="'(' + ${user.userEntity.tier} + ')'"></span></span>
+                    </p>
+                    <p class="info_data" th:unless="${#authorization.expression('isAuthenticated()')}">
+                        <span></span>
                     </p>
                 </div>
             </div>
@@ -62,6 +86,9 @@
                     <div>활동 기록</div>
                     <a class="plus" th:href="@{/board/notice}">+ 더보기</a>
                 </dt>
+                <div>
+                    <canvas id="testScoreChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -76,7 +103,8 @@
                     <div class="li" th:each="notice, i : ${noticeList}">
                         <li>
                             <a th:href="@{|/public/notice/${notice.id}|}" class="main_text">
-                                <span th:text="${i.index + 1}"></span> - <span class="notice-color" th:text="${notice.noticeTitle}"></span>
+                                <span th:text="${i.index + 1}"></span> - <span class="notice-color"
+                                                                               th:text="${notice.noticeTitle}"></span>
                             </a>
                         </li>
                     </div>
@@ -122,6 +150,79 @@
 <div th:insert="common/footer.html" class="footer"></div>
 
 <script>
+
+    // 그래프를 그릴 Canvas 엘리먼트 선택
+    var testScoreChart = document.getElementById('testScoreChart').getContext('2d');
+
+    var userId = extractUserIdFromURL();
+    if (userId) {
+        // 백엔드 API에서 JSON 데이터 가져오기
+        $.ajax({
+            url: '/api/testHistories?userId=' + userId, // 유저 아이디에 실제 아이디를 넣어주세요
+            type: 'GET',
+            success: function (data) {
+                // JSON 데이터를 변수에 저장
+                var testHistories = data;
+
+                // 날짜 배열과 시험 총점 배열 초기화
+                var dates = [];
+                var scores = [];
+
+                // JSON 데이터에서 날짜와 시험 총점 추출
+                testHistories.forEach(function (history) {
+                    dates.push(history.testDate); // 날짜 필드 이름에 따라 수정
+                    scores.push(history.totalScore); // 시험 총점 필드 이름에 따라 수정
+                });
+
+                // 그래프 생성
+                var chart = new Chart(testScoreChart, {
+                    type: 'line',
+                    data: {
+                        labels: dates, // X 축에 표시할 날짜 데이터
+                        datasets: [{
+                            label: '시험 총점',
+                            data: scores, // Y 축에 표시할 시험 총점 데이터
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: '날짜'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: '시험 총점'
+                                }
+                            }
+                        }
+                    }
+                });
+            },
+            error: function () {
+                // 에러 처리
+                console.log('데이터 가져오기 실패');
+            }
+        });
+    } else {
+        // 사용자 아이디를 찾을 수 없을 때의 처리
+        console.log('사용자 아이디를 찾을 수 없습니다.');
+    }
+
+    // URL에서 사용자 아이디 추출하는 함수
+    function extractUserIdFromURL() {
+        var url = window.location.href;
+        var matches = url.match(/\/user\/(\d+)/); // URL 형식에 따라 정규표현식을 수정해야 할 수도 있습니다
+        if (matches && matches.length > 1) {
+            return matches[1];
+        }
+        return null; // 사용자 아이디를 찾을 수 없는 경우 null 반환
+    }
 
     $('#target_img').click(function (e) {
         document.signform.target_url.value = document.getElementById('target_img').src;

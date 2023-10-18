@@ -47,11 +47,15 @@
     <div class="loginbox">
         <div class="login">
             <div class="msg">
-                <b sec:authorize="isAuthenticated()"><span
+                <b sec:authorize="isAnonymous()">로그인이 필요합니다.</b>
+                <b sec:authorize="isAuthenticated()">
+                    <span
                         th:text="${user.userEntity.nickname}"></span><span> 님 어서오세요.</span></b>
             </div>
             <div class="choice">
+                <a sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
                 <a sec:authorize="isAuthenticated()" th:href="@{/private/myinfo}">내정보</a>
+                <a sec:authorize="isAnonymous()" th:href="@{/signup}" id="signup">회원가입</a>
                 <a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
             </div>
         </div>

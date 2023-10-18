@@ -21,6 +21,11 @@ public class TestHistoryService {
         return testHistoryRepository.save(testHistory);
     }
 
+    @Transactional
+    public List<TestHistory> getTestHistoryByUserIdAndDate(String userId) {
+        return testHistoryRepository.findByUserIdOrderByCreatedTime(userId);
+    }
+
     public List<TestHistory> getTestHistoryByUserId(Long userId) {
         return testHistoryRepository.findByUserId(userId);
     }

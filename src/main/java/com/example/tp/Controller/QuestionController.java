@@ -94,11 +94,6 @@ public class QuestionController {
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
         int endPage = Math.min(startPage + blockLimit - 1, questionList.getTotalPages());
 
-        if (user == null) {
-
-            return "redirect:/login";
-        }
-
         // page 갯수 20개
         // 현재 사용자가 3페이지
         // 1 2 3

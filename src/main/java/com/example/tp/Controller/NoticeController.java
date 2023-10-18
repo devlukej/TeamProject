@@ -57,30 +57,21 @@ public class NoticeController {
     @GetMapping("/public/notice")
     public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable) {
 
+
+        if (user != null) {
+
+            model.addAttribute("user", user);
+        }
+
         Page<NoticeDTO> noticeList = noticeService.paging(pageable);
         int blockLimit = 3;
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
         int endPage = Math.min(startPage + blockLimit - 1, noticeList.getTotalPages());
 
-        if (user == null) {
 
-            return "redirect:/login";
-        }
-
-        // page 갯수 20개
-        // 현재 사용자가 3페이지
-        // 1 2 3
-        // 현재 사용자가 7페이지
-        // 7 8 9
-        // 보여지는 페이지 갯수 3개
-        // 총 페이지 갯수 8개
-        model.addAttribute("user", user);
         model.addAttribute("noticeList", noticeList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-
-        // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
-        List<NoticeDTO> noticeDTOList = noticeService.findAll();
 
         return "board/notice/notice";
     }
