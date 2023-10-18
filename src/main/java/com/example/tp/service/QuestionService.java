@@ -1,12 +1,9 @@
 package com.example.tp.service;
 
 
-import com.example.tp.domain.entity.BoardEntity;
 import com.example.tp.domain.entity.QuestionEntity;
-import com.example.tp.domain.repository.BoardRepository;
-import com.example.tp.domain.repository.QcommentRepository;
 import com.example.tp.domain.repository.QuestionRepository;
-import com.example.tp.dto.BoardDTO;
+import com.example.tp.domain.repository.QcommentRepository;
 import com.example.tp.dto.QuestionDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -116,6 +113,44 @@ public class QuestionService {
         Page<QuestionDTO> questionDTOS = questionEntities.map(question -> new QuestionDTO(question.getId(), question.getQuestionWriter(), question.getQuestionTitle(), question.getQuestionContents(), question.getQuestionHits(), question.getCreatedTime(), question.getCategory(), question.getRecommendCount()));
         return questionDTOS;
     }
+
+    //제목검색
+    @Transactional
+    public Page<QuestionDTO> searchQuestionTitle(String questionTitle, Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+
+        Page<QuestionEntity> questionEntities = questionRepository.findByQuestionTitleContaining(questionTitle, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+
+        Page<QuestionDTO> questionDTOS = questionEntities.map(question -> new QuestionDTO(question.getId(), question.getQuestionWriter(), question.getQuestionTitle(), question.getQuestionContents(), question.getQuestionHits(), question.getCreatedTime(), question.getCategory(), question.getRecommendCount()));
+
+        return questionDTOS;
+    }
+
+    @Transactional
+    public Page<QuestionDTO> searchQuestionContents(String questionContents, Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+
+        Page<QuestionEntity> questionEntities = questionRepository.findByQuestionContentsContaining(questionContents, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+
+        Page<QuestionDTO> questionDTOS = questionEntities.map(question -> new QuestionDTO(question.getId(), question.getQuestionWriter(), question.getQuestionTitle(), question.getQuestionContents(), question.getQuestionHits(), question.getCreatedTime(), question.getCategory(), question.getRecommendCount()));
+
+        return questionDTOS;
+    }
+
+    @Transactional
+    public Page<QuestionDTO> searchQuestionWriter(String questionWriter, Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+
+        Page<QuestionEntity> questionEntities = questionRepository.findByQuestionWriterContaining(questionWriter, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+
+        Page<QuestionDTO> questionDTOS = questionEntities.map(question -> new QuestionDTO(question.getId(), question.getQuestionWriter(), question.getQuestionTitle(), question.getQuestionContents(), question.getQuestionHits(), question.getCreatedTime(), question.getCategory(), question.getRecommendCount()));
+
+        return questionDTOS;
+    }
+    
 }
 
 

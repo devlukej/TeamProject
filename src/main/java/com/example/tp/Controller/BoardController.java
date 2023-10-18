@@ -230,6 +230,77 @@ public class BoardController {
         return "board/board/board";
     }
 
+    //내용검색
+    @GetMapping("/public/board/boardContents")
+    public String searchBoardContents(@RequestParam(value = "boardContents") String boardContents, Model model, @AuthenticationPrincipal MemberUser user, @PageableDefault(page = 1) Pageable pageable) {
+
+        model.addAttribute("user", user);
+
+        if (Objects.equals(boardContents, "")) {
+            // 검색어가 비어있을 경우 기본 페이지로 리다이렉트
+            return "redirect:/public/board";
+        } else {
+
+            Page<BoardDTO> boardList = boardService.searchBoardContents(boardContents, pageable);
+
+            // 각 게시글에 대한 댓글 수를 계산하고 추가
+            for (BoardDTO board : boardList) {
+                Long boardId = board.getId();
+                BoardEntity boardEntity = boardService.getBoardEntityById(boardId);
+                Long commentCount = commentRepository.countByBoardEntity(boardEntity);
+                board.setCommentCount(commentCount);
+
+                int recommendCount = boardEntity.getRecommendCount(); // 게시물의 추천 수
+                board.setRecommendCount(recommendCount); // 추천 수 설정
+            }
+
+            int blockLimit = 3;
+            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = Math.min(startPage + blockLimit - 1, boardList.getTotalPages());
+
+            model.addAttribute("boardList", boardList);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+        }
+
+        return "board/board/board";
+    }
+
+    //작성자검색
+    @GetMapping("/public/board/boardWriter")
+    public String searchBoardWriter(@RequestParam(value = "boardWriter") String boardWriter, Model model, @AuthenticationPrincipal MemberUser user, @PageableDefault(page = 1) Pageable pageable) {
+
+        model.addAttribute("user", user);
+
+        if (Objects.equals(boardWriter, "")) {
+            // 검색어가 비어있을 경우 기본 페이지로 리다이렉트
+            return "redirect:/public/board";
+        } else {
+
+            Page<BoardDTO> boardList = boardService.searchBoardWriter(boardWriter, pageable);
+
+            // 각 게시글에 대한 댓글 수를 계산하고 추가
+            for (BoardDTO board : boardList) {
+                Long boardId = board.getId();
+                BoardEntity boardEntity = boardService.getBoardEntityById(boardId);
+                Long commentCount = commentRepository.countByBoardEntity(boardEntity);
+                board.setCommentCount(commentCount);
+
+                int recommendCount = boardEntity.getRecommendCount(); // 게시물의 추천 수
+                board.setRecommendCount(recommendCount); // 추천 수 설정
+            }
+
+            int blockLimit = 3;
+            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = Math.min(startPage + blockLimit - 1, boardList.getTotalPages());
+
+            model.addAttribute("boardList", boardList);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+        }
+
+        return "board/board/board";
+    }
 
 }
 

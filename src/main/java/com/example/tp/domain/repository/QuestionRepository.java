@@ -1,9 +1,9 @@
 package com.example.tp.domain.repository;
 
 
-import com.example.tp.domain.entity.BoardEntity;
 import com.example.tp.domain.entity.QuestionEntity;
-import com.example.tp.dto.BoardDTO;
+import com.example.tp.domain.entity.QuestionEntity;
+import com.example.tp.dto.QuestionDTO;
 import com.example.tp.dto.QuestionDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +20,11 @@ public interface QuestionRepository extends JpaRepository<QuestionEntity, Long> 
     void updateHits(@Param("id") Long id);
 
 
-    Page<QuestionDTO> findByCategory(String category, Pageable pageable);
+    Page<QuestionEntity> findByQuestionTitleContaining(String questionTitle, Pageable pageable);
+
+    Page<QuestionEntity> findByQuestionContentsContaining(String questionContents, Pageable pageable);
+
+    Page<QuestionEntity> findByQuestionWriterContaining(String questionWriter, Pageable pageable);
 
 }
 

@@ -13,8 +13,16 @@
     <div class="check"><h3>함께 > 공지사항</h3></div>
     <div class="enter">
         <div class="search">
-            <input class="size" name="nameKeyword" id="keyword" type="text">
-            <button class="search-btn">검색</button>
+            <form action="/public/notice/noticeTitle" method="GET" id="frm">
+                <div class="search">
+                    <select id="sort" name="sort" class="sort" onchange="ChangeSelect()">
+                        <option name="noticeTitle" id="noticeTitle" value="noticeTitle">제목</option>
+                        <option name="noticeContents" id="noticeContents" value="noticeContents">내용</option>
+                    </select>
+                    <input class="size" name="noticeTitle" id="keyword" type="text">
+                    <button class="search-btn">검색</button>
+                </div>
+            </form>
         </div>
         <div class="bar">
             <div class="btn">
@@ -76,7 +84,7 @@
         let selectValue = langSelect.options[langSelect.selectedIndex].value;
 
         document.getElementById("keyword").setAttribute("name", selectValue);
-        document.getElementById("frm").setAttribute("action", "/admin/userList/" + selectValue);
+        document.getElementById("frm").setAttribute("action", "/public/notice/" + selectValue);
 
     }
 

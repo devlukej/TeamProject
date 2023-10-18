@@ -2,7 +2,9 @@ package com.example.tp.service;
 
 
 import com.example.tp.domain.entity.NoticeEntity;
+import com.example.tp.domain.entity.NoticeEntity;
 import com.example.tp.domain.repository.NoticeRepository;
+import com.example.tp.dto.NoticeDTO;
 import com.example.tp.dto.NoticeDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -99,6 +101,31 @@ public class NoticeService {
         return noticeEntities.stream()
                 .map(noticeEntity -> modelMapper.map(noticeEntity, NoticeDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    //제목검색
+    @Transactional
+    public Page<NoticeDTO> searchNoticeTitle(String noticeTitle, Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+
+        Page<NoticeEntity> noticeEntities = noticeRepository.findByNoticeTitleContaining(noticeTitle, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+
+        Page<NoticeDTO> noticeDTOS = noticeEntities.map(notice -> new NoticeDTO(notice.getId(), notice.getNoticeWriter(), notice.getNoticeTitle(), notice.getNoticeContents(), notice.getNoticeHits(), notice.getCreatedTime()));
+
+        return noticeDTOS;
+    }
+
+    @Transactional
+    public Page<NoticeDTO> searchNoticeContents(String noticeContents, Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+
+        Page<NoticeEntity> noticeEntities = noticeRepository.findByNoticeContentsContaining(noticeContents, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+
+        Page<NoticeDTO> noticeDTOS = noticeEntities.map(notice -> new NoticeDTO(notice.getId(), notice.getNoticeWriter(), notice.getNoticeTitle(), notice.getNoticeContents(), notice.getNoticeHits(), notice.getCreatedTime()));
+
+        return noticeDTOS;
     }
 
 }

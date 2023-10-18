@@ -2,6 +2,9 @@ package com.example.tp.domain.repository;
 
 
 import com.example.tp.domain.entity.NoticeEntity;
+import com.example.tp.domain.entity.NoticeEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +15,11 @@ public interface NoticeRepository extends JpaRepository<NoticeEntity, Long> {
     @Modifying
     @Query(value = "update NoticeEntity b set b.noticeHits=b.noticeHits+1 where b.id=:id")
     void updateHits(@Param("id") Long id);
+
+    Page<NoticeEntity> findByNoticeTitleContaining(String noticeTitle, Pageable pageable);
+
+    Page<NoticeEntity> findByNoticeContentsContaining(String noticeContents, Pageable pageable);
+
 }
 
 

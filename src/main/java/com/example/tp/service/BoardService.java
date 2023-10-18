@@ -128,6 +128,30 @@ public class BoardService {
 
         return boardDTOS;
     }
+
+    @Transactional
+    public Page<BoardDTO> searchBoardContents(String boardContents, Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardContentsContaining(boardContents, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+
+        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardContents(), board.getBoardHits(), board.getCreatedTime(), board.getCategory(), board.getRecommendCount()));
+
+        return boardDTOS;
+    }
+
+    @Transactional
+    public Page<BoardDTO> searchBoardWriter(String boardWriter, Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardWriterContaining(boardWriter, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+
+        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardContents(), board.getBoardHits(), board.getCreatedTime(), board.getCategory(), board.getRecommendCount()));
+
+        return boardDTOS;
+    }
 }
 
 

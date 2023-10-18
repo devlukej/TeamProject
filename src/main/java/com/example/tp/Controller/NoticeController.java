@@ -1,8 +1,10 @@
 package com.example.tp.Controller;
 
 
+import com.example.tp.domain.entity.NoticeEntity;
 import com.example.tp.dto.NoticeDTO;
 import com.example.tp.dto.CommentDTO;
+import com.example.tp.dto.NoticeDTO;
 import com.example.tp.service.NoticeService;
 import com.example.tp.service.CommentService;
 import com.example.tp.service.MemberUser;
@@ -13,13 +15,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -128,7 +128,56 @@ public class NoticeController {
 
         return "redirect:/public/notice";
     }
+    //제목검색
+    @GetMapping("/public/notice/noticeTitle")
+    public String searchNoticeTitle(@RequestParam(value = "noticeTitle") String noticeTitle, Model model, @AuthenticationPrincipal MemberUser user, @PageableDefault(page = 1) Pageable pageable) {
 
+        model.addAttribute("user", user);
+
+        if (Objects.equals(noticeTitle, "")) {
+            // 검색어가 비어있을 경우 기본 페이지로 리다이렉트
+            return "redirect:/public/notice";
+        } else {
+
+            Page<NoticeDTO> noticeList = noticeService.searchNoticeTitle(noticeTitle, pageable);
+
+            int blockLimit = 3;
+            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = Math.min(startPage + blockLimit - 1, noticeList.getTotalPages());
+
+            model.addAttribute("noticeList", noticeList);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+        }
+
+        return "board/notice/notice";
+    }
+
+    //내용검색
+    @GetMapping("/public/notice/noticeContents")
+    public String searchNoticeContents(@RequestParam(value = "noticeContents") String noticeContents, Model model, @AuthenticationPrincipal MemberUser user, @PageableDefault(page = 1) Pageable pageable) {
+
+        model.addAttribute("user", user);
+
+        if (Objects.equals(noticeContents, "")) {
+            // 검색어가 비어있을 경우 기본 페이지로 리다이렉트
+            return "redirect:/public/notice";
+        } else {
+
+            Page<NoticeDTO> noticeList = noticeService.searchNoticeContents(noticeContents, pageable);
+
+
+            int blockLimit = 3;
+            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = Math.min(startPage + blockLimit - 1, noticeList.getTotalPages());
+
+            model.addAttribute("noticeList", noticeList);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+        }
+
+        return "board/notice/notice";
+    }
 }
 
 

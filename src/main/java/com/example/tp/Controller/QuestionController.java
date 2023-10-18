@@ -1,11 +1,13 @@
 package com.example.tp.Controller;
 
 
+import com.example.tp.domain.entity.BoardEntity;
 import com.example.tp.domain.entity.QuestionEntity;
 import com.example.tp.domain.entity.UserEntity;
 import com.example.tp.domain.repository.QuestionRepository;
 import com.example.tp.domain.repository.QcommentRepository;
 import com.example.tp.domain.repository.UserRepository;
+import com.example.tp.dto.BoardDTO;
 import com.example.tp.dto.QuestionDTO;
 import com.example.tp.dto.QcommentDTO;
 import com.example.tp.service.QuestionService;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -195,7 +198,113 @@ public class QuestionController {
 
 
 
+    //제목검색
+    @GetMapping("/public/question/questionTitle")
+    public String searchQuestionTitle(@RequestParam(value = "questionTitle") String questionTitle, Model model, @AuthenticationPrincipal MemberUser user, @PageableDefault(page = 1) Pageable pageable) {
 
+        model.addAttribute("user", user);
+
+        if (Objects.equals(questionTitle, "")) {
+            // 검색어가 비어있을 경우 기본 페이지로 리다이렉트
+            return "redirect:/public/question";
+        } else {
+
+            Page<QuestionDTO> questionList = questionService.searchQuestionTitle(questionTitle, pageable);
+
+            // 각 게시글에 대한 댓글 수를 계산하고 추가
+            for (QuestionDTO question : questionList) {
+                Long questionId = question.getId();
+                QuestionEntity questionEntity = questionService.getQuestionEntityById(questionId);
+                Long commentCount = qcommentRepository.countByQuestionEntity(questionEntity);
+                question.setCommentCount(commentCount);
+
+                int recommendCount = questionEntity.getRecommendCount(); // 게시물의 추천 수
+                question.setRecommendCount(recommendCount); // 추천 수 설정
+            }
+
+            int blockLimit = 3;
+            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = Math.min(startPage + blockLimit - 1, questionList.getTotalPages());
+
+            model.addAttribute("questionList", questionList);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+        }
+
+        return "board/question/question";
+    }
+
+    //내용검색
+    @GetMapping("/public/question/questionContents")
+    public String searchQuestionContents(@RequestParam(value = "questionContents") String questionContents, Model model, @AuthenticationPrincipal MemberUser user, @PageableDefault(page = 1) Pageable pageable) {
+
+        model.addAttribute("user", user);
+
+        if (Objects.equals(questionContents, "")) {
+            // 검색어가 비어있을 경우 기본 페이지로 리다이렉트
+            return "redirect:/public/question";
+        } else {
+
+            Page<QuestionDTO> questionList = questionService.searchQuestionContents(questionContents, pageable);
+
+            // 각 게시글에 대한 댓글 수를 계산하고 추가
+            for (QuestionDTO question : questionList) {
+                Long questionId = question.getId();
+                QuestionEntity questionEntity = questionService.getQuestionEntityById(questionId);
+                Long commentCount = qcommentRepository.countByQuestionEntity(questionEntity);
+                question.setCommentCount(commentCount);
+
+                int recommendCount = questionEntity.getRecommendCount(); // 게시물의 추천 수
+                question.setRecommendCount(recommendCount); // 추천 수 설정
+            }
+
+            int blockLimit = 3;
+            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = Math.min(startPage + blockLimit - 1, questionList.getTotalPages());
+
+            model.addAttribute("questionList", questionList);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+        }
+
+        return "board/question/question";
+    }
+
+    //작성자검색
+    @GetMapping("/public/question/questionWriter")
+    public String searchQuestionWriter(@RequestParam(value = "questionWriter") String questionWriter, Model model, @AuthenticationPrincipal MemberUser user, @PageableDefault(page = 1) Pageable pageable) {
+
+        model.addAttribute("user", user);
+
+        if (Objects.equals(questionWriter, "")) {
+            // 검색어가 비어있을 경우 기본 페이지로 리다이렉트
+            return "redirect:/public/question";
+        } else {
+
+            Page<QuestionDTO> questionList = questionService.searchQuestionWriter(questionWriter, pageable);
+
+            // 각 게시글에 대한 댓글 수를 계산하고 추가
+            for (QuestionDTO question : questionList) {
+                Long questionId = question.getId();
+                QuestionEntity questionEntity = questionService.getQuestionEntityById(questionId);
+                Long commentCount = qcommentRepository.countByQuestionEntity(questionEntity);
+                question.setCommentCount(commentCount);
+
+                int recommendCount = questionEntity.getRecommendCount(); // 게시물의 추천 수
+                question.setRecommendCount(recommendCount); // 추천 수 설정
+            }
+
+            int blockLimit = 3;
+            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = Math.min(startPage + blockLimit - 1, questionList.getTotalPages());
+
+            model.addAttribute("questionList", questionList);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+        }
+
+        return "board/question/question";
+    }
 
 
 }
