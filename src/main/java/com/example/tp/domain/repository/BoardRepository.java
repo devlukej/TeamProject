@@ -19,6 +19,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     @Query("UPDATE BoardEntity b SET b.boardHits = b.boardHits + 1 WHERE b.id = :id")
     void updateHits(@Param("id") Long id);
 
+    Page<BoardEntity> findByBoardTitleContaining(String boardTitle, Pageable pageable);
+
 }
 
 

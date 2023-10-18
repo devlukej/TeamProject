@@ -13,8 +13,17 @@
         <div class="check"><h3>함께 > 자유잡담</h3></div>
         <div class="enter">
             <div class="search">
-                <input class="size" name="titleKeyword" id="keyword" type="text">
-                <button class="search-btn" onclick="searchPosts()">검색</button>
+                <form action="/public/board/boardTitle" method="GET" id="frm">
+                    <div class="search">
+                        <select id="sort" name="sort" class="sort" onchange="ChangeSelect()">
+                            <option name="boardTitle" id="boardTitle" value="boardTitle">제목</option>
+                            <option name="yearKeyword" id="yearKeyword" value="yearKeyword">내용</option>
+                            <option name="sessionKeyword" id="sessionKeyword" value="sessionKeyword">작성자</option>
+                        </select>
+                        <input class="size" name="boardTitle" id="keyword" type="text">
+                        <button class="search-btn">검색</button>
+                    </div>
+                </form>
             </div>
             <div class="bar">
                 <div class="btn">
@@ -77,6 +86,18 @@
 
     const saveReq = () => {
         location.href = "/public/board/save";
+    }
+
+    function ChangeSelect() {
+
+        let langSelect = document.getElementById("sort");
+
+        // select element에서 선택된 option의 value가 저장된다.
+        let selectValue = langSelect.options[langSelect.selectedIndex].value;
+
+        document.getElementById("keyword").setAttribute("name", selectValue);
+        document.getElementById("frm").setAttribute("action", "/public/board/" + selectValue);
+
     }
 
 </script>

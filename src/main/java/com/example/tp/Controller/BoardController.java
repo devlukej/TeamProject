@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,7 +43,7 @@ public class BoardController {
     private final UserRepository userRepository;
 
     @GetMapping("/public/board/save")
-    public String saveForm(@AuthenticationPrincipal MemberUser user,Model model) {
+    public String saveForm(@AuthenticationPrincipal MemberUser user, Model model) {
 
         if (user == null) {
 
@@ -69,7 +70,7 @@ public class BoardController {
     }
 
     @GetMapping("/public/board")
-    public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable, @RequestParam(value = "nameKeyword", required = false) String nameKeyword) {
+    public String findAll(@AuthenticationPrincipal MemberUser user, Model model, @PageableDefault(page = 1) Pageable pageable) {
 
         Page<BoardDTO> boardList = boardService.paging(pageable);
 
@@ -91,7 +92,7 @@ public class BoardController {
 
 
         int blockLimit = 3;
-        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
         int endPage = Math.min(startPage + blockLimit - 1, boardList.getTotalPages());
 
         // page 갯수 20개
@@ -114,8 +115,8 @@ public class BoardController {
 
     @GetMapping("/public/board/{id}")
     public String findById(@AuthenticationPrincipal MemberUser user,
-            @PathVariable Long id, Model model,
-                           @PageableDefault(page=1) Pageable pageable) {
+                           @PathVariable Long id, Model model,
+                           @PageableDefault(page = 1) Pageable pageable) {
         /*
             해당 게시글의 조회수를 하나 올리고
             게시글 데이터를 가져와서 detail.html에 출력
@@ -139,7 +140,7 @@ public class BoardController {
     }
 
     @GetMapping("/public/board/update/{id}")
-    public String updateForm(@AuthenticationPrincipal MemberUser user,@PathVariable Long id, Model model) {
+    public String updateForm(@AuthenticationPrincipal MemberUser user, @PathVariable Long id, Model model) {
 
         if (user == null) {
 
@@ -193,9 +194,41 @@ public class BoardController {
     }
 
 
+    //제목검색
+    @GetMapping("/public/board/boardTitle")
+    public String searchBoardTitle(@RequestParam(value = "boardTitle") String boardTitle, Model model, @AuthenticationPrincipal MemberUser user, @PageableDefault(page = 1) Pageable pageable) {
 
+        model.addAttribute("user", user);
 
+        if (Objects.equals(boardTitle, "")) {
+            // 검색어가 비어있을 경우 기본 페이지로 리다이렉트
+            return "redirect:/public/board";
+        } else {
 
+            Page<BoardDTO> boardList = boardService.searchBoardTitle(boardTitle, pageable);
+
+            // 각 게시글에 대한 댓글 수를 계산하고 추가
+            for (BoardDTO board : boardList) {
+                Long boardId = board.getId();
+                BoardEntity boardEntity = boardService.getBoardEntityById(boardId);
+                Long commentCount = commentRepository.countByBoardEntity(boardEntity);
+                board.setCommentCount(commentCount);
+
+                int recommendCount = boardEntity.getRecommendCount(); // 게시물의 추천 수
+                board.setRecommendCount(recommendCount); // 추천 수 설정
+            }
+
+            int blockLimit = 3;
+            int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+            int endPage = Math.min(startPage + blockLimit - 1, boardList.getTotalPages());
+
+            model.addAttribute("boardList", boardList);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+        }
+
+        return "board/board/board";
+    }
 
 
 }

@@ -116,6 +116,18 @@ public class BoardService {
         return boardDTOS;
     }
 
+    //제목검색
+    @Transactional
+    public Page<BoardDTO> searchBoardTitle(String boardTitle, Pageable pageable) {
+        int page = pageable.getPageNumber() - 1;
+        int pageLimit = 3; // 한 페이지에 보여줄 글 갯수
+
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardTitleContaining(boardTitle, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+
+        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardContents(), board.getBoardHits(), board.getCreatedTime(), board.getCategory(), board.getRecommendCount()));
+
+        return boardDTOS;
+    }
 }
 
 

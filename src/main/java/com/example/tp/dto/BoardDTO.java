@@ -27,7 +27,7 @@ public class BoardDTO {
 
     private int recommendCount;
 
-
+    @Builder
     public BoardDTO(Long id, String boardWriter, String boardTitle, String boardContents, int boardHits, LocalDateTime boardCreatedTime, String category, int recommendCount) {
         this.id = id;
         this.boardWriter = boardWriter;
