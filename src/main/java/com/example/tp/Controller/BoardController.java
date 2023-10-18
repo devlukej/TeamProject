@@ -69,17 +69,10 @@ public class BoardController {
     }
 
     @GetMapping("/public/board")
-    public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable, @RequestParam(value = "category", required = false) String category) {
+    public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable, @RequestParam(value = "nameKeyword", required = false) String nameKeyword) {
 
-        Page<BoardDTO> boardList;
+        Page<BoardDTO> boardList = boardService.paging(pageable);
 
-        if (category != null) {
-            // 카테고리가 선택된 경우, 해당 카테고리에 맞게 게시글을 필터링
-            boardList = boardService.pagingByCategory(category, pageable);
-        } else {
-            // 카테고리가 선택되지 않은 경우, 모든 게시글을 가져옴
-            boardList = boardService.paging(pageable);
-        }
 
         // 각 게시글에 대한 댓글 수를 계산하고 추가
         for (BoardDTO board : boardList) {

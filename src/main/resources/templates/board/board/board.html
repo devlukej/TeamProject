@@ -13,8 +13,8 @@
         <div class="check"><h3>함께 > 자유잡담</h3></div>
         <div class="enter">
             <div class="search">
-                <input class="size" name="nameKeyword" id="keyword" type="text">
-                <button class="search-btn">검색</button>
+                <input class="size" name="titleKeyword" id="keyword" type="text">
+                <button class="search-btn" onclick="searchPosts()">검색</button>
             </div>
             <div class="bar">
                 <div class="btn">
@@ -74,32 +74,11 @@
     </div>
 </div>
 <script>
-    function loadCategory(select) {
-        const category = select.value;
-        if (category === "All") {
-            // "전체"가 선택된 경우, 모든 게시글을 보여줍니다.
-            loadPosts("/public/board");
-        } else {
-            // 선택된 category 값으로 해당 카테고리의 게시글을 가져오는 AJAX 요청을 보냅니다.
-            loadPosts(`/public/board?category=${category}`);
-        }
-    }
-
-    function loadPosts(url) {
-        // AJAX를 사용하여 해당 URL로 요청을 보내고, 응답을 받아서 게시글 목록을 업데이트합니다.
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                // 받은 HTML 데이터를 특정 영역에 업데이트
-                const postsContainer = document.getElementById("posts-container");
-                postsContainer.innerHTML = data;
-            })
-            .catch(error => console.error("Error: " + error));
-    }
 
     const saveReq = () => {
         location.href = "/public/board/save";
     }
+
 </script>
 </body>
 </html>

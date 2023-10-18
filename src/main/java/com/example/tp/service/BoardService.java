@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 // DTO -> Entity (Entity Class)
 // Entity -> DTO (DTO Class)
@@ -115,9 +116,6 @@ public class BoardService {
         return boardDTOS;
     }
 
-    public Page<BoardDTO> pagingByCategory(String category, Pageable pageable) {
-        return boardRepository.findByCategory(category, pageable);
-    }
 }
 
 
