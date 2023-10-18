@@ -44,6 +44,7 @@ public class QuestionService {
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (QuestionEntity questionEntity : questionEntityList) {
             QuestionDTO questionDTO = QuestionDTO.toQuestionDTO(questionEntity);
+
             // 댓글 수 계산 및 설정
             Long commentCount = qcommentRepository.countByQuestionEntity(questionEntity);
             questionDTO.setCommentCount(commentCount);
@@ -114,10 +115,6 @@ public class QuestionService {
         // 목록: id, writer, title, hits, createdTime
         Page<QuestionDTO> questionDTOS = questionEntities.map(question -> new QuestionDTO(question.getId(), question.getQuestionWriter(), question.getQuestionTitle(), question.getQuestionContents(), question.getQuestionHits(), question.getCreatedTime(), question.getCategory(), question.getRecommendCount()));
         return questionDTOS;
-    }
-
-    public Page<QuestionDTO> pagingByCategory(String category, Pageable pageable) {
-        return questionRepository.findByCategory(category, pageable);
     }
 }
 

@@ -67,20 +67,14 @@ public class QuestionController {
         return "redirect:/public/question";
     }
 
+
     @GetMapping("/public/question")
     public String findAll(@AuthenticationPrincipal MemberUser user,Model model, @PageableDefault(page = 1) Pageable pageable, @RequestParam(value = "category", required = false) String category) {
 
-        Page<QuestionDTO> questionList;
+        Page<QuestionDTO> questionList = questionService.paging(pageable);;
 
-        if (category != null) {
-            // 카테고리가 선택된 경우, 해당 카테고리에 맞게 게시글을 필터링
-            questionList = questionService.pagingByCategory(category, pageable);
-        } else {
-            // 카테고리가 선택되지 않은 경우, 모든 게시글을 가져옴
-            questionList = questionService.paging(pageable);
-        }
 
-// 각 게시글에 대한 댓글 수를 계산하고 추가
+        // 각 게시글에 대한 댓글 수를 계산하고 추가
         for (QuestionDTO question : questionList) {
             Long questionId = question.getId();
             QuestionEntity questionEntity = questionService.getQuestionEntityById(questionId);

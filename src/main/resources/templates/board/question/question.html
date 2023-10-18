@@ -17,7 +17,7 @@
                 <button class="search-btn">검색</button>
             </div>
             <div class="bar">
-                <select id="sort" name="category" class="sort" onchange="loadCategory(this)">
+                <select id="sort" name="category" class="sort" >
                     <option value="All">전체</option>
                     <option value="경찰">경찰</option>
                     <option value="소방">소방</option>
@@ -82,29 +82,8 @@
         </div>
     </div>
 </div>
-<script>
-    function loadCategory(select) {
-        const category = select.value;
-        if (category === "All") {
-            // "전체"가 선택된 경우, 모든 게시글을 보여줍니다.
-            loadPosts("/public/question");
-        } else {
-            // 선택된 category 값으로 해당 카테고리의 게시글을 가져오는 AJAX 요청을 보냅니다.
-            loadPosts(`/public/question?category=${category}`);
-        }
-    }
 
-    function loadPosts(url) {
-        // AJAX를 사용하여 해당 URL로 요청을 보내고, 응답을 받아서 게시글 목록을 업데이트합니다.
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                // 받은 HTML 데이터를 특정 영역에 업데이트
-                const postsContainer = document.getElementById("posts-container");
-                postsContainer.innerHTML = data;
-            })
-            .catch(error => console.error("Error: " + error));
-    }
+<script>
 
     const saveReq = () => {
         location.href = "/public/question/save";
