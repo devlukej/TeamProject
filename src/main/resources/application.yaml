@@ -1,29 +1,21 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/user?serverTimezone=UTC&characterEncoding=UTF-8&
-    username: root
-    password: root
-    hikari:
-      connection-timeout: 20000
-      maximum-pool-size: 5
-  devtools:
-    livereload:
-      enabled: true
-    freemarker:
-      cache: false
+    url: jdbc:mysql://dodo-mysql.cet6jusu056s.ap-northeast-1.rds.amazonaws.com:3306/dodo
+    username: admin
+    password: anwkdrhdql
   mvc:
     hiddenmethod:
       filter:
         enabled: true
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5Dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     show-sql: true
     hibernate:
       properties:
         hibernate:
-          dialect: org.hibernate.dialect.MySQLDialect
+          dialect: org.hibernate.dialect.MySQL8Dialect
       format_sql: true
       ddl-auto: update
     defer-datasource-initialization: true
@@ -34,36 +26,7 @@ spring:
     h2:
       console:
         enabled: true
-#  config:
-#    activate:
-#      on-profile: dev
 
-
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
-      springframework: DEBUG
-    com:
-      example:
-        tp: DEBUG
-
-
-cloud:
-  aws:
-    credentials:
-      accessKey: AKIAVIUCCJXTWKCZD4P5
-      secretKey: tYC/XBKeUpFjBKbuHwN3rb0eVLUdzoZT9DuZuBRJ
-    s3:
-      bucket: chanho
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
-
+server:
+  port: 80
 

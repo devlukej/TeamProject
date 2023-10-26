@@ -77,7 +77,6 @@ public class UserService implements UserDetailsService {
                 .phone(userEntity.getPhone())
                 .tier(userEntity.getTier())
                 .filePath(userEntity.getFilePath())
-                .imgFullPath("https://" + S3Service.CLOUD_FRONT_DOMAIN_NAME + "/" + userEntity.getFilePath())
 
                 .build();
     }

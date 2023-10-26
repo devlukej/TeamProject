@@ -31,7 +31,7 @@ import java.util.Map;
 public class UserController {
 
     private UserService userService;
-    private S3Service s3Service;
+
     private NoticeService noticeService;
 
     private RankingService rankingService;
@@ -120,8 +120,7 @@ public class UserController {
     }
 
     @PostMapping("/private/myinfo")
-    public String dispMyInfo(@AuthenticationPrincipal MemberUser user, Model model , UserDto userDto, MultipartFile file) throws IOException {
-        userDto.setFilePath(s3Service.upload(userDto.getFilePath(), file));
+    public String dispMyInfo(@AuthenticationPrincipal MemberUser user, Model model , UserDto userDto) {
         userService.savePost(userDto);
         model.addAttribute("user", user);
 
