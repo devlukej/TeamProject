@@ -1,0 +1,47 @@
+package com.example.Community.service;
+
+
+import com.example.Community.domain.entity.QuestionEntity;
+import com.example.Community.domain.entity.QcommentEntity;
+import com.example.Community.domain.entity.UserEntity;
+import com.example.Community.domain.repository.QuestionRepository;
+import com.example.Community.domain.repository.QcommentRepository;
+import com.example.Community.dto.QcommentDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class QcommentService {
+    private final QcommentRepository qcommentRepository;
+    private final QuestionRepository questionRepository;
+
+    public Long save(QcommentDTO qcommentDTO, UserEntity commentWriter) {
+        /* 부모엔티티(QuestionEntity) 조회 */
+        Optional<QuestionEntity> optionalQuestionEntity = questionRepository.findById(qcommentDTO.getQuestionId());
+        if (optionalQuestionEntity.isPresent()) {
+            QuestionEntity questionEntity = optionalQuestionEntity.get();
+            QcommentEntity qcommentEntity = QcommentEntity.toSaveEntity(qcommentDTO, questionEntity, commentWriter);
+            return qcommentRepository.save(qcommentEntity).getId();
+        } else {
+            return null;
+        }
+    }
+
+    public List<QcommentDTO> findAll(Long questionId) {
+        QuestionEntity questionEntity = questionRepository.findById(questionId).get();
+        List<QcommentEntity> qcommentEntityList = qcommentRepository.findAllByQuestionEntityOrderByIdAsc(questionEntity);
+        /* EntityList -> DTOList */
+        List<QcommentDTO> qcommentDTOList = new ArrayList<>();
+        for (QcommentEntity qcommentEntity: qcommentEntityList) {
+            QcommentDTO qcommentDTO = QcommentDTO.toQcommentDTO(qcommentEntity, questionId);
+            qcommentDTOList.add(qcommentDTO);
+        }
+        return qcommentDTOList;
+    }
+
+}
